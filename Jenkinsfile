@@ -70,7 +70,7 @@ pipeline {
     }
 
     stages {
-        stage('Verify Delius-Core IAPS') { 
+        stage('IAPS - Packer Verify') { 
             steps { 
                 sh('echo $BRANCH_NAME')
                 script {
@@ -79,7 +79,7 @@ pipeline {
             }
         }
 
-        stage('Build Delius-Core IAPS') { 
+        stage('IAPS - Packer Build') { 
             steps { 
                 script {
                     build_win_image('iaps.json')
