@@ -67,7 +67,8 @@ catch [Exception] {
 }
 
 try {
-    Write-Host('Installing DotNet3.5 from media')
+    $winvolumedrive = Get-Partition -DiskNumber 1 
+    Write-Host('Installing DotNet3.5 from media volume on drive: ' + $winvolumedrive.DriveLetter)
     Install-WindowsFeature Net-Framework-Core -source $winvolumedrive.DriveLetter:\sources\sxs
     
     if (Get-WindowsFeature -Name Net-Framework-Core) {
