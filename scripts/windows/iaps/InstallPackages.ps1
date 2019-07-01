@@ -1,5 +1,5 @@
 $ErrorActionPreference = "Stop"
-$VerbosePreference = "Continue"REM Chocolatey installed on base image
+$VerbosePreference = "Continue"
 
 try
 {
