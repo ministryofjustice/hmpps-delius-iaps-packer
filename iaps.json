@@ -61,8 +61,10 @@
     ],
     "provisioners": [
         {
-            "type": "windows-shell",
-            "script": "scripts/windows/iaps/InstallPackages.bat"
+            "type": "powershell",
+            "script": "scripts/windows/iaps/InstallPackages.ps1",
+            "elevated_user": "Administrator",
+            "elevated_password": "{{user `admin_pass`}}"
         },
         {
             "type": "powershell",
@@ -118,6 +120,16 @@
             "type": "file",
             "source": "scripts/windows/iaps/ImportACMCertificates.ps1",
             "destination": "C:\\Setup\\RunTimeConfig\\ImportACMCertificates.ps1"
+        },
+        {
+            "type": "file",
+            "source": "files/windows/iaps/nginx.conf.tmpl",
+            "destination": "C:\\Setup\\Nginx\\nginx.conf.tmpl"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/SetupNginx.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\SetupNginx.ps1"
         }
     ]
   }

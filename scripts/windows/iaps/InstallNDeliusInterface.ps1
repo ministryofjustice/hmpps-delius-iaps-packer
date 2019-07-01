@@ -34,7 +34,7 @@ try {
     [System.IO.File]::WriteAllBytes("$iapsshortcut", $bytes)
 
     Write-Host('Copying in Live Config Files')
-    Copy-Item -Path "C:\Setup\Config Files\Live Config\NDelius IF Live Config\*.XML"-Destination "C:\Program Files (x86)\I2N\IapsNDeliusInterface\Config\" -Force
+    Copy-Item -Path "C:\Setup\Config Files\Live Config\NDelius IF Live Config\*.XML" -Destination "C:\Program Files (x86)\I2N\IapsNDeliusInterface\Config\" -Force
     if( (Get-ChildItem "C:\Program Files (x86)\I2N\IapsNDeliusInterface\Config\*.XML" | Measure-Object).Count -lt 4)
     {
         echo "Error: Filed to copy all NDelius IF Config files"
