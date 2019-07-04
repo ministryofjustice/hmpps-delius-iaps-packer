@@ -81,14 +81,18 @@ try {
         Write-Host('Installed cert to this users local store successfully')
         Write-Host('Exporting Cert for nginx')
         $keypasscipher = ConvertTo-SecureString -String $keypassplain -Force -AsPlainText
-        $pfxfile="C:\nginx\nginx-1.17.1\certs\localhost.pfx"
-        $pemkeyfile="C:\nginx\nginx-1.17.1\certs\localhost.key"
-        $pemcrtfile="C:\nginx\nginx-1.17.1\certs\localhost.crt"
+        $nginxcertsdir=$nginxdir + "\certs"
+        if (! (Test-Path -Path $nginxcertsdir)) {
+            New-Item -ItemType directory -Path $nginxcertsdir
+        }
+        $pfxfile=$nginxcertsdir + "\localhost.pfx"
+        $pemkeyfile=$nginxcertsdir + "\localhost.key"
+        $pemcrtfile=$nginxcertsdir + "\localhost.crt"
         Export-PfxCertificate -Cert $storedcert -FilePath $pfxfile -Password $keypasscipher
+
         $pemkey=(openssl pkcs12 -nocerts -nodes -in $pfxfile -out $pemkeyfile --password pass:$keypassplain --passin pass:$keypassplain)
         $pemcrt=(openssl pkcs12 -clcerts -nokeys -nodes -in $pfxfile -out $pemcrtfile --password pass:$keypassplain --passin pass:$keypassplain)
         Import-PfxCertificate -FilePath $pfxfile -Password $keypasscipher -CertStoreLocation cert:\LocalMachine\Root
-        
     } 
     else { 
         Write-Host('Failed generating and storing new localhost self signed cert')
