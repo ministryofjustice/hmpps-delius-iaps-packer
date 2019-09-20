@@ -1,7 +1,8 @@
 
 $LANIP = Test-Connection -ComputerName (hostname) -Count 1  | Select IPV4Address -expandproperty IPV4Address
 
-$zoneName = $args[0] + "." 
+Set-Location ENV:
+$zoneName =  $env:ExternalDomain + "."
 
 $hostedZone = Get-R53HostedZones | where Name -eq $zoneName
 
