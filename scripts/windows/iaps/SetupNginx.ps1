@@ -2,40 +2,10 @@ $ErrorActionPreference = "Stop"
 $VerbosePreference = "Continue"
 
 try {
-    # Get environment domain suffix
-    # Get the instance id from ec2 meta data
-    $instanceid = Invoke-RestMethod "http://169.254.169.254/latest/meta-data/instance-id"
-    # Get the public zone fqdn suffix from this instance's environment and application tag compound values or set to gov.uk if prod
-    $environment = Get-EC2Tag -Filter @(
-        @{
-            name="resource-id"
-            values="$instanceid"
-        }
-        @{
-            name="key"
-            values="environment"
-        }
-    )
-    $application = Get-EC2Tag -Filter @(
-        @{
-            name="resource-id"
-            values="$instanceid"
-        }
-        @{
-            name="key"
-            values="application"
-        }
-    )
-    if ((!$environment.Value) -or (!$application.Value)) {
-        Write-Host('Error - Nginx setup cannot continue due to missing environment and/or application tags')
-        Exit 1
-    }
-    # Set fqdn suffix for public hosted zones
-    if ($environment -match "prod") {
-        $suffix = 'probation.service.justice.gov.uk'
-    } else {
-        $suffix = $environment.Value + '.' + $application.Value + '.probation.hmpps.dsd.io'
-    }
+    # Get environment domain suffix and PSN Proxy Endpoint from system variables
+    Set-Location ENV:
+    $suffix = $env:InternalDomain
+    $psnproxy = $env:PSNProxy
     Write-Host('Determined fqdn suffix as: ' + $suffix)
 
     $dnsservers = Get-DnsClientServerAddress
@@ -59,8 +29,9 @@ try {
     $nginxconf = "$nginxdir\conf\nginx.conf"
     Copy-Item -Path $nginxtmpl -Destination $nginxconf -Force
     if (Test-Path -Path $nginxconf) {
-        ((Get-Content -path $nginxconf -Raw) -replace '__INTERFACE__',"interface.$suffix") | Set-Content -Path $nginxconf 
-        ((Get-Content -path $nginxconf -Raw) -replace '__DNS__',"$dns") | Set-Content -Path $nginxconf 
+        ((Get-Content -path $nginxconf -Raw) -replace '__INTERFACE__',"interface-app-internal.$suffix") | Set-Content -Path $nginxconf 
+        ((Get-Content -path $nginxconf -Raw) -replace '__DNS__',"$dns") | Set-Content -Path $nginxconf
+        ((Get-Content -path $nginxconf -Raw) -replace '__PSNPROXY__',"$psnproxy") | Set-Content -Path $nginxconf  
     } else {
         write-host('Error - could not find nginx conf file: $nginxconf')
         Exit 1
@@ -113,4 +84,4 @@ catch [Exception] {
     Write-Host ('Failed to configure Nginx')
     echo $_.Exception|format-list -force
     exit 1
-}
+} 
