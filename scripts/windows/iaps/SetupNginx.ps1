@@ -78,6 +78,11 @@ try {
         Write-Host('Error - Failed to restart nginx - see logs')
         Exit 1
     }
+    
+    # OpenSSL installs vcredist 2015-19 as a dependency which causes conflict with IAPS - so uninstall
+    choco uninstall -y openssl.light
+    choco uninstall -y  vcredist140
+
 
 }
 catch [Exception] {
