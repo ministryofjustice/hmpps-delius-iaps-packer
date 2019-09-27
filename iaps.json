@@ -139,6 +139,15 @@
             "type": "file",
             "source": "scripts/windows/iaps/Route53Record.ps1",
             "destination": "C:\\Setup\\RunTimeConfig\\Route53Record.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/cloudwatch.config.json",
+            "destination": "C:\\Setup\\Cloudwatch\\config.json"
+        },       
+        {
+            "type": "powershell",
+            "script": "scripts/windows/iaps/SetupCloudwatchAgent.ps1"
         }
     ]
   }
