@@ -59,3 +59,13 @@ catch [Exception] {
     echo $_.Exception|format-list -force
     exit 1
 }
+
+try {
+    Write-Host ('Update Oracle NLS_LANG reg value')
+    Set-ItemProperty -path "HKLM:\SOFTWARE\Wow6432Node\ORACLE\KEY_OraClient12Home1_32bit" -name "NLS_LANG" -value "AMERICAN_AMERICA.WE8ISO8859P15" 
+}
+catch [Exception] {
+    Write-Host ('Error - Failed to update oracle NLS_LANG value')
+    echo $_.Exception|format-list -force
+    exit 1
+}
