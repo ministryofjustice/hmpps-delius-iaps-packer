@@ -1,0 +1,77 @@
+{
+	"logs": {
+		"logs_collected": {
+			"files": {
+				"collect_list": [
+					{
+						"file_path": "c:\\nginx\\nginx-1.17.1\\logs\\access.log",
+						"log_group_name": "IAPS",
+						"log_stream_name": "nginx-access-log"
+					},
+					{
+						"file_path": "c:\\nginx\\nginx-1.17.1\\logs\\error.log",
+						"log_group_name": "IAPS",
+						"log_stream_name": "nginx-error-log"
+					},
+					{
+						"file_path": "C:\\Program Files (x86)\\I2N\\IapsNDeliusInterface\\Log\\XMLTRANSFER.LOG",
+						"log_group_name": "IAPS",
+						"log_stream_name": "i2n-xmltransfer.log"
+					},
+					{
+						"file_path": "C:\\Program Files (x86)\\I2N\\IapsNDeliusInterface\\Log\\DAILY\\DAYSUMMARY.LOG",
+						"log_group_name": "IAPS",
+						"log_stream_name": "i2n-daysummary.log"
+					}
+				]
+			},
+			"windows_events": {
+				"collect_list": [
+					{
+						"event_format": "xml",
+						"event_levels": [
+							"VERBOSE",
+							"INFORMATION",
+							"WARNING",
+							"ERROR",
+							"CRITICAL"
+						],
+						"event_name": "System",
+						"log_group_name": "IAPS",
+						"log_stream_name": "system-events"
+					}
+				]
+			}
+		}
+	},
+	"metrics": {
+		"append_dimensions": {
+			"AutoScalingGroupName": "${aws:AutoScalingGroupName}",
+			"ImageId": "${aws:ImageId}",
+			"InstanceId": "${aws:InstanceId}",
+			"InstanceType": "${aws:InstanceType}"
+		},
+		"metrics_collected": {
+			"LogicalDisk": {
+				"measurement": [
+					"% Free Space"
+				],
+				"metrics_collection_interval": 60,
+				"resources": [
+					"*"
+				]
+			},
+			"Memory": {
+				"measurement": [
+					"% Committed Bytes In Use"
+				],
+				"metrics_collection_interval": 60
+			},
+			"statsd": {
+				"metrics_aggregation_interval": 60,
+				"metrics_collection_interval": 30,
+				"service_address": ":8125"
+			}
+		}
+	}
+}
