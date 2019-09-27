@@ -12,6 +12,16 @@
 						"file_path": "c:\\nginx\\nginx-1.17.1\\logs\\error.log",
 						"log_group_name": "IAPS",
 						"log_stream_name": "nginx-error-log"
+					},
+					{
+						"file_path": "C:\\Program Files (x86)\\I2N\\IapsNDeliusInterface\\Log\\XMLTRANSFER.LOG",
+						"log_group_name": "IAPS",
+						"log_stream_name": "i2n-xmltransfer.log"
+					},
+					{
+						"file_path": "C:\\Program Files (x86)\\I2N\\IapsNDeliusInterface\\Log\\DAILY\\DAYSUMMARY.LOG",
+						"log_group_name": "IAPS",
+						"log_stream_name": "i2n-daysummary.log"
 					}
 				]
 			},
