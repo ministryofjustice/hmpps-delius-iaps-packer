@@ -142,7 +142,7 @@
         },
         {
             "type": "file",
-            "source": "scripts/windows/iaps/cloudwatch.config.json",
+            "source": "files/windows/iaps/cloudwatch.config.json",
             "destination": "C:\\Setup\\Cloudwatch\\config.json"
         },       
         {
