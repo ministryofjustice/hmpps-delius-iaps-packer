@@ -147,7 +147,12 @@
         },       
         {
             "type": "powershell",
-            "script": "scripts/windows/iaps/SetupCloudwatchAgent.ps1"
+            "script": "scripts/windows/iaps/InstallCloudwatchAgent.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/SetupCloudwatchAgent.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\SetupCloudwatchAgent.ps1"
         }
     ]
   }
