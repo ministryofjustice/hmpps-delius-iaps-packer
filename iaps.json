@@ -153,6 +153,11 @@
             "type": "file",
             "source": "scripts/windows/iaps/SetupCloudwatchAgent.ps1",
             "destination": "C:\\Setup\\RunTimeConfig\\SetupCloudwatchAgent.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/SetupLocalUsers.ps1",
+            "destination": "C:\\Setup\\Users\\SetupLocalUsers.ps1"
         }
     ]
   }
