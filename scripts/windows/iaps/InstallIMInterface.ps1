@@ -29,7 +29,7 @@ try {
     {
         if ($element.URL -eq "https://data-im.noms.gsi.gov.uk/IMIapsSoap/service.svc")
         {
-            $element.URL="https://im-proxy.psn.probation.service.justice.gov.uk/IMIapsSoap/service.svc"
+            $element.URL="https://localhost/IMIapsSoap/service.sv"
         }
     }
     $xmlElement.SOAPSERVER.RemoveAttribute("PROXYURL")
@@ -45,6 +45,9 @@ try {
         if ($element.NAME -eq "PCMS")
         {
             $element.SOAPURL="https://localhost:443/NDeliusIAPS"
+            $element.SOAPCERT="*.probation.service.justice.gov.uk"
+            $element.REPLICACERT=""
+            $element.SOAPPASSCODED="q8y&gt;&#x7;$&#x11;=d&#x5;&#x1B;&#xC;%h{h"
         }
     }
     $xmlElementToModify = $xmlElement.EMAIL
