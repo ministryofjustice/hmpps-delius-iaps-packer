@@ -156,8 +156,8 @@
         },
         {
             "type": "file",
-            "source": "scripts/windows/iaps/SetupLocalUsers.ps1",
-            "destination": "C:\\Setup\\Users\\SetupLocalUsers.ps1"
+            "source": "scripts/windows/iaps/SetupLocalUsersFromParamStore.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\SetupLocalUsersFromParamStore.ps1"
         }
     ]
   }
