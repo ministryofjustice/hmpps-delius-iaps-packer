@@ -30,7 +30,7 @@
           "owners": ["895523100917"],
           "most_recent": true
         },
-        "instance_type": "t2.micro",
+        "instance_type": "t2.medium",
         "ami_regions": ["eu-west-2"],
         "ami_users": [
             "895523100917",
@@ -156,8 +156,13 @@
         },
         {
             "type": "file",
-            "source": "scripts/windows/iaps/SetupLocalUsers.ps1",
-            "destination": "C:\\Setup\\Users\\SetupLocalUsers.ps1"
+            "source": "scripts/windows/iaps/SetupLocalUsersFromParamStore.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\SetupLocalUsersFromParamStore.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/UpdateNDeliusIMConfig.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\UpdateNDeliusIMConfig.ps1"
         }
     ]
   }

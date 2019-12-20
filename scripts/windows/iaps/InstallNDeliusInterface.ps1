@@ -3,7 +3,7 @@ $VerbosePreference = "Continue"
 
 try {
     Write-Host('Installing NDelius Interface Package')
-    Start-Process -Wait -FilePath "C:\Setup\NDelius Interface\setup.exe" -ArgumentList "/quiet /qn" -Verb RunAs
+    Start-Process -Wait -FilePath "C:\Setup\NDelius Interface\latest\setup.exe" -ArgumentList "/quiet /qn" -Verb RunAs
 
     Write-Host('Remove invalid shortcut')
     Remove-Item -Path "C:\Users\Public\Desktop\Migration Utility (Iaps-NDelius IF).lnk"

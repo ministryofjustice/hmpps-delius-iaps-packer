@@ -3,7 +3,7 @@ $VerbosePreference = "Continue"
 
 try {
     Write-Host('Installing IM Interface Package')
-    Start-Process -Wait -FilePath "C:\Setup\IM Interface\InstallIMIAPSInterfaceV1.2.15\IMIapsInterfaceService\setup.exe" -ArgumentList "/quiet /qn" -Verb RunAs
+    Start-Process -Wait -FilePath "C:\Setup\IM Interface\latest\setup.exe" -ArgumentList "/quiet /qn" -Verb RunAs
 
     Write-Host('Copying in Live Config Files')
     Copy-Item -Path "C:\Setup\Config Files\Live Config\IM Interface Live Config\*.XML" -Destination "C:\Program Files (x86)\I2N\IapsNDeliusInterface\Config\" -Force
@@ -29,7 +29,7 @@ try {
     {
         if ($element.URL -eq "https://data-im.noms.gsi.gov.uk/IMIapsSoap/service.svc")
         {
-            $element.URL="https://im-proxy.psn.probation.service.justice.gov.uk/IMIapsSoap/service.svc"
+            $element.URL="https://localhost/IMIapsSoap/service.svc"
         }
     }
     $xmlElement.SOAPSERVER.RemoveAttribute("PROXYURL")
@@ -45,6 +45,9 @@ try {
         if ($element.NAME -eq "PCMS")
         {
             $element.SOAPURL="https://localhost:443/NDeliusIAPS"
+            $element.SOAPCERT="*.probation.service.justice.gov.uk"
+            $element.REPLICACERT=""
+            $element.SOAPPASSCODED="q8y&gt;&#x7;$&#x11;=d&#x5;&#x1B;&#xC;%h{h"
         }
     }
     $xmlElementToModify = $xmlElement.EMAIL
