@@ -74,14 +74,16 @@ try {
         Exit 1
     } else {
         $dnsconfig = Get-DnsClientGlobalSetting
-        if ($dnsconfig.SuffixSearchList -match $environment.Value) {
-            Write-Host('Skipping DNS Search Suffix as matching entry exists for private zone')
+        $suffix=$environment.Value + ".internal"
+
+        if ($dnsconfig.SuffixSearchList -match $suffix) {
+            Write-Host("Skipping DNS Search Suffix as matching entry exists for private zone $suffix")
         } else {
-            Write-Host('Adding Private Zone (internal) DNS Search Suffix Entry')
-            $dnsconfig.SuffixSearchList += $environment.Value + ".internal"
+            Write-Host("Adding Private Zone (internal) DNS Search Suffix Entry $suffix")
+            $dnsconfig.SuffixSearchList += $suffix
             Set-DnsClientGlobalSetting -SuffixSearchList $dnsconfig.SuffixSearchList
             Clear-DnsClientCache
-        }
+        } 
     }
 }
 catch [Exception] {
@@ -136,17 +138,18 @@ try {
     #if ($environment -match "prod") {
     if ($hostname -eq "Packer Builder") {
         #Write-Host('Prod environment - adding public zone dns search suffix')
-        Write-Host('This is a Packer Builder Instance - adding public zone dns search suffix')
         $suffix = 'probation.service.justice.gov.uk'
+        Write-Host("This is a Packer Builder Instance - adding public zone dns search suffix $suffix")
     } else {
         $suffix = $environment.Value + '.' + $application.Value + '.probation.hmpps.dsd.io'
+        Write-Host("This is a deployed Instance - adding public zone dns search suffix $suffix")
     }
     # Update the search suffix
     $dnsconfig = Get-DnsClientGlobalSetting
     if ($dnsconfig.SuffixSearchList -match $suffix) {
-        Write-Host('Skipping DNS Search Suffix as matching entry exists for public zone')
+        Write-Host("Skipping DNS Search Suffix as matching entry exists for public zone $suffix")
     } else {
-        Write-Host('Adding Public Zone DNS Search Suffix Entry')
+        Write-Host("Adding Public Zone DNS Search Suffix Entry $suffix")
         $dnsconfig.SuffixSearchList += "$suffix"
         Set-DnsClientGlobalSetting -SuffixSearchList $dnsconfig.SuffixSearchList
         Clear-DnsClientCache
