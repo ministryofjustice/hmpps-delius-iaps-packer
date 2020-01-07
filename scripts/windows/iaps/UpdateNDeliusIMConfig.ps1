@@ -46,6 +46,15 @@ Write-Host('Fetching IAPS Delius Credentials from SSM Parameter Store')
     }
     $xml.Save($configfile)
 
+    # Restart IapsNDeliusInterfaceWinService service
+    $service = Restart-Service -Name IapsNDeliusInterfaceWinService -Force -PassThru
+    if ($service.Status -match "Running") {
+        Write-Host('Restart of IapsNDeliusInterfaceWinService successful')
+    } else {
+        Write-Host('Error - Failed to restart IapsNDeliusInterfaceWinService - see logs')
+        Exit 1
+    }
+
 }
 catch [Exception] {
     Write-Host ('Failed to fetch ssm params')
