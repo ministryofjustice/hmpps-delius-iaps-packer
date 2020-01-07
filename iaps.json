@@ -121,6 +121,11 @@
         },
         {
             "type": "file",
+            "source": "scripts/windows/iaps/SetRegionalConfig.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\SetRegionalConfig.ps1"
+        },
+        {
+            "type": "file",
             "source": "scripts/windows/iaps/SetDNSSearchSuffix.ps1",
             "destination": "C:\\Setup\\RunTimeConfig\\SetDNSSearchSuffix.ps1"
         },
