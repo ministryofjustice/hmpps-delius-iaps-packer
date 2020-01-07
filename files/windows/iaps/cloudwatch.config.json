@@ -4,12 +4,12 @@
 			"files": {
 				"collect_list": [
 					{
-						"file_path": "c:\\nginx\\nginx-1.17.1\\logs\\access.log",
+						"file_path": "c:\\nginx\\nginx-1.17.6\\logs\\access.log",
 						"log_group_name": "IAPS",
 						"log_stream_name": "nginx-access-log"
 					},
 					{
-						"file_path": "c:\\nginx\\nginx-1.17.1\\logs\\error.log",
+						"file_path": "c:\\nginx\\nginx-1.17.6\\logs\\error.log",
 						"log_group_name": "IAPS",
 						"log_stream_name": "nginx-error-log"
 					},

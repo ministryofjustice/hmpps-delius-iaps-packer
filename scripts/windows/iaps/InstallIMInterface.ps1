@@ -71,6 +71,16 @@ try {
         }
     }
     $xml.Save($ndifconfigfile)
+
+    # Restart IMIapsInterfaceWinService service
+    $service = Restart-Service -Name IMIapsInterfaceWinService -Force -PassThru
+    if ($service.Status -match "Running") {
+        Write-Host('Restart of IMIapsInterfaceWinService successful')
+    } else {
+        Write-Host('Error - Failed to restart IMIapsInterfaceWinService - see logs')
+        Exit 1
+    }
+
 }
 catch [Exception] {
     Write-Host ('Failed to install IM Interface service')

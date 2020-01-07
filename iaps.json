@@ -105,6 +105,10 @@
         },
         {
             "type": "powershell",
+            "script": "scripts/windows/iaps/SetupODBCDSN.ps1"
+        },
+        {
+            "type": "powershell",
             "script": "scripts/windows/iaps/InstallNDeliusInterface.ps1"
         },
         {
@@ -114,6 +118,11 @@
         {
             "type": "powershell",
             "script": "scripts/windows/iaps/ReEnableUserData.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/SetRegionalConfig.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\SetRegionalConfig.ps1"
         },
         {
             "type": "file",

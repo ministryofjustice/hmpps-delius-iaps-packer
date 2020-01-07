@@ -41,6 +41,15 @@ try {
         exit 1
     }
 
+    # Restart IapsNDeliusInterfaceWinService service
+    $service = Restart-Service -Name IapsNDeliusInterfaceWinService -Force -PassThru
+    if ($service.Status -match "Running") {
+        Write-Host('Restart of IapsNDeliusInterfaceWinService successful')
+    } else {
+        Write-Host('Error - Failed to restart IapsNDeliusInterfaceWinService - see logs')
+        Exit 1
+    }
+
     # TODO Add dynamic interpolation of env specific config values
     # e.g. pull creds in from SSM and write encrypted if poss - see comments on ticket
     # https://dsdmoj.atlassian.net/browse/DAM-188
