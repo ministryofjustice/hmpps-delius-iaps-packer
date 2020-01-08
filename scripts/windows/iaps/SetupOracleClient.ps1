@@ -62,10 +62,19 @@ catch [Exception] {
 
 try {
     Write-Host ('Update Oracle NLS_LANG reg value')
-    Set-ItemProperty -path "HKLM:\SOFTWARE\Wow6432Node\ORACLE\KEY_OraClient12Home1_32bit" -name "NLS_LANG" -value "AMERICAN_AMERICA.WE8ISO8859P15" 
+    Set-ItemProperty -path "HKLM:\SOFTWARE\Wow6432Node\ORACLE\KEY_OraClient12Home1_32bit" -name "NLS_LANG" -value "ENGLISH_UNITED KINGDOM.WE8MSWIN1252" 
 }
 catch [Exception] {
     Write-Host ('Error - Failed to update oracle NLS_LANG value')
     echo $_.Exception|format-list -force
     exit 1
 }
+
+#//TODO: possibly required? (prob not as Packer installs as Administrator user, manually prod built server via login as i2nadmin user)
+
+# Set-ItemProperty -path "HKLM:\SOFTWARE\Wow6432Node\ORACLE\KEY_OraClient12Home1_32bit" -name "ORACLE_BASE" -value "C:\app\client\i2nadmin" 
+# Set-ItemProperty -path "HKLM:\SOFTWARE\Wow6432Node\ORACLE\KEY_OraClient12Home1_32bit" -name "ORACLE_HOME" -value "C:\app\client\i2nadmin\product\12.1.0\client_1" 
+# Set-ItemProperty -path "HKLM:\SOFTWARE\Wow6432Node\ORACLE\KEY_OraClient12Home1_32bit" -name "OLEDB" -value "C:\app\client\i2nadmin\product\12.1.0\client_1\oledb\mesg" 
+# Set-ItemProperty -path "HKLM:\SOFTWARE\Wow6432Node\ORACLE\KEY_OraClient12Home1_32bit" -name "MSHELP_TOOLS" -value "C:\app\client\i2nadminC:\app\client\i2nadmin\product\12.1.0\client_1\MSHELP" 
+# Set-ItemProperty -path "HKLM:\SOFTWARE\Wow6432Node\ORACLE\KEY_OraClient12Home1_32bit" -name "SQLPATH" -value "C:\app\client\i2nadmin\product\12.1.0\client_1\dbs" 
+
