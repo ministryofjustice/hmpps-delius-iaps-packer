@@ -22,7 +22,7 @@ try {
     # Update IapsNDeliusInterface\Config\IMIAPS.xml
     ###############################################################
     Write-Host('Updating DB and URL Values in IM Config')
-    $imconfigfile="C:\Program Files (x86)\I2N\IapsNDeliusInterface\Config\IMIAPS.xml"
+    $imconfigfile="C:\Program Files (x86)\I2N\IapsIMInterface\Config\IMIAPS.xml"
     $xml = [xml](get-content $imconfigfile)
     $xmlElement = $xml.get_DocumentElement()
     $xmlElementToModify = $xmlElement.IAPSORACLE
