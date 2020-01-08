@@ -2,9 +2,15 @@ $ErrorActionPreference = "Stop"
 $VerbosePreference = "Continue"
 
 try {
+    ###############################################################
+    # Run Installer to install NDelius Interface
+    ###############################################################
     Write-Host('Installing NDelius Interface Package')
     Start-Process -Wait -FilePath "C:\Setup\NDelius Interface\latest\setup.exe" -ArgumentList "/quiet /qn" -Verb RunAs
 
+    ###############################################################
+    # Remove invalid shortcut
+    ###############################################################
     Write-Host('Remove invalid shortcut')
     Remove-Item -Path "C:\Users\Public\Desktop\Migration Utility (Iaps-NDelius IF).lnk"
 
@@ -33,6 +39,11 @@ try {
     $bytes[0x15] = $bytes[0x15] -bor 0x20 #set byte 21 (0x15) bit 6 (0x20) ON
     [System.IO.File]::WriteAllBytes("$iapsshortcut", $bytes)
 
+    ###############################################################
+    # Copy Live config files from 
+    # C:\Setup\Config Files\Live Config\NDelius IF Live Config\ 
+    # to install folder
+    ###############################################################
     Write-Host('Copying in Live Config Files')
     Copy-Item -Path "C:\Setup\Config Files\Live Config\NDelius IF Live Config\*.XML" -Destination "C:\Program Files (x86)\I2N\IapsNDeliusInterface\Config\" -Force
     if( (Get-ChildItem "C:\Program Files (x86)\I2N\IapsNDeliusInterface\Config\*.XML" | Measure-Object).Count -lt 4)
@@ -41,7 +52,51 @@ try {
         exit 1
     }
 
+    ###############################################################
+    # Updating IapsNDeliusInterface\Config\NDELIUSIF.xml
+    ###############################################################
+    Write-Host('Updating NDelius IF SOAPURL and SMTP Values in NDELIUSIF Config')
+    $ndifconfigfile="C:\Program Files (x86)\I2N\IapsNDeliusInterface\Config\NDELIUSIF.xml"
+    $xml = [xml](get-content $ndifconfigfile)
+    $xmlElement = $xml.get_DocumentElement()
+    $xmlElementToModify = $xmlElement.INTERFACES.INTERFACE
+    foreach ($element in $xmlElementToModify)
+    {
+        if ($element.NAME -eq "PCMS")
+        {
+            $element.SOAPURL="https://localhost:443/NDeliusIAPS"
+            $element.SOAPCERT="*.probation.service.justice.gov.uk"
+            $element.REPLICACERT=""
+            $element.SOAPPASSCODED="q8y&gt;&#x7;$&#x11;=d&#x5;&#x1B;&#xC;%h{h"
+            $element.REPLICAURL=""
+            $element.SOAPCERT="*.probation.service.justice.gov.uk" 
+        }
+    }
+    $xmlElementToModify = $xmlElement.EMAIL
+    foreach ($element in $xmlElementToModify)
+    {
+        if ($element.SMTPURL -eq "tbdominoa.i2ntest.local")
+        {
+            $element.SMTPURL="smtp"
+        }
+        if ($element.SMTPUSER -eq "administrator")
+        {
+            $element.SMTPUSER=""
+        }
+        if ($element.PASSWORDCODED -eq " &lt;5&quot;:4,;;")
+        {
+            $element.PASSWORDCODED=""
+        }
+        if ($element.FROMADDRESS -eq "PCMS1-Interface@i2ntest.co.uk")
+        {
+            $element.FROMADDRESS="PCMS1-Interface@probation.service.justice.gov.uk"
+        }
+    }
+    $xml.Save($ndifconfigfile)
+
+    ###############################################################
     # Restart IapsNDeliusInterfaceWinService service
+    ###############################################################
     $service = Restart-Service -Name IapsNDeliusInterfaceWinService -Force -PassThru
     if ($service.Status -match "Running") {
         Write-Host('Restart of IapsNDeliusInterfaceWinService successful')
