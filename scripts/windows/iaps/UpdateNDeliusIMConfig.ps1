@@ -57,7 +57,7 @@ try {
         $CertificateSubject = '*.probation.service.justice.gov.uk'
     }
     else {
-        $CertificateSubject = '*.' + $environmentName.Value + '.probation.service.justice.gov.uk'
+        $CertificateSubject = '*.' + $environment.Value + '.probation.service.justice.gov.uk'
     }
     ################################################################################
     # Edit IapsNDeliusInterface\Config\NDELIUSIF.xml with creds & cert subject for this environment

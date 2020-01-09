@@ -55,6 +55,27 @@ try {
     ###############################################################
     # Updating IapsNDeliusInterface\Config\NDELIUSIF.xml
     ###############################################################
+    # Get the instance id from ec2 meta data
+    $instanceid = Invoke-RestMethod "http://169.254.169.254/latest/meta-data/instance-id"
+    # Get the environment name and application from this instance's environment-name and application tag values
+    $environment = Get-EC2Tag -Filter @(
+        @{
+            name="resource-id"
+            values="$instanceid"
+        }
+        @{
+            name="key"
+            values="environment"
+        }
+    )
+
+    if($environment.Value -eq 'prod') {
+        $CertificateSubject = '*.probation.service.justice.gov.uk'
+    }
+    else {
+        $CertificateSubject = '*.' + $environment.Value + '.probation.service.justice.gov.uk'
+    }
+
     Write-Host('Updating NDelius IF SOAPURL and SMTP Values in NDELIUSIF Config')
     $ndifconfigfile="C:\Program Files (x86)\I2N\IapsNDeliusInterface\Config\NDELIUSIF.xml"
     $xml = [xml](get-content $ndifconfigfile)
@@ -65,11 +86,10 @@ try {
         if ($element.NAME -eq "PCMS")
         {
             $element.SOAPURL="https://localhost:443/NDeliusIAPS"
-            $element.SOAPCERT="*.probation.service.justice.gov.uk"
+            $element.SOAPCERT=$CertificateSubject
             $element.REPLICACERT=""
             $element.SOAPPASSCODED="q8y&gt;&#x7;$&#x11;=d&#x5;&#x1B;&#xC;%h{h"
             $element.REPLICAURL=""
-            $element.SOAPCERT="*.probation.service.justice.gov.uk" 
         }
     }
     $xmlElementToModify = $xmlElement.EMAIL
