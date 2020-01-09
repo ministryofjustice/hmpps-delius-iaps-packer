@@ -25,7 +25,7 @@ try {
     $config = "C:\Setup\Cloudwatch\config.json"
     Write-Host("Editing Cloudwatch Config file '$origconfig'")
     
-    $loggroupnametext = '"log_group_name": "' + $environmentName.Value + '/IAPS"'
+    $loggroupnametext = '"log_group_name": "' + $environmentName.Value + '/IAPS",'
     Write-Host("Updating Cloudwatch Config log_group_name to '$loggroupnametext'")
     ((Get-Content -path $config -Raw) -replace '"log_group_name": "IAPS",',$loggroupnametext) | Set-Content -Path $config
 
@@ -34,17 +34,6 @@ try {
     ################################################################################
     Write-Host ('Start the cloudwatch service')
     Start-Process powershell.exe -WorkingDirectory "C:\Program Files\Amazon\AmazonCloudWatchAgent" -Wait -ArgumentList ".\amazon-cloudwatch-agent-ctl.ps1 -a fetch-config -m ec2 -c file:$config -s"
-
-    ################################################################################
-    # Restart AmazonCloudWatchAgent service
-    ################################################################################
-    $service = Restart-Service -Name AmazonCloudWatchAgent -Force -PassThru
-    if ($service.Status -match "Running") {
-        Write-Host('Restart of AmazonCloudWatchAgent successful')
-    } else {
-        Write-Host('Error - Failed to restart AmazonCloudWatchAgent - see logs')
-        Exit 1
-    }
 
 }
 catch [Exception] {
