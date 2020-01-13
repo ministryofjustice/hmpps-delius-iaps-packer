@@ -170,8 +170,8 @@
         },
         {
             "type": "file",
-            "source": "scripts/windows/iaps/UpdateNDeliusIMConfig.ps1",
-            "destination": "C:\\Setup\\RunTimeConfig\\UpdateNDeliusIMConfig.ps1"
+            "source": "scripts/windows/iaps/ImportChainCertificates.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\ImportChainCertificates.ps1"
         }
     ]
   }
