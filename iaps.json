@@ -196,6 +196,11 @@
             "type": "file",
             "source": "scripts/windows/iaps/UpdateIMInterface.ps1",
             "destination": "C:\\Setup\\RunTimeConfig\\UpdateIMInterface.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/UpdateNDeliusIMConfig.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\UpdateNDeliusIMConfig.ps1"
         }
     ]
   }

@@ -53,12 +53,14 @@ try {
     $IAPSUserPasswordSSMPath = "/" + $environmentName.Value + "/" + $application.Value + "/apacheds/apacheds/iaps_user_password"
     $IAPSDeliusUserPassword = Get-SSMParameter -Name $IAPSUserPasswordSSMPath -WithDecryption $true
     
+    # only update if not prod as default is *.probation.service.justice.gov.uk
     if($environment.Value -eq 'prod') {
         $CertificateSubject = '*.probation.service.justice.gov.uk'
     }
     else {
-        $CertificateSubject = '*.' + $environment.Value + '.probation.service.justice.gov.uk'
+        $CertificateSubject = '*.' + $environment.Value + '.probation.service.justice.gov.uk'        
     }
+  
     ################################################################################
     # Edit IapsNDeliusInterface\Config\NDELIUSIF.xml with creds & cert subject for this environment
     ################################################################################
