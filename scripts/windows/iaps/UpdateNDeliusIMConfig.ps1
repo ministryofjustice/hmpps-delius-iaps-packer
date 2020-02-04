@@ -53,6 +53,13 @@ try {
     $IAPSUserPasswordSSMPath = "/" + $environmentName.Value + "/" + $application.Value + "/apacheds/apacheds/iaps_user_password"
     $IAPSDeliusUserPassword = Get-SSMParameter -Name $IAPSUserPasswordSSMPath -WithDecryption $true
     
+    ################################
+    # /iaps/iaps/iaps_ndelius_soap_password_coded
+    ################################
+    $IAPSUserPasswordCodedSSMPath = "/" + $environmentName.Value + "/" + $application.Value + "/iaps/iaps/iaps_ndelius_soap_password_coded"
+    $IAPSDeliusUserPasswordCoded = Get-SSMParameter -Name $IAPSUserPasswordCodedSSMPath -WithDecryption $true
+    
+
     # only update if not prod as default is *.probation.service.justice.gov.uk
     if($environment.Value -eq 'prod') {
         $CertificateSubject = '*.probation.service.justice.gov.uk'
@@ -73,9 +80,10 @@ try {
     {
         if ($element.NAME -eq "PCMS")
         {
-            $element.SOAPUSER=$IAPSDeliusUserName.Value
-            $element.SOAPPASS=$IAPSDeliusUserPassword.Value
-            $element.SOAPCERT=$CertificateSubject
+            $element.SOAPUSER      = $IAPSDeliusUserName.Value
+            $element.SOAPPASS      = $IAPSDeliusUserPassword.Value
+            $element.SOAPPASSCODED = $IAPSDeliusUserPasswordCoded.Value
+            $element.SOAPCERT      = $CertificateSubject
         }
     }
     $xml.Save($configfile)
