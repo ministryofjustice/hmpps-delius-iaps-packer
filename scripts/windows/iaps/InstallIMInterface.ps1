@@ -60,11 +60,8 @@ try {
     $xmlElementToModify = $xmlElement.SOAPSERVER 
     foreach ($element in $xmlElementToModify)
     {
-        if ($element.URL -eq "https://data-im.noms.gsi.gov.uk/IMIapsSoap/service.svc")
-        {
-            $element.URL="https://localhost/IMIapsSoap/service.svc"
-        }
-        
+        $element.URL="https://localhost/IMIapsSoap/service.svc"
+       
         # DSN=IM;Server=imdb01.im.i2ncloud.com;Database=IM-v2;uid=IMApplication;pwd=xxxx 
         $element.DSN='DSN=IM;Server=' + $iaps_im_soapserver_odbc_server.Value + ';Database=' + $iaps_im_soapserver_odbc_database.Value + ';uid=' + $iaps_im_soapserver_odbc_uid.Value + ';pwd=' + $iaps_im_soapserver_odbc_password.Value
     }
