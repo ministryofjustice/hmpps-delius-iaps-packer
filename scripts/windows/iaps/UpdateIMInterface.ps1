@@ -68,6 +68,12 @@ try {
     }
     $xml.Save($imconfigfile)
 
+    ################################################################################
+    # Set IMIapsInterfaceWinService service to -StartupType Automatic
+    ################################################################################
+    Set-Service -Name IMIapsInterfaceWinService -StartupType Automatic
+    Get-Service IMIapsInterfaceWinService | Select-Object -Property Name, StartType, Status
+
     ###############################################################
     # Restart IMIapsInterfaceWinService service
     ###############################################################

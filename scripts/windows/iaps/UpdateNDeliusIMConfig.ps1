@@ -81,6 +81,12 @@ try {
     $xml.Save($configfile)
 
     ################################################################################
+    # Set IapsNDeliusInterfaceWinService service to -StartupType Automatic
+    ################################################################################
+    Set-Service -Name IapsNDeliusInterfaceWinService -StartupType Automatic
+    Get-Service IapsNDeliusInterfaceWinService | Select-Object -Property Name, StartType, Status
+
+    ################################################################################
     # Restart IapsNDeliusInterfaceWinService service
     ################################################################################
     $service = Restart-Service -Name IapsNDeliusInterfaceWinService -Force -PassThru
