@@ -25,17 +25,22 @@ try {
     # /iaps/iaps/iaps_im_soapserver_odbc_uid
     # /iaps/iaps/iaps_im_soapserver_odbc_password
     ################################
-    $iaps_im_soapserver_odbc_server_SSMPath = "/" + $environmentName.Value + "/" + $application.Value + "/apacheds/apacheds/iaps_im_soapserver_odbc_server"
+    Write-Host('get ssm param /iaps/iaps/iaps_im_soapserver_odbc_server')
+    Write-Host('get ssm param /iaps/iaps/iaps_im_soapserver_odbc_database')
+    Write-Host('get ssm param /iaps/iaps/iaps_im_soapserver_odbc_uid')
+    Write-Host('get ssm param /iaps/iaps/iaps_im_soapserver_odbc_password')
+
+    $iaps_im_soapserver_odbc_server_SSMPath = "/" + $environmentName.Value + "/" + $application.Value + "/iaps/iaps/iaps_im_soapserver_odbc_server"
     $iaps_im_soapserver_odbc_server = Get-SSMParameter -Name $iaps_im_soapserver_odbc_server_SSMPath -WithDecryption $true
 
-    $iaps_im_soapserver_odbc_database_SSMPath = "/" + $environmentName.Value + "/" + $application.Value + "/apacheds/apacheds/iaps_im_soapserver_odbc_database"
+    $iaps_im_soapserver_odbc_database_SSMPath = "/" + $environmentName.Value + "/" + $application.Value + "/iaps/iaps/iaps_im_soapserver_odbc_database"
     $iaps_im_soapserver_odbc_database = Get-SSMParameter -Name $iaps_im_soapserver_odbc_database_SSMPath -WithDecryption $true
 
-    $iaps_im_soapserver_odbc_uid_SSMPath = "/" + $environmentName.Value + "/" + $application.Value + "/apacheds/apacheds/iaps_im_soapserver_odbc_uid"
+    $iaps_im_soapserver_odbc_uid_SSMPath = "/" + $environmentName.Value + "/" + $application.Value + "/iaps/iaps/iaps_im_soapserver_odbc_uid"
     $iaps_im_soapserver_odbc_uid = Get-SSMParameter -Name $iaps_im_soapserver_odbc_uid_SSMPath -WithDecryption $true
 
-    $iaps_im_soapserver_odbc_passwordr_SSMPath = "/" + $environmentName.Value + "/" + $application.Value + "/apacheds/apacheds/iaps_im_soapserver_odbc_password"
-    $iaps_im_soapserver_odbc_password = Get-SSMParameter -Name $iaps_im_soapserver_odbc_passwordr_SSMPath -WithDecryption $true
+    $iaps_im_soapserver_odbc_password_SSMPath = "/" + $environmentName.Value + "/" + $application.Value + "/iaps/iaps/iaps_im_soapserver_odbc_password"
+    $iaps_im_soapserver_odbc_password = Get-SSMParameter -Name $iaps_im_soapserver_odbc_password_SSMPath -WithDecryption $true
 
     ###############################################################
     # Update IapsNDeliusInterface\Config\IMIAPS.xml
