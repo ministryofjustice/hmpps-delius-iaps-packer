@@ -19,6 +19,34 @@ try {
         Exit 1
     }
 
+    ###############################################################
+    # Get creds from ParameterStore for this environment to connect
+    ###############################################################
+    Write-Host('Fetching IAPS Delius Credentials from SSM Parameter Store')
+    # Get the instance id from ec2 meta data
+    $instanceid = Invoke-RestMethod "http://169.254.169.254/latest/meta-data/instance-id"
+    # Get the environment name and application from this instance's environment-name and application tag values
+    $environmentName = Get-EC2Tag -Filter @(
+        @{
+            name="resource-id"
+            values="$instanceid"
+        }
+        @{
+            name="key"
+            values="environment-name"
+        }
+    )
+    $application = Get-EC2Tag -Filter @(
+        @{
+            name="resource-id"
+            values="$instanceid"
+        }
+        @{
+            name="key"
+            values="application"
+        }
+    ) 
+
     ################################
     # /iaps/iaps/iaps_im_soapserver_odbc_server
     # /iaps/iaps/iaps_im_soapserver_odbc_database
