@@ -191,6 +191,11 @@
             "type": "file",
             "source": "scripts/windows/iaps/ImportChainCertificates.ps1",
             "destination": "C:\\Setup\\RunTimeConfig\\ImportChainCertificates.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/UpdateIMInterface.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\UpdateIMInterface.ps1"
         }
     ]
   }

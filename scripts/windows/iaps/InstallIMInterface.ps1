@@ -20,57 +20,6 @@ try {
     }
 
     ###############################################################
-    # Get creds from ParameterStore for this environment to connect
-    ###############################################################
-    Write-Host('Fetching IAPS Delius Credentials from SSM Parameter Store')
-    # Get the instance id from ec2 meta data
-    $instanceid = Invoke-RestMethod "http://169.254.169.254/latest/meta-data/instance-id"
-    # Get the environment name and application from this instance's environment-name and application tag values
-    $environmentName = Get-EC2Tag -Filter @(
-        @{
-            name="resource-id"
-            values="$instanceid"
-        }
-        @{
-            name="key"
-            values="environment-name"
-        }
-    )
-    $application = Get-EC2Tag -Filter @(
-        @{
-            name="resource-id"
-            values="$instanceid"
-        }
-        @{
-            name="key"
-            values="application"
-        }
-    ) 
-
-    ################################
-    # /iaps/iaps/iaps_im_soapserver_odbc_server
-    # /iaps/iaps/iaps_im_soapserver_odbc_database
-    # /iaps/iaps/iaps_im_soapserver_odbc_uid
-    # /iaps/iaps/iaps_im_soapserver_odbc_password
-    ################################
-    Write-Host('get ssm param /iaps/iaps/iaps_im_soapserver_odbc_server')
-    Write-Host('get ssm param /iaps/iaps/iaps_im_soapserver_odbc_database')
-    Write-Host('get ssm param /iaps/iaps/iaps_im_soapserver_odbc_uid')
-    Write-Host('get ssm param /iaps/iaps/iaps_im_soapserver_odbc_password')
-
-    $iaps_im_soapserver_odbc_server_SSMPath = "/" + $environmentName.Value + "/" + $application.Value + "/iaps/iaps/iaps_im_soapserver_odbc_server"
-    $iaps_im_soapserver_odbc_server = Get-SSMParameter -Name $iaps_im_soapserver_odbc_server_SSMPath -WithDecryption $true
-
-    $iaps_im_soapserver_odbc_database_SSMPath = "/" + $environmentName.Value + "/" + $application.Value + "/iaps/iaps/iaps_im_soapserver_odbc_database"
-    $iaps_im_soapserver_odbc_database = Get-SSMParameter -Name $iaps_im_soapserver_odbc_database_SSMPath -WithDecryption $true
-
-    $iaps_im_soapserver_odbc_uid_SSMPath = "/" + $environmentName.Value + "/" + $application.Value + "/iaps/iaps/iaps_im_soapserver_odbc_uid"
-    $iaps_im_soapserver_odbc_uid = Get-SSMParameter -Name $iaps_im_soapserver_odbc_uid_SSMPath -WithDecryption $true
-
-    $iaps_im_soapserver_odbc_password_SSMPath = "/" + $environmentName.Value + "/" + $application.Value + "/iaps/iaps/iaps_im_soapserver_odbc_password"
-    $iaps_im_soapserver_odbc_password = Get-SSMParameter -Name $iaps_im_soapserver_odbc_password_SSMPath -WithDecryption $true
-
-    ###############################################################
     # Update IapsNDeliusInterface\Config\IMIAPS.xml
     ###############################################################
     Write-Host('Updating DB and URL Values in IM Config')
@@ -89,9 +38,7 @@ try {
     foreach ($element in $xmlElementToModify)
     {
         $element.URL="https://localhost/IMIapsSoap/service.svc"
-       
-        # DSN=IM;Server=imdb01.im.i2ncloud.com;Database=IM-v2;uid=IMApplication;pwd=xxxx 
-        $element.DSN='DSN=IM;Server=' + $iaps_im_soapserver_odbc_server.Value + ';Database=' + $iaps_im_soapserver_odbc_database.Value + ';uid=' + $iaps_im_soapserver_odbc_uid.Value + ';pwd=' + $iaps_im_soapserver_odbc_password.Value
+        $element.DSN='DSN=IM;Server=;Database=;uid=;pwd='
     }
     $xmlElement.SOAPSERVER.RemoveAttribute("PROXYURL")
     $xml.Save($imconfigfile)
