@@ -64,7 +64,7 @@ try {
     $xmlElementToModify = $xmlElement.SOAPSERVER 
     foreach ($element in $xmlElementToModify)
     {
-        $element.DSN='DSN=IM;Server=' + $iaps_im_soapserver_odbc_server.Value + ';Database=' + $iaps_im_soapserver_odbc_database.Value + ';uid=' + $iaps_im_soapserver_odbc_uid.Value + ';pwd=' + $iaps_im_soapserver_odbc_password.Value
+        $element.ODBC='DSN=IM;Server=' + $iaps_im_soapserver_odbc_server.Value + ';Database=' + $iaps_im_soapserver_odbc_database.Value + ';uid=' + $iaps_im_soapserver_odbc_uid.Value + ';pwd=' + $iaps_im_soapserver_odbc_password.Value
     }
     $xml.Save($imconfigfile)
 

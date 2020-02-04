@@ -38,7 +38,7 @@ try {
     foreach ($element in $xmlElementToModify)
     {
         $element.URL="https://localhost/IMIapsSoap/service.svc"
-        $element.DSN='DSN=IM;Server=;Database=;uid=;pwd='
+        $element.ODBC='DSN=IM;Server=;Database=;uid=;pwd='
     }
     $xmlElement.SOAPSERVER.RemoveAttribute("PROXYURL")
     $xml.Save($imconfigfile)
