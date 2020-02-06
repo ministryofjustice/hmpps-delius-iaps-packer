@@ -44,5 +44,10 @@ Get-ChildItem $runtimeconfig -Filter *.ps1 |
     Foreach-Object {
         & $runtimeconfig\$_
     }
+
+# Run Post Deployment Smoke Test Suites
+& C:\Setup\Testing\IMTests-Generic.ps1
+& C:\Setup\Testing\IMTests-Runtime.ps1
+
 </powershell>
 <persist>true</persist>

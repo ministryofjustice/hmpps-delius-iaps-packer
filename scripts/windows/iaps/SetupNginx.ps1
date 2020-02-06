@@ -30,7 +30,7 @@ try {
         $psnproxy = 'data-im-proxy.psn.probation.service.justice.gov.uk'
     }
     else {
-        $psnproxy = 'data-im-proxy.' + $environment.Value + '.psn.probation.service.justice.gov.uk'
+        $psnproxy = 'data-im-proxy-int-psn.' + $environment.Value + '.probation.service.justice.gov.uk'
     }
 
     Write-Host('Determined psnproxy as: ' + $psnproxy)

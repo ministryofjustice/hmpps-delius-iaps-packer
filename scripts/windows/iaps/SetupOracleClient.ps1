@@ -53,6 +53,9 @@ catch [Exception] {
 try {
     $tnsnameorafile = 'C:\app\client\Administrator\product\12.1.0\client_1\network\admin\tnsnames.ora'
     Copy-Item 'C:\Setup\Oracle\tnsnames.ora.tmpl' -Destination $tnsnameorafile
+
+    $sqlnetorafile = 'C:\app\client\Administrator\product\12.1.0\client_1\network\admin\sqlnet.ora'
+    Copy-Item 'C:\Setup\Oracle\sqlnet.ora.tmpl' -Destination $sqlnetorafile
 }
 catch [Exception] {
     Write-Host ('Error - Failed to create ora file: $tnsnameorafile')
