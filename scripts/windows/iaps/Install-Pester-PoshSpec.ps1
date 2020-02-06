@@ -37,7 +37,7 @@ try {
     write-output '-----------------------------------'
     write-output 'Extracting PoshSpec'
     write-output '-----------------------------------'
-    Start-Process $env:ProgramFiles\7-Zip\7z.exe "x -o$(DirectoryToCreate) $outfile" -Wait -Verb RunAs
+    Start-Process $env:ProgramFiles\7-Zip\7z.exe "x -oC:\Setup\Testing $outfile" -Wait -Verb RunAs
 }
 catch [Exception] {
     Write-Host ('Failed to extract PoshSpec client setup using 7z')
