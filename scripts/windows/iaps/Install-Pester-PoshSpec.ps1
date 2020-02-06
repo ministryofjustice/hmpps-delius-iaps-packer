@@ -19,11 +19,25 @@ try {
     Invoke-WebRequest -Uri $uri -OutFile $outfile
     dir $outfile
 
+    $DirectoryToCreate = 'C:\Setup\Testing'
+    if (-not (Test-Path -LiteralPath $DirectoryToCreate)) {
+    
+        try {
+            New-Item -Path DirectoryToCreate -ItemType 'directory' | Out-Null #-Force
+        }
+        catch {
+            Write-Error -Message "Unable to create directory '$DirectoryToCreate'. Error was: $_" -ErrorAction Stop
+        }
+        "Successfully created directory '$DirectoryToCreate'."
+    }
+    else {
+        "Directory $DirectoryToCreate already existed"
+    }
+        
     write-output '-----------------------------------'
     write-output 'Extracting PoshSpec'
     write-output '-----------------------------------'
-    New-Item -Path 'C:\Setup\' -Name 'Testing' -ItemType 'directory'
-    Start-Process $env:ProgramFiles\7-Zip\7z.exe "x -oC:\Setup\Testing $outfile" -Wait -Verb RunAs
+    Start-Process $env:ProgramFiles\7-Zip\7z.exe "x -o$(DirectoryToCreate) $outfile" -Wait -Verb RunAs
 }
 catch [Exception] {
     Write-Host ('Failed to extract PoshSpec client setup using 7z')

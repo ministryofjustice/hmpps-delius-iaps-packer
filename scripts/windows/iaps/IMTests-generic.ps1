@@ -114,3 +114,4 @@ Describe 'Firewall Rules' {
         Get-NetFirewallRule -DisplayName $displayname | Get-NetFirewallPortFilter | Select -ExpandProperty RemotePort { Should Be '1521' }
     } 
 }
+

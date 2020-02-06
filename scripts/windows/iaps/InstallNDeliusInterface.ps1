@@ -96,14 +96,10 @@ try {
         {
             $element.SMTPUSER=""
         }
-        if ($element.PASSWORDCODED -eq "&lt;5&quot;:4,;;")
-        {
-            $element.PASSWORDCODED=""
-        }
-        if ($element.FROMADDRESS -eq "PCMS1-Interface@i2ntest.co.uk")
-        {
-            $element.FROMADDRESS="PCMS1-Interface@probation.service.justice.gov.uk"
-        }
+        
+        $element.PASSWORDCODED=""
+        $element.FROMADDRESS="PCMS1-Interface@probation.service.justice.gov.uk"
+        
     }
     $xml.Save($ndifconfigfile)
 
