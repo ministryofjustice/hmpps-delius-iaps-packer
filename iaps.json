@@ -218,6 +218,11 @@
         },
         {
             "type": "file",
+            "source": "scripts/windows/iaps/IMTests-generic.ps1",
+            "destination": "C:\\Setup\\Testing\\IMTests-generic.ps1"
+        },
+        {
+            "type": "file",
             "source": "scripts/windows/iaps/IMTests-PackerAMIBuild.ps1",
             "destination": "C:\\Setup\\Testing\\IMTests-PackerAMIBuild.ps1"
         },
@@ -225,6 +230,11 @@
             "type": "file",
             "source": "scripts/windows/iaps/IMTests-Runtime.ps1",
             "destination": "C:\\Setup\\Testing\\IMTests-Runtime.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/RunTests.ps1",
+            "destination": "C:\\Setup\\Testing\\RunTests.ps1"
         },
         {
             "type": "powershell",
