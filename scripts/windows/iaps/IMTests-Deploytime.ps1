@@ -1,6 +1,5 @@
 Import-Module -Name C:\Setup\Testing\poshspec -Verbose
 
-$ComputerName = "sim-win-001"
 # Get the instance id from ec2 meta data
 $instanceid = Invoke-RestMethod "http://169.254.169.254/latest/meta-data/instance-id"
 
@@ -43,6 +42,7 @@ Write-Output "application:     $($application.Value)"
 
 
 New-PSDrive -PSProvider Registry -Name HKU -Root HKEY_USERS
+Get-PSDrive
 
 
 Describe 'Regional Configuration' {
@@ -55,13 +55,17 @@ Describe 'Regional Configuration' {
 }
 
 Describe 'ComputerName is correct' {
-    Registry 'HKLM:\SYSTEM\CurrentControlSet\Control\Computername\Computername' 'Computername' { Should Be $ComputerName }
-    Registry 'HKLM:\SYSTEM\CurrentControlSet\Control\Computername\ActiveComputername' 'Computername' { Should Be $ComputerName }
-    Registry 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters' 'Hostname' { Should Be $ComputerName }
-    Registry 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters' 'NV Hostname' { Should Be $ComputerName }
-    Registry 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' 'AltDefaultDomainName' { Should Be $ComputerName }
-    Registry 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' 'DefaultDomainName' { Should Be $ComputerName }
-}
+    Registry 'HKLM:\SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName' 'ComputerName' { Should Be 'sim-win-001' }
+    Registry 'HKLM:\SYSTEM\CurrentControlSet\Control\Computername\ActiveComputerName' 'ComputerName' { Should Be 'sim-win-001' }
+    Registry 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters' 'Hostname' { Should Be 'sim-win-001' }
+    Registry 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters' 'NV Hostname' { Should Be 'sim-win-001' }
+    Registry 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' 'AltDefaultDomainName' { Should Be 'sim-win-001' }
+    Registry 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' 'DefaultDomainName' { Should Be 'sim-win-001' }
+} 
+
+Describe 'AmazonCloudWatchAgent is Running' {
+    Service AmazonCloudWatchAgent Status { Should Be Running }
+} 
 
 # nDelius Interface Config
 Describe 'nDelius Interface Config' {

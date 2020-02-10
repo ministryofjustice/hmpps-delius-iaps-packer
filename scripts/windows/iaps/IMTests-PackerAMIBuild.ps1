@@ -3,6 +3,10 @@
 Import-Module -Name C:\Setup\Testing\poshspec -Verbose
 #Import-Module -Name C:\ProgramData\chocolatey\lib\pester\tools\pester -Verbose
  
+Describe 'AmazonCloudWatchAgent is Stopped' {
+    Service AmazonCloudWatchAgent Status { Should Be Stopped }
+} 
+
 Describe 'Packages Installed' {
     Registry 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\7-Zip' { Should Exist }
     Registry 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Mozilla Firefox 71.0 (x64 en-US)' { Should Exist }
