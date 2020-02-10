@@ -40,10 +40,14 @@ Write-Output "environmentName: $($environmentName.Value)"
 Write-Output "environment:     $($environment.Value)"
 Write-Output "application:     $($application.Value)"
 
-
-New-PSDrive -PSProvider Registry -Name HKU -Root HKEY_USERS
-Get-PSDrive
-
+$hku = Get-PSDrive | Where { $_.Root -eq 'HKEY_USERS'}
+if($hku -eq $null) {
+    write-host 'Creating HKEY_USERS as PSDrive HKU'
+    New-PSDrive -PSProvider Registry -Name HKU -Root HKEY_USERS
+}
+else {
+    write-host 'HKEY_USERS PSDrive HKU already exists, skipping'
+} 
 
 Describe 'Regional Configuration' {
     Describe 'Default_user Regional Configuration' {
@@ -65,6 +69,79 @@ Describe 'ComputerName is correct' {
 
 Describe 'AmazonCloudWatchAgent is Running' {
     Service AmazonCloudWatchAgent Status { Should Be Running }
+} 
+
+Describe 'AmazonCloudWatchAgent is Configured Correctly' {
+
+    $json = Get-Content 'C:\Setup\Cloudwatch\config.json' | Out-String | ConvertFrom-Json
+
+    It 'Logs nginx-access-log should be configured correctly' {    
+        foreach ($logfile in $json.logs.logs_collected.files.collect_list)
+        {
+          if($logfile.log_stream_name -eq 'nginx-access-log') {
+            $logfile.log_group_name | Should be "$($environmentName.Value)/IAPS"
+            $logfile.file_path | Should be 'c:\nginx\nginx-1.17.6\logs\access.log'
+          }
+        }  
+    }
+
+    It 'Logs nginx-error-log should be configured correctly' {    
+        foreach ($logfile in $json.logs.logs_collected.files.collect_list)
+        {
+          if($logfile.log_stream_name -eq 'nginx-error-log') {
+            $logfile.log_group_name | Should be "$($environmentName.Value)/IAPS"
+            $logfile.file_path | Should be 'c:\nginx\nginx-1.17.6\logs\error.log'
+          }
+        }  
+    }
+
+    It 'Logs i2n-xmltransfer.log should be configured correctly' {    
+        foreach ($logfile in $json.logs.logs_collected.files.collect_list)
+        {
+          if($logfile.log_stream_name -eq 'i2n-xmltransfer.log') {
+            $logfile.log_group_name | Should be "$($environmentName.Value)/IAPS"
+            $logfile.file_path | Should be 'C:\Program Files (x86)\I2N\IapsNDeliusInterface\Log\XMLTRANSFER.LOG'
+          }
+        }  
+    }
+    
+    It 'Logs i2n-xmltransfer.log should be configured correctly' {    
+        foreach ($logfile in $json.logs.logs_collected.files.collect_list)
+        {
+          if($logfile.log_stream_name -eq 'i2n-daysummary.log') {
+            $logfile.log_group_name | Should be "$($environmentName.Value)/IAPS"
+            $logfile.file_path | Should be 'C:\Program Files (x86)\I2N\IapsNDeliusInterface\Log\DAILY\DAYSUMMARY.LOG'
+          }
+        }  
+    }
+
+    It 'windows_events system-events should be configured correctly' {    
+        foreach ($event in $json.logs.logs_collected.windows_events.collect_list)
+        {
+          if($event.log_stream_name -eq 'system-events') {
+            $event.event_format | Should be 'XML'
+            $event.event_name  | Should be 'System'
+            $event.log_group_name | Should be "$($environmentName.Value)/IAPS"
+            $event.event_levels | Should Contain 'CRITICAL'
+            $event.event_levels | Should Contain 'WARNING'
+            $event.event_levels | Should Contain 'ERROR'
+          }
+        }  
+    }
+
+    It 'windows_events application-events should be configured correctly' {    
+        foreach ($event in $json.logs.logs_collected.windows_events.collect_list)
+        {
+          if($event.log_stream_name -eq 'application-events') {
+            $event.event_format | Should be 'XML'
+            $event.event_name  | Should be 'Application'
+            $event.log_group_name | Should be "$($environmentName.Value)/IAPS"
+            $event.event_levels | Should Contain 'CRITICAL'
+            $event.event_levels | Should Contain 'WARNING'
+            $event.event_levels | Should Contain 'ERROR'
+          }
+        }  
+    }
 } 
 
 # nDelius Interface Config
@@ -175,9 +252,6 @@ Describe 'nDelius Interface Config' {
     Describe 'INTERFACE PASSWORDCODED Is not blank' {
         $elementToTest.PASSWORDCODED | Should Not Be ''
     }
-
-
-
 }
 
 # IM Interface Config

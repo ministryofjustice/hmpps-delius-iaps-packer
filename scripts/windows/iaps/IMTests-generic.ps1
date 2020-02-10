@@ -9,6 +9,19 @@ Describe 'Core Windows Services' {
     } 
 }
 
+Describe 'AmazonCloudWatchAgent is Stopped' {
+    
+    It 'Service is Installed' {
+        $service = Get-Service | Where { $_.Name -eq 'AmazonCloudWatchAgent' }
+        $service | Should Not Be $null
+    }
+
+    It 'Service is set to Automatic StartType' {
+        $service = Get-Service | Where { $_.Name -eq 'AmazonCloudWatchAgent' }
+        $service.StartType | Should Be 'Automatic'
+    }
+} 
+ 
 Describe 'IAPS Windows Services' {
     Describe 'nginx is Running' {
         Service nginx Status { Should Be Running }
