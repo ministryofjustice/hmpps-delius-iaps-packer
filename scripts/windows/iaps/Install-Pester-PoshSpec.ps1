@@ -21,7 +21,7 @@
      write-output '-----------------------------------'
      write-output 'Extracting PoshSpec'
      write-output '-----------------------------------'
-     New-Item -Path 'C:\Setup' -NaInme 'Testing' -ItemType 'directory'
+     New-Item -Path 'C:\Setup' -Name 'Testing' -ItemType 'directory'
      Start-Process $env:ProgramFiles\7-Zip\7z.exe "x -oC:\Setup\Testing $outfile" -Wait -Verb RunAs
  }
  catch [Exception] {
