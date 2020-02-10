@@ -5,42 +5,54 @@ $ComputerName = "sim-win-001"
 $instanceid = Invoke-RestMethod "http://169.254.169.254/latest/meta-data/instance-id"
 
 # Get the environment name and application from this instance's environment-name and application tag values
-    $environmentName = Get-EC2Tag -Filter @(
-            @{
-                name="resource-id"
-                values="$instanceid"
-            }
-            @{
-                name="key"
-                values="environment-name"
-            }
-        )
-    $environment = Get-EC2Tag -Filter @(
-            @{
-                name="resource-id"
-                values="$instanceid"
-            }
-            @{
-                name="key"
-                values="environment"
-            }
-        )
-    $application = Get-EC2Tag -Filter @(
-            @{
-                name="resource-id"
-                values="$instanceid"
-            }
-            @{
-                name="key"
-                values="application"
-            }
-        )
+$environmentName = Get-EC2Tag -Filter @(
+        @{
+            name="resource-id"
+            values="$instanceid"
+        }
+        @{
+            name="key"
+            values="environment-name"
+        }
+    )
+$environment = Get-EC2Tag -Filter @(
+        @{
+            name="resource-id"
+            values="$instanceid"
+        }
+        @{
+            name="key"
+            values="environment"
+        }
+    )
+$application = Get-EC2Tag -Filter @(
+        @{
+            name="resource-id"
+            values="$instanceid"
+        }
+        @{
+            name="key"
+            values="application"
+        }
+    )
 
-    Write-Output "instanceid:      $instanceid"
-    Write-Output "environmentName: $($environmentName.Value)"
-    Write-Output "environment:     $($environment.Value)"
-    Write-Output "application:     $($application.Value)"
+Write-Output "instanceid:      $instanceid"
+Write-Output "environmentName: $($environmentName.Value)"
+Write-Output "environment:     $($environment.Value)"
+Write-Output "application:     $($application.Value)"
 
+
+New-PSDrive -PSProvider Registry -Name HKU -Root HKEY_USERS
+
+
+Describe 'Regional Configuration' {
+    Describe 'Default_user Regional Configuration' {
+            Registry 'HKU:\.DEFAULT\Control Panel\International' 'Locale'      { Should Be '00000809' }
+            Registry 'HKU:\.DEFAULT\Control Panel\International' 'LocaleName'  { Should Be 'en-GB' }
+            Registry 'HKU:\.DEFAULT\Control Panel\International' 'sCountry'    { Should Be 'United Kingdom' }
+            Registry 'HKU:\.DEFAULT\Control Panel\International\Geo' 'Nation'  { Should Be '242' }
+    }
+}
 
 Describe 'ComputerName is correct' {
     Registry 'HKLM:\SYSTEM\CurrentControlSet\Control\Computername\Computername' 'Computername' { Should Be $ComputerName }
@@ -298,40 +310,87 @@ Describe 'Route53 Record Updated for iaps-admin' {
 
 # Local Users Created
 Describe 'Default Local Users Created, Enabled and Disabled\' {
-    LocalUser 'i2nadmin'      { Should -Not -BeNullOrEmpty }
-    LocalUser 'Administrator' { Should -Not -BeNullOrEmpty }
-    LocalUser 'Administrator' Disabled { Should -Be $false }
-    LocalUser 'Guest' Disabled { Should Be $true }
+        LocalUser 'i2nadmin'      { Should -Not -BeNullOrEmpty }
+        LocalUser 'Administrator' { Should -Not -BeNullOrEmpty }
+        LocalUser 'Administrator' Disabled { Should -Be $false }
+        LocalUser 'Guest' Disabled { Should Be $true }
 }
 
 Describe 'ACM Certificates Configuration' {
-    #Trusted Publishers/Amazon cert
-    $exists = Get-ChildItem cert:\LocalMachine\TrustedPublisher | Where subject -eq 'CN=Amazon, OU=Server CA 1B, O=Amazon, C=US'
-    $exists | Should Not Be $Null
-
-    #Trusted People/*.stage.delius.probation.hmpps.dsd.io
-    $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq 'CN=*.stage.delius.probation.hmpps.dsd.io'
-    $exists | Should Not Be $Null
-
-    #Trusted People/*.stage.delius.probation.hmpps.dsd.io
-    $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq 'CN=*.stage.probation.service.justice.gov.uk'
-    $exists | Should Not Be $Null
-
-    #Trusted People/*.stage.probation.service.justice.gov.uk
-    $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq 'CN=*.stage.probation.service.justice.gov.uk'
-    $exists | Should Not Be $Null
     
-    #Trusted People/Amazon
-    $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq 'CN=Amazon, OU=Server CA 1B, O=Amazon, C=US'
-    $exists | Should Not Be $Null
+    It 'Trusted Publishers/Amazon cert exists' {
+        $exists = Get-ChildItem cert:\LocalMachine\TrustedPublisher | Where subject -eq 'CN=Amazon, OU=Server CA 1B, O=Amazon, C=US'
+        $exists | Should Not Be $Null
+    }
+    It 'Trusted People/*.stage.delius.probation.hmpps.dsd.io cert exists' {
+        $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq 'CN=*.stage.delius.probation.hmpps.dsd.io'
+        $exists | Should Not Be $Null
+    }
+
+    It 'Trusted People/*.stage.delius.probation.hmpps.dsd.io cert exists' {
+        $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq 'CN=*.stage.probation.service.justice.gov.uk'
+        $exists | Should Not Be $Null
+    }
+
+    It 'Trusted People/*.stage.probation.service.justice.gov.uk cert exists' {
+        $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq 'CN=*.stage.probation.service.justice.gov.uk'
+        $exists | Should Not Be $Null
+    }
     
-    #Trusted People/Amazon Root CA 1
-    $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq 'CN=Amazon Root CA 1, O=Amazon, C=US'
-    $exists | Should Not Be $Null
+    It 'Trusted People/Amazon cert exists' {
+        $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq 'CN=Amazon, OU=Server CA 1B, O=Amazon, C=US'
+        $exists | Should Not Be $Null
+    }
+
+    It 'Trusted People/Amazon Root CA 1 cert exists' {
+        $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq 'CN=Amazon Root CA 1, O=Amazon, C=US'
+        $exists | Should Not Be $Null
+    }
+
+    It 'Trusted People/Starfield Services Root Certificate Authority - G2 cert exists' {
+        $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq 'CN=Starfield Services Root Certificate Authority - G2, O="Starfield Technologies, Inc.", L=Scottsdale, S=Arizona, C=US'
+        $exists | Should Not Be $Null
+    }
+}
+
+Describe 'DNS Search Suffix Configuration' {
     
-    #Trusted People/Starfield Services Root Certificate Authority - G2
-    $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq 'CN=Starfield Services Root Certificate Authority - G2, O="Starfield Technologies, Inc.", L=Scottsdale, S=Arizona, C=US'
-    $exists | Should Not Be $Null
+    It 'service.justice.gov.uk suffix exists' {
+        $suffix="service.justice.gov.uk"
+        $dnsconfig = Get-DnsClientGlobalSetting
+        if ($dnsconfig.SuffixSearchList -match $suffix) {
+            $result = $true
+        } else {
+           $result = $false
+        }
+
+        $result | Should Be $True
+    }
+     
+    It "$($environmentname.Value).internal suffix exists" {
+        $suffix="$($environmentname.Value).internal"
+        $dnsconfig = Get-DnsClientGlobalSetting
+        if ($dnsconfig.SuffixSearchList -match $suffix) {
+            $result = $true
+        } else {
+           $result = $false
+        }
+
+        $result | Should Be $True
+    } 
+
+    It "$($environment.Value).delius.probation.hmpps.dsd.io suffix exists" {
+        $suffix="$($environment.Value).delius.probation.hmpps.dsd.io"
+        $dnsconfig = Get-DnsClientGlobalSetting
+        if ($dnsconfig.SuffixSearchList -match $suffix) {
+            $result = $true
+        } else {
+           $result = $false
+        }
+
+        $result | Should Be $True
+    } 
 
 }
+ 
 

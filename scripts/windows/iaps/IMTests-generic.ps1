@@ -4,8 +4,8 @@ Import-Module -Name C:\Setup\Testing\poshspec -Verbose
 #Import-Module -Name C:\ProgramData\chocolatey\lib\pester\tools\pester -Verbose
 
 Describe 'Core Windows Services' {
-    Describe 'AmazonCloudWatchAgent is Running' {
-        Service AmazonCloudWatchAgent Status { Should Be Running }
+    Describe 'AmazonCloudWatchAgent is Stopped' {
+        Service AmazonCloudWatchAgent Status { Should Be Stopped }
     } 
     Describe 'MpsSvc (Windows Firewall) is Running' {
         Service MpsSvc Status { Should Be Running }

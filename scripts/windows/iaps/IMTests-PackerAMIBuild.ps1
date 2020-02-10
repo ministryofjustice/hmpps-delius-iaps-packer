@@ -2,18 +2,6 @@
 
 Import-Module -Name C:\Setup\Testing\poshspec -Verbose
 #Import-Module -Name C:\ProgramData\chocolatey\lib\pester\tools\pester -Verbose
-
-New-PSDrive -PSProvider Registry -Name HKU -Root HKEY_USERS
-
-
-Describe 'Regional Configuration' {
-    Describe 'Default_user Regional Configuration' {
-            Registry 'HKU:\.DEFAULT\Control Panel\International' 'Locale'      { Should Be '00000809' }
-            Registry 'HKU:\.DEFAULT\Control Panel\International' 'LocaleName'  { Should Be 'en-GB' }
-            Registry 'HKU:\.DEFAULT\Control Panel\International' 'sCountry'    { Should Be 'United Kingdom' }
-            Registry 'HKU:\.DEFAULT\Control Panel\International\Geo' 'Nation'  { Should Be '242' }
-    }
-}
  
 Describe 'Packages Installed' {
     Registry 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\7-Zip' { Should Exist }
@@ -38,8 +26,6 @@ Describe 'Packages Installed' {
         Registry 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{F0C3E5D1-1ADE-321E-8167-68EF0DE699A5}'  { Should Exist }
         Registry 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{F0C3E5D1-1ADE-321E-8167-68EF0DE699A5}' 'DisplayVersion' { Should Be '10.0.40219' }
     }
-    
-
 }
 
 Describe 'Windows Features Installed' {
@@ -216,42 +202,5 @@ Describe 'DNS Search Suffix Configuration' {
 
         $result | Should Be $True
     }
-
-    It 'service.justice.gov.uk suffix exists' {
-        $suffix="service.justice.gov.uk"
-        $dnsconfig = Get-DnsClientGlobalSetting
-        if ($dnsconfig.SuffixSearchList -match $suffix) {
-            $result = $true
-        } else {
-           $result = $false
-        }
-
-        $result | Should Be $True
-    }
-
-    It 'delius-stage.internal suffix exists' {
-        $suffix="delius-stage.internal"
-        $dnsconfig = Get-DnsClientGlobalSetting
-        if ($dnsconfig.SuffixSearchList -match $suffix) {
-            $result = $true
-        } else {
-           $result = $false
-        }
-
-        $result | Should Be $True
-    }
-
-    It 'stage.delius.probation.hmpps.dsd.io suffix exists' {
-        $suffix="stage.delius.probation.hmpps.dsd.io"
-        $dnsconfig = Get-DnsClientGlobalSetting
-        if ($dnsconfig.SuffixSearchList -match $suffix) {
-            $result = $true
-        } else {
-           $result = $false
-        }
-
-        $result | Should Be $True
-    }
-
 }
  
