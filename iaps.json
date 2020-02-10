@@ -243,7 +243,7 @@
         },
         {
             "type": "powershell",
-            "script": "scripts/windows/iaps/MTests-Execute-Baketime.ps1"
+            "script": "scripts/windows/iaps/IMTests-Execute-Baketime.ps1"
         }
     ]
   }
