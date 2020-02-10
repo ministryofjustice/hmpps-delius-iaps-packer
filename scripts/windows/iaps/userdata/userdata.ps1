@@ -46,8 +46,7 @@ Get-ChildItem $runtimeconfig -Filter *.ps1 |
     }
 
 # Run Post Deployment Smoke Test Suites
-& C:\Setup\Testing\IMTests-Generic.ps1
-& C:\Setup\Testing\IMTests-Runtime.ps1
+& C:\Setup\Testing\IMTests-Execute-Deploytime.ps1
 
 </powershell>
 <persist>true</persist>

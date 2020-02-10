@@ -99,7 +99,7 @@ Describe 'Oracle Client Installed' {
 }
 
 Describe 'SqlDeveloper Client Installed' {
-    
+    File 'C:\sqldeveloper-4.1.3.20.78-x64\sqldeveloper\sqldeveloper.exe' { Should -Exist }
 }
 
 Describe 'ODBC DSNs Configured' {

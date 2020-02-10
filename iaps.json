@@ -218,6 +218,16 @@
         },
         {
             "type": "file",
+            "source": "scripts/windows/iaps/IMTests-Execute-Deploytime.ps1",
+            "destination": "C:\\Setup\\Testing\\IMTests-Execute-Deploytime.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/IMTests-Execute-Baketime.ps1",
+            "destination": "C:\\Setup\\Testing\\IMTests-Execute-Baketime.ps1"
+        },
+        {
+            "type": "file",
             "source": "scripts/windows/iaps/IMTests-generic.ps1",
             "destination": "C:\\Setup\\Testing\\IMTests-generic.ps1"
         },
@@ -228,21 +238,12 @@
         },
         {
             "type": "file",
-            "source": "scripts/windows/iaps/IMTests-Runtime.ps1",
-            "destination": "C:\\Setup\\Testing\\IMTests-Runtime.ps1"
-        },
-        {
-            "type": "file",
-            "source": "scripts/windows/iaps/RunTests.ps1",
-            "destination": "C:\\Setup\\Testing\\RunTests.ps1"
+            "source": "scripts/windows/iaps/IMTests-Deploytime.ps1",
+            "destination": "C:\\Setup\\Testing\\IMTests-Deploytime.ps1"
         },
         {
             "type": "powershell",
-            "script": "scripts/windows/iaps/IMTests-PackerAMIBuild.ps1"
-        },
-        {
-            "type": "powershell",
-            "script": "scripts/windows/iaps/IMTests-generic.ps1"
+            "script": "scripts/windows/iaps/MTests-Execute-Baketime.ps1"
         }
     ]
   }

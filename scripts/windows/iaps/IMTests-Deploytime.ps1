@@ -1,7 +1,45 @@
 Import-Module -Name C:\Setup\Testing\poshspec -Verbose
 
 $ComputerName = "sim-win-001"
+# Get the instance id from ec2 meta data
+$instanceid = Invoke-RestMethod "http://169.254.169.254/latest/meta-data/instance-id"
 
+# Get the environment name and application from this instance's environment-name and application tag values
+    $environmentName = Get-EC2Tag -Filter @(
+            @{
+                name="resource-id"
+                values="$instanceid"
+            }
+            @{
+                name="key"
+                values="environment-name"
+            }
+        )
+    $environment = Get-EC2Tag -Filter @(
+            @{
+                name="resource-id"
+                values="$instanceid"
+            }
+            @{
+                name="key"
+                values="environment"
+            }
+        )
+    $application = Get-EC2Tag -Filter @(
+            @{
+                name="resource-id"
+                values="$instanceid"
+            }
+            @{
+                name="key"
+                values="application"
+            }
+        )
+
+    Write-Output "instanceid:      $instanceid"
+    Write-Output "environmentName: $($environmentName.Value)"
+    Write-Output "environment:     $($environment.Value)"
+    Write-Output "application:     $($application.Value)"
 
 
 Describe 'ComputerName is correct' {
@@ -16,41 +54,7 @@ Describe 'ComputerName is correct' {
 # nDelius Interface Config
 Describe 'nDelius Interface Config' {
     File 'C:\Program Files (x86)\I2N\IapsNDeliusInterface\Config\NDELIUSIF.XML' { Should -Exist }      
-
-    # Get the instance id from ec2 meta data
-    $instanceid = Invoke-RestMethod "http://169.254.169.254/latest/meta-data/instance-id"
-    # Get the environment name and application from this instance's environment-name and application tag values
-    $environmentName = Get-EC2Tag -Filter @(
-        @{
-            name="resource-id"
-            values="$instanceid"
-        }
-        @{
-            name="key"
-            values="environment-name"
-        }
-    )
-    $environment = Get-EC2Tag -Filter @(
-        @{
-            name="resource-id"
-            values="$instanceid"
-        }
-        @{
-            name="key"
-            values="environment"
-        }
-    )
-    $application = Get-EC2Tag -Filter @(
-        @{
-            name="resource-id"
-            values="$instanceid"
-        }
-        @{
-            name="key"
-            values="application"
-        }
-    )
-
+  
     ################################
     # /apacheds/apacheds/iaps_user
     ################################
@@ -164,45 +168,6 @@ Describe 'nDelius Interface Config' {
 Describe 'IM Interface Config' {
     File 'C:\Program Files (x86)\I2N\IapsIMInterface\Config\IMIAPS.XML' { Should -Exist }    
 
-    # Get the instance id from ec2 meta data
-    $instanceid = Invoke-RestMethod "http://169.254.169.254/latest/meta-data/instance-id"
-    # Get the environment name and application from this instance's environment-name and application tag values
-    $environmentName = Get-EC2Tag -Filter @(
-            @{
-                name="resource-id"
-                values="$instanceid"
-            }
-            @{
-                name="key"
-                values="environment-name"
-            }
-        )
-    $environment = Get-EC2Tag -Filter @(
-            @{
-                name="resource-id"
-                values="$instanceid"
-            }
-            @{
-                name="key"
-                values="environment"
-            }
-        )
-    $application = Get-EC2Tag -Filter @(
-            @{
-                name="resource-id"
-                values="$instanceid"
-            }
-            @{
-                name="key"
-                values="application"
-            }
-        )
-
-    Write-Output "instanceid:      $instanceid"
-    Write-Output "environmentName: $($environmentName.Value)"
-    Write-Output "environment:     $($environment.Value)"
-    Write-Output "application:     $($application.Value)"
-
     $iaps_im_soapserver_odbc_server_SSMPath = "/" + $environmentName.Value + "/" + $application.Value + "/iaps/iaps/iaps_im_soapserver_odbc_server"
     $iaps_im_soapserver_odbc_server = Get-SSMParameter -Name $iaps_im_soapserver_odbc_server_SSMPath -WithDecryption $true
 
@@ -264,6 +229,25 @@ Describe 'IM Interface Config' {
 # UserData Re-Enabled
 Describe 'UserData Re-Enabled' {
 
+    $result = $true
+
+    $EC2SettingsFile="C:\Program Files\Amazon\Ec2ConfigService\Settings\Config.xml"
+    $xml = [xml](get-content $EC2SettingsFile)
+    $xmlElement = $xml.get_DocumentElement()
+    $xmlElementToModify = $xmlElement.Plugins
+    
+    foreach ($element in $xmlElementToModify.Plugin)
+    {
+        if ($element.name -eq "Ec2HandleUserData")
+        {
+            If ($element.State -ne "Enabled") {
+                $result = $false
+            }
+        }
+    }
+    
+    $result | Should Be $True 
+
 }
 
 # nginx config set for IM and nDelius
@@ -283,9 +267,32 @@ Describe 'nginx listening on 443' {
     TcpPort localhost 443 TcpTestSucceeded { Should Be $true }
 }
 
-
 # route53 config
 Describe 'Route53 Record Updated for iaps-admin' {
+    
+    $instanceid = Invoke-RestMethod "http://169.254.169.254/latest/meta-data/instance-id"
+    $LANIP = (Get-EC2Instance -Region $region).Instances | ?{$_.InstanceId -eq $instanceid} | select -ExpandProperty PrivateIpAddress
+    if (!$LANIP)  {
+        Write-Host('Error - R53 Setup failed to retrieve LAN IP')
+        Exit 1
+    }
+
+    Set-Location ENV:
+    $zoneName =  $env:ExternalDomain + "."
+    $hostedZone = Get-R53HostedZones | where Name -eq $zoneName
+    $resourceName = "iaps-admin." + $zoneName
+    
+    Get-R53ResourceRecordSet -HostedZoneId $hostedZone.id
+
+    $dnsrecord = $(Get-R53ResourceRecordSet -HostedZoneId $($hostedZone.Id)).ResourceRecordSets | `
+        Where {$_.Type -like '*' -and $_.Name -eq $resourceName} | Select Name,Type,@{Name='Value';Expression={$_.ResourceRecords | `
+            Select -ExpandProperty Value}} 
+
+    $typecheck = If ($dnsrecord.Type.Value -eq 'A') {$true} Else {$false} 
+    $ipcheck = If ($dnsrecord.Value -eq $LANIP) {$true} Else {$false}
+
+    $typecheck | Should Be $True 
+    $ipcheck | Should Be $True 
 
 }
 
@@ -297,8 +304,34 @@ Describe 'Default Local Users Created, Enabled and Disabled\' {
     LocalUser 'Guest' Disabled { Should Be $true }
 }
 
-
 Describe 'ACM Certificates Configuration' {
+    #Trusted Publishers/Amazon cert
+    $exists = Get-ChildItem cert:\LocalMachine\TrustedPublisher | Where subject -eq 'CN=Amazon, OU=Server CA 1B, O=Amazon, C=US'
+    $exists | Should Not Be $Null
+
+    #Trusted People/*.stage.delius.probation.hmpps.dsd.io
+    $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq 'CN=*.stage.delius.probation.hmpps.dsd.io'
+    $exists | Should Not Be $Null
+
+    #Trusted People/*.stage.delius.probation.hmpps.dsd.io
+    $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq 'CN=*.stage.probation.service.justice.gov.uk'
+    $exists | Should Not Be $Null
+
+    #Trusted People/*.stage.probation.service.justice.gov.uk
+    $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq 'CN=*.stage.probation.service.justice.gov.uk'
+    $exists | Should Not Be $Null
     
+    #Trusted People/Amazon
+    $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq 'CN=Amazon, OU=Server CA 1B, O=Amazon, C=US'
+    $exists | Should Not Be $Null
+    
+    #Trusted People/Amazon Root CA 1
+    $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq 'CN=Amazon Root CA 1, O=Amazon, C=US'
+    $exists | Should Not Be $Null
+    
+    #Trusted People/Starfield Services Root Certificate Authority - G2
+    $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq 'CN=Starfield Services Root Certificate Authority - G2, O="Starfield Technologies, Inc.", L=Scottsdale, S=Arizona, C=US'
+    $exists | Should Not Be $Null
+
 }
 
