@@ -94,6 +94,28 @@ try {
     }
     $xml.Save($configfile)
 
+
+    # Note: This script is required as some IAPS passwords have characters that are escaped in XML when the values are updated by UpdateNDeliusIMConfig.ps1
+    # This script then updates the values to remove the encoding using RAW text manipulation as the XML parser will explicity encode the chars on writing the file
+    Write-Host('---------------------------------------------------------------------')
+    Write-Host('Updating NDELIUSIF Config with Credentials - Character Encoding Fix')
+    Write-Host('---------------------------------------------------------------------')
+    $configfile="C:\Program Files (x86)\I2N\IapsNDeliusInterface\Config\NDELIUSIF.xml"
+
+    #SOAPPASSCODED
+    $searchtext_SOAPPASSCODED  = [System.Web.HttpUtility]::HtmlEncode($IAPSDeliusUserPasswordCoded.Value)
+    $replacetext_SOAPPASSCODED = [Regex]::UnEscape($IAPSDeliusUserPasswordCoded.Value)
+    #PASSWORDCODED
+    $searchtext_PASSWORDCODED  = [System.Web.HttpUtility]::HtmlEncode($IAPSPCMSOracleShadowPasswordCoded.Value)
+    $replacetext_PASSWORDCODED = [Regex]::UnEscape($IAPSPCMSOracleShadowPasswordCoded.Value)
+
+    $content = (Get-Content -path "$configfile" -Raw)
+
+    write-host "Search for '$($searchtext_SOAPPASSCODED)' and replace with '$($replacetext_SOAPPASSCODED)'"
+    $content.Replace($searchtext_SOAPPASSCODED, $replacetext_SOAPPASSCODED) | Set-Content -Path $configfile 
+    write-host "Search for '$($searchtext_PASSWORDCODED)' and replace with '$($replacetext_PASSWORDCODED)'"
+    $content.Replace($searchtext_PASSWORDCODED, $replacetext_PASSWORDCODED) | Out-Null
+
     ################################################################################
     # Set IapsNDeliusInterfaceWinService service to -StartupType Automatic
     ################################################################################

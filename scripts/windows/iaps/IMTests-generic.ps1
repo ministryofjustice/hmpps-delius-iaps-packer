@@ -9,8 +9,7 @@ Describe 'Core Windows Services' {
     } 
 }
 
-Describe 'AmazonCloudWatchAgent is Stopped' {
-    
+Describe 'AmazonCloudWatchAgent Windows Service' {
     It 'Service is Installed' {
         $service = Get-Service | Where { $_.Name -eq 'AmazonCloudWatchAgent' }
         $service | Should Not Be $null
