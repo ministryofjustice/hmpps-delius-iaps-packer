@@ -22,7 +22,12 @@
 						"file_path": "C:\\Program Files (x86)\\I2N\\IapsNDeliusInterface\\Log\\DAILY\\DAYSUMMARY.LOG",
 						"log_group_name": "IAPS",
 						"log_stream_name": "i2n-daysummary.log"
-					}
+					},
+					{
+						"file_path": "C:\\Program Files (x86)\\I2N\\IapsIMInterface\\Log\\IMIAPSIF.LOG",
+						"log_group_name": "IAPS",
+						"log_stream_name": "i2n-iapsif.log"
+					} 
 				]
 			},
 			"windows_events": {
