@@ -112,10 +112,14 @@ try {
     $content = (Get-Content -path "$configfile" -Raw)
 
     write-host "Search for '$($searchtext_SOAPPASSCODED)' and replace with '$($replacetext_SOAPPASSCODED)'"
-    $content.Replace($searchtext_SOAPPASSCODED, $replacetext_SOAPPASSCODED) | Set-Content -Path $configfile 
+    $content = $content.Replace($searchtext_SOAPPASSCODED, $replacetext_SOAPPASSCODED)
+    
     write-host "Search for '$($searchtext_PASSWORDCODED)' and replace with '$($replacetext_PASSWORDCODED)'"
-    $content.Replace($searchtext_PASSWORDCODED, $replacetext_PASSWORDCODED) | Out-Null
+    $content = $content.Replace($searchtext_PASSWORDCODED, $replacetext_PASSWORDCODED)
 
+    Write-Host("Saving RAW changes to NDELIUSIF Config '$($configfile)'") 
+    $content | Set-Content -Path $configfile
+ 
     ################################################################################
     # Set IapsNDeliusInterfaceWinService service to -StartupType Automatic
     ################################################################################
