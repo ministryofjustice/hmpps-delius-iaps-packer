@@ -53,12 +53,26 @@ try {
     $IAPSUserPasswordSSMPath = "/" + $environmentName.Value + "/" + $application.Value + "/apacheds/apacheds/iaps_user_password"
     $IAPSDeliusUserPassword = Get-SSMParameter -Name $IAPSUserPasswordSSMPath -WithDecryption $true
     
+    ################################
+    # /iaps/iaps/iaps_ndelius_soap_password_coded
+    ################################
+    $IAPSUserPasswordCodedSSMPath = "/" + $environmentName.Value + "/" + $application.Value + "/iaps/iaps/iaps_ndelius_soap_password_coded"
+    $IAPSDeliusUserPasswordCoded = Get-SSMParameter -Name $IAPSUserPasswordCodedSSMPath -WithDecryption $true
+    
+    ################################
+    # /iaps/iaps/iaps_pcms_oracle_shadow_password_coded
+    ################################
+    $IAPSPCMSOracleShadowPasswordCodedSSMPath = "/" + $environmentName.Value + "/" + $application.Value + "/iaps/iaps/iaps_pcms_oracle_shadow_password_coded"
+    $IAPSPCMSOracleShadowPasswordCoded = Get-SSMParameter -Name $IAPSPCMSOracleShadowPasswordCodedSSMPath -WithDecryption $true
+    
+    # only update if not prod as default is *.probation.service.justice.gov.uk
     if($environment.Value -eq 'prod') {
         $CertificateSubject = '*.probation.service.justice.gov.uk'
     }
     else {
-        $CertificateSubject = '*.' + $environment.Value + '.probation.service.justice.gov.uk'
+        $CertificateSubject = '*.' + $environment.Value + '.probation.service.justice.gov.uk'        
     }
+  
     ################################################################################
     # Edit IapsNDeliusInterface\Config\NDELIUSIF.xml with creds & cert subject for this environment
     ################################################################################
@@ -71,12 +85,46 @@ try {
     {
         if ($element.NAME -eq "PCMS")
         {
-            $element.SOAPUSER=$IAPSDeliusUserName.Value
-            $element.SOAPPASS=$IAPSDeliusUserPassword.Value
-            $element.SOAPCERT=$CertificateSubject
+            $element.SOAPUSER      = $IAPSDeliusUserName.Value
+            $element.SOAPPASS      = $IAPSDeliusUserPassword.Value
+            $element.SOAPPASSCODED = $IAPSDeliusUserPasswordCoded.Value
+            $element.SOAPCERT      = $CertificateSubject
+            $element.PASSWORDCODED = $IAPSPCMSOracleShadowPasswordCoded.Value
         }
     }
     $xml.Save($configfile)
+
+
+    # Note: This script is required as some IAPS passwords have characters that are escaped in XML when the values are updated by UpdateNDeliusIMConfig.ps1
+    # This script then updates the values to remove the encoding using RAW text manipulation as the XML parser will explicity encode the chars on writing the file
+    Write-Host('---------------------------------------------------------------------')
+    Write-Host('Updating NDELIUSIF Config with Credentials - Character Encoding Fix')
+    Write-Host('---------------------------------------------------------------------')
+    $configfile="C:\Program Files (x86)\I2N\IapsNDeliusInterface\Config\NDELIUSIF.xml"
+
+    #SOAPPASSCODED
+    $searchtext_SOAPPASSCODED  = [System.Web.HttpUtility]::HtmlEncode($IAPSDeliusUserPasswordCoded.Value)
+    $replacetext_SOAPPASSCODED = [Regex]::UnEscape($IAPSDeliusUserPasswordCoded.Value)
+    #PASSWORDCODED
+    $searchtext_PASSWORDCODED  = [System.Web.HttpUtility]::HtmlEncode($IAPSPCMSOracleShadowPasswordCoded.Value)
+    $replacetext_PASSWORDCODED = [Regex]::UnEscape($IAPSPCMSOracleShadowPasswordCoded.Value)
+
+    $content = (Get-Content -path "$configfile" -Raw)
+
+    write-host "Search for '$($searchtext_SOAPPASSCODED)' and replace with '$($replacetext_SOAPPASSCODED)'"
+    $content = $content.Replace($searchtext_SOAPPASSCODED, $replacetext_SOAPPASSCODED)
+    
+    write-host "Search for '$($searchtext_PASSWORDCODED)' and replace with '$($replacetext_PASSWORDCODED)'"
+    $content = $content.Replace($searchtext_PASSWORDCODED, $replacetext_PASSWORDCODED)
+
+    Write-Host("Saving RAW changes to NDELIUSIF Config '$($configfile)'") 
+    $content | Set-Content -Path $configfile
+ 
+    ################################################################################
+    # Set IapsNDeliusInterfaceWinService service to -StartupType Automatic
+    ################################################################################
+    Set-Service -Name IapsNDeliusInterfaceWinService -StartupType Automatic
+    Get-Service IapsNDeliusInterfaceWinService | Select-Object -Property Name, StartType, Status
 
     ################################################################################
     # Restart IapsNDeliusInterfaceWinService service

@@ -5,7 +5,35 @@ try {
     # Get environment domain suffix and PSN Proxy Endpoint from system variables
     Set-Location ENV:
     $suffix = $env:InternalDomain
-    $psnproxy = $env:PSNProxy
+    
+    #$psnproxy = $env:PSNProxy
+    ###############################################################
+    # Get creds from ParameterStore for this environment to connect
+    ###############################################################
+    Write-Host('Fetching Environment Name from Instance Tag environment')
+    # Get the instance id from ec2 meta data
+    $instanceid = Invoke-RestMethod "http://169.254.169.254/latest/meta-data/instance-id"
+    # Get the environment from this instance's environment tag value
+    $environment = Get-EC2Tag -Filter @(
+        @{
+            name="resource-id"
+            values="$instanceid"
+        }
+        @{
+            name="key"
+            values="environment"
+        }
+    )
+
+    Write-Host('Determined environment as: ' + $environment.Value)
+    if($environment.Value -eq 'prod') {
+        $psnproxy = 'data-im-proxy.psn.probation.service.justice.gov.uk'
+    }
+    else {
+        $psnproxy = 'data-im-proxy-int-psn.' + $environment.Value + '.probation.service.justice.gov.uk'
+    }
+
+    Write-Host('Determined psnproxy as: ' + $psnproxy)
     Write-Host('Determined fqdn suffix as: ' + $suffix)
 
     $dnsservers = Get-DnsClientServerAddress
@@ -90,3 +118,4 @@ catch [Exception] {
     echo $_.Exception|format-list -force
     exit 1
 } 
+ 

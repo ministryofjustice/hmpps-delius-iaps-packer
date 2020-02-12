@@ -113,6 +113,11 @@
             "destination": "C:\\Setup\\Oracle\\tnsnames.ora.tmpl"
         },
         {
+            "type": "file",
+            "source": "files/windows/iaps/sqlnet.ora.tmpl",
+            "destination": "C:\\Setup\\Oracle\\sqlnet.ora.tmpl"
+        },
+        {
             "type": "powershell",
             "script": "scripts/windows/iaps/SetupOracleClient.ps1",
             "elevated_user": "Administrator",
@@ -191,6 +196,54 @@
             "type": "file",
             "source": "scripts/windows/iaps/ImportChainCertificates.ps1",
             "destination": "C:\\Setup\\RunTimeConfig\\ImportChainCertificates.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/UpdateIMInterface.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\UpdateIMInterface.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/UpdateNDeliusIMConfig.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\UpdateNDeliusIMConfig.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/Install-Pester-PoshSpec.ps1",
+            "destination": "C:\\Setup\\Testing\\Install-Pester-PoshSpec.ps1"
+        },
+        {
+            "type": "powershell",
+            "script": "scripts/windows/iaps/Install-Pester-PoshSpec.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/IMTests-Execute-Deploytime.ps1",
+            "destination": "C:\\Setup\\Testing\\IMTests-Execute-Deploytime.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/IMTests-Execute-Baketime.ps1",
+            "destination": "C:\\Setup\\Testing\\IMTests-Execute-Baketime.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/IMTests-generic.ps1",
+            "destination": "C:\\Setup\\Testing\\IMTests-generic.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/IMTests-PackerAMIBuild.ps1",
+            "destination": "C:\\Setup\\Testing\\IMTests-PackerAMIBuild.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/IMTests-Deploytime.ps1",
+            "destination": "C:\\Setup\\Testing\\IMTests-Deploytime.ps1"
+        },
+        {
+            "type": "powershell",
+            "script": "scripts/windows/iaps/IMTests-Execute-Baketime.ps1"
         }
     ]
   }

@@ -69,13 +69,6 @@ try {
         }
     )
 
-    if($environment.Value -eq 'prod') {
-        $CertificateSubject = '*.probation.service.justice.gov.uk'
-    }
-    else {
-        $CertificateSubject = '*.' + $environment.Value + '.probation.service.justice.gov.uk'
-    }
-
     Write-Host('Updating NDelius IF SOAPURL and SMTP Values in NDELIUSIF Config')
     $ndifconfigfile="C:\Program Files (x86)\I2N\IapsNDeliusInterface\Config\NDELIUSIF.xml"
     $xml = [xml](get-content $ndifconfigfile)
@@ -86,9 +79,9 @@ try {
         if ($element.NAME -eq "PCMS")
         {
             $element.SOAPURL="https://localhost:443/NDeliusIAPS"
-            $element.SOAPCERT=$CertificateSubject
+            $element.SOAPCERT='*.probation.service.justice.gov.uk'
             $element.REPLICACERT=""
-            $element.SOAPPASSCODED="q8y&gt;&#x7;$&#x11;=d&#x5;&#x1B;&#xC;%h{h"
+            $element.SOAPPASSCODED=""
             $element.REPLICAURL=""
         }
     }
@@ -103,14 +96,10 @@ try {
         {
             $element.SMTPUSER=""
         }
-        if ($element.PASSWORDCODED -eq " &lt;5&quot;:4,;;")
-        {
-            $element.PASSWORDCODED=""
-        }
-        if ($element.FROMADDRESS -eq "PCMS1-Interface@i2ntest.co.uk")
-        {
-            $element.FROMADDRESS="PCMS1-Interface@probation.service.justice.gov.uk"
-        }
+        
+        $element.PASSWORDCODED=""
+        $element.FROMADDRESS="PCMS1-Interface@probation.service.justice.gov.uk"
+        
     }
     $xml.Save($ndifconfigfile)
 
