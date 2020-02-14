@@ -15,15 +15,11 @@ env:
     GITHUB_ACCESS_TOKEN: "/jenkins/github/accesstoken"
 
 phases:
-  iaps-packer-verify':
+  BUILD':
     #run-as: Linux-user-name
     commands:
       - echo $BRANCH_NAME'
       - /packer-verify.sh 
-  iaps-packer-build-windows':
-    #run-as: Linux-user-name
-    commands:
-      - echo $BRANCH_NAME'
       - /packer-build-windows.sh 
 #    finally:
 #      - command
