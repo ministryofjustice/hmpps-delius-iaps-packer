@@ -17,13 +17,13 @@ env:
 phases:
   install:
     commands:
-      - ./install-pre-reqs.sh
+      - ${CODEBUILD_SRC_DIR}/install-pre-reqs.sh
   build:
     #run-as: Linux-user-name
     commands:
       - echo $BRANCH_NAME
-      - ./packer-verify.sh 
-      - ./packer-build-windows.sh 
+      - ${CODEBUILD_SRC_DIR}/packer-verify.sh 
+      - ${CODEBUILD_SRC_DIR}/packer-build-windows.sh 
 #    finally:
 #      - command
 #  post_build:
