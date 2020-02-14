@@ -15,6 +15,9 @@ env:
     GITHUB_ACCESS_TOKEN: "/jenkins/github/accesstoken"
 
 phases:
+  INSTALL:
+    commands:
+      - ./install-pre-reqs.sh
   BUILD:
     #run-as: Linux-user-name
     commands:
