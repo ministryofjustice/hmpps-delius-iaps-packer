@@ -1,0 +1,36 @@
+version: 0.2
+
+#run-as: Linux-user-name
+
+env:
+  variables:
+    AWS_REGION:  'eu-west-2'
+    BRANCH_NAME: ${CODEBUILD_WEBHOOK_TRIGGER}
+    TARGET_ENV:  'dev'
+    ARTIFACT_BUCKET: 'tf-eu-west-2-hmpps-eng-dev-config-s3bucket'
+    ZAIZI_BUCKET: 'tf-eu-west-2-hmpps-eng-dev-artefacts-s3bucket'
+    FILENAME:     'iaps.json'
+  parameter-store:
+    WIN_ADMIN_PASS:  '/${TARGET_ENV}/jenkins/windows/slave/admin/password'
+    GITHUB_ACCESS_TOKEN: "/jenkins/github/accesstoken"
+
+phases:
+  iaps-packer-verify':
+    #run-as: Linux-user-name
+    commands:
+      - echo $BRANCH_NAME'
+      - /packer-verify.sh 
+  iaps-packer-build-windows':
+    #run-as: Linux-user-name
+    commands:
+      - echo $BRANCH_NAME'
+      - /packer-build-windows.sh 
+#    finally:
+#      - command
+#  post_build:
+#    run-as: Linux-user-name
+#    commands:
+#      - command
+#    finally:
+#      - command
+   

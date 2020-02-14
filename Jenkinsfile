@@ -14,7 +14,8 @@ def verify_image(filename) {
         -v `pwd`:/home/tools/data \
         mojdigitalstudio/hmpps-packer-builder \
         bash -c 'USER=`whoami` packer validate \
-        -var \'github_access_token=`aws ssm get-parameter --name /jenkins/github/accesstoken --with-decryption --output text --query Parameter.Value --region eu-west-2`\' \
+        -var \'github_access_token=`aws ssm get-parameter --name /jenkins/github/accesstoken 
+            --with-decryption --output text --query Parameter.Value --region eu-west-2`\' \
         ''' + filename + "'"
     }
 }
@@ -31,7 +32,8 @@ def build_image(filename) {
         -v `pwd`:/home/tools/data \
         mojdigitalstudio/hmpps-packer-builder \
         bash -c 'USER=`whoami` packer build \
-        -var \'github_access_token=`aws ssm get-parameter --name /jenkins/github/accesstoken --with-decryption --output text --query Parameter.Value --region eu-west-2`\' \
+        -var \'github_access_token=`aws ssm get-parameter --name /jenkins/github/accesstoken 
+            --with-decryption --output text --query Parameter.Value --region eu-west-2`\' \
         ''' + filename + "'"
     }
 }
@@ -65,7 +67,9 @@ pipeline {
     environment {
         // TARGET_ENV is set on the jenkins slave and defaults to dev
         AWS_REGION = "eu-west-2"
-        WIN_ADMIN_PASS = '$(aws ssm get-parameters --names /${TARGET_ENV}/jenkins/windows/slave/admin/password --region ${AWS_REGION} --with-decrypt | jq -r .Parameters[0].Value)'
+        WIN_ADMIN_PASS = '$(aws ssm get-parameters --names 
+        /${TARGET_ENV}/jenkins/windows/slave/admin/password --region ${AWS_REGION} 
+        --with-decrypt | jq -r .Parameters[0].Value)'
         BRANCH_NAME = set_branch_name()
     }
 
