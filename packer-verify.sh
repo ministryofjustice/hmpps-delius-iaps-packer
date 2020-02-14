@@ -1,3 +1,4 @@
+#!/bin/bash
 
 echo "BRANCH_NAME: ${BRANCH_NAME}"
 echo "TARGET_ENV: ${TARGET_ENV}"
@@ -6,8 +7,9 @@ echo "ZAIZI_BUCKET: ${ZAIZI_BUCKET}"
 echo "GITHUB_ACCESS_TOKEN: ${GITHUB_ACCESS_TOKEN}"
 echo "FILENAME: ${FILENAME}"
 
-
-#!/bin/bash
+echo '----------------------------------'
+echo 'Verifying Packer Windows AMI'
+echo '----------------------------------'
 docker run --rm \
     -e BRANCH_NAME=${BRANCH_NAME} \
     -e TARGET_ENV=${TARGET_ENV} \

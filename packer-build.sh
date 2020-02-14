@@ -1,4 +1,9 @@
 #!/bin/bash
+
+echo '----------------------------------'
+echo 'Building Packer AMI'
+echo '----------------------------------'
+
 docker run --rm \
   -e BRANCH_NAME=${BRANCH_NAME} \
     -e TARGET_ENV=${TARGET_ENV} \

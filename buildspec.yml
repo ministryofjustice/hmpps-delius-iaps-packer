@@ -1,7 +1,5 @@
 version: 0.2
 
-#run-as: ubuntu
-
 env:
   variables:
     AWS_REGION:  'eu-west-2'
@@ -19,17 +17,7 @@ phases:
     commands:
       - ${CODEBUILD_SRC_DIR}/install-pre-reqs.sh
   build:
-    #run-as: Linux-user-name
     commands:
       - echo $BRANCH_NAME
       - ${CODEBUILD_SRC_DIR}/packer-verify.sh 
       - ${CODEBUILD_SRC_DIR}/packer-build-windows.sh 
-#    finally:
-#      - command
-#  post_build:
-#    run-as: Linux-user-name
-#    commands:
-#      - command
-#    finally:
-#      - command
-   
