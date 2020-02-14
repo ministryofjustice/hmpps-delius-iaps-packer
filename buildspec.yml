@@ -18,9 +18,9 @@ phases:
   BUILD:
     #run-as: Linux-user-name
     commands:
-      - echo $BRANCH_NAME'
-      - /packer-verify.sh 
-      - /packer-build-windows.sh 
+      - echo $BRANCH_NAME
+      - ./packer-verify.sh 
+      - ./packer-build-windows.sh 
 #    finally:
 #      - command
 #  post_build:
