@@ -15,10 +15,10 @@ env:
     GITHUB_ACCESS_TOKEN: "/jenkins/github/accesstoken"
 
 phases:
-  INSTALL:
+  install:
     commands:
       - ./install-pre-reqs.sh
-  BUILD:
+  build:
     #run-as: Linux-user-name
     commands:
       - echo $BRANCH_NAME
