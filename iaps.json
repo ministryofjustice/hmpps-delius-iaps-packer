@@ -209,6 +209,11 @@
         },
         {
             "type": "file",
+            "source": "scripts/windows/iaps/DisableServices.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\DisableServices.ps1"
+        },
+        {
+            "type": "file",
             "source": "scripts/windows/iaps/Install-Pester-PoshSpec.ps1",
             "destination": "C:\\Setup\\Testing\\Install-Pester-PoshSpec.ps1"
         },

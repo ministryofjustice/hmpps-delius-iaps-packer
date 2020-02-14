@@ -470,5 +470,15 @@ Describe 'DNS Search Suffix Configuration' {
     } 
 
 }
- 
+
+Describe 'Other Windows Services' {
+    Describe 'sshd (OpenSSH Server) is Stopped' {
+        Service sshd Status { Should Be Stopped }
+    }
+  
+    It 'sshd (OpenSSH Server) Service is Disabled' {
+        $service = Get-Service | Where { $_.Name -eq 'sshd' }
+        $service.StartType | Should Be 'Disabled'
+    }
+}
 
