@@ -15,5 +15,5 @@ phases:
   build:
     commands:
       - echo $BRANCH_NAME
-      - ${CODEBUILD_SRC_DIR}/packer-verify.sh 
-      - ${CODEBUILD_SRC_DIR}/packer-build-windows.sh 
+      - ${CODEBUILD_SRC_DIR}/packer-verify-docker.sh 
+      - ${CODEBUILD_SRC_DIR}/packer-build-windows-docker.sh 
