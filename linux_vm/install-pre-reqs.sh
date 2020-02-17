@@ -47,7 +47,7 @@ chmod +x /usr/local/bin/docker-compose
 ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 docker-compose --version
 
-export VER="1.5.1"
+export VER="1.3.5"
 wget https://releases.hashicorp.com/packer/${VER}/packer_${VER}_linux_amd64.zip
 unzip packer_${VER}_linux_amd64.zip
 mv packer /usr/local/bin
