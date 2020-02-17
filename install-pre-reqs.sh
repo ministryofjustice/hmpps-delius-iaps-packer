@@ -38,6 +38,11 @@ docker run hello-world
 # docker-compose
 apt-get install wget -y
 
-wget https://github.com/docker/compose/releases/download/1.21.2/docker-compose-Linux-x86_64 -o /usr/bin/docker-compose
-chmod +x /usr/bin/docker-compose
-/usr/bin/docker-compose -v 
+#wget https://github.com/docker/compose/releases/download/1.21.2/docker-compose-Linux-x86_64 -o /usr/bin/docker-compose
+#chmod +x /usr/bin/docker-compose
+#/usr/bin/docker-compose -v 
+
+curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+docker-compose --version
