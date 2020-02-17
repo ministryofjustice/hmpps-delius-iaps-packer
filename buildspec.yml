@@ -14,11 +14,10 @@ env:
 phases:
   pre_build:
     commands:
-      - echo "Installing Pre-Requisites"
-      - ${CODEBUILD_SRC_DIR}/install-pre-reqs.sh
+      #- echo "Installing Pre-Requisites"
+      #- ${CODEBUILD_SRC_DIR}/install-pre-reqs.sh
   build:
     commands:
       - echo $BRANCH_NAME
       - ${CODEBUILD_SRC_DIR}/packer-verify.sh 
       - ${CODEBUILD_SRC_DIR}/packer-build-windows.sh 
-      
