@@ -28,6 +28,7 @@
         "winrm_password": "{{user `admin_pass`}}",
         "winrm_use_ssl": false,
         "winrm_insecure": true,
+        "iam_instance_profile": "tf-eu-west-2-hmpps-eng-{{user `target_env`}}-jenkins-ec2-slave-role-instance-profile",
         "ami_name": "HMPPS IAPS Windows Server {{user `branch_name`}} {{timestamp}}",
         "vpc_id": "vpc-02321f288159e5d0e",
         "subnet_id": "subnet-00982fba28419ac5f",

@@ -46,3 +46,7 @@ curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-compo
 chmod +x /usr/local/bin/docker-compose
 ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 docker-compose --version
+
+# packer
+curl -o packer.zip https://releases.hashicorp.com/packer/1.3.3/packer_1.3.3_linux_amd64.zip && unzip packer.zip
+packer -v 
