@@ -34,3 +34,10 @@ apt-get install -y docker-ce docker-ce-cli containerd.io
 
 echo 'Running: docker run hello-world'
 docker run hello-world
+
+# docker-compose
+apt-get install wget -y
+
+wget https://github.com/docker/compose/releases/download/1.21.2/docker-compose-Linux-x86_64 /usr/bin/docker-compose
+chmod +x /usr/bin/docker-compose
+/usr/bin/docker-compose -v 
