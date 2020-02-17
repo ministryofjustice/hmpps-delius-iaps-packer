@@ -49,6 +49,7 @@ docker-compose --version
 
 # packer
 curl -o /opt/packer.zip https://releases.hashicorp.com/packer/1.3.3/packer_1.3.3_linux_amd64.zip && unzip /opt/packer.zip
+ls -al /opt
 chmod +x /opt/packer
 ln -s /opt/packer /usr/bin/packer
 packer -v 
