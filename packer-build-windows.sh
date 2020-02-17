@@ -23,4 +23,4 @@ docker run --rm \
     -e AWS_REGION=${AWS_REGION} \
     -v `pwd`:/home/tools/data \
     mojdigitalstudio/hmpps-packer-builder \
-    bash -c "USER=`whoami` packer build ${FILENAME}"
+    bash -c "USER=`whoami` packer build -debug ${FILENAME}"
