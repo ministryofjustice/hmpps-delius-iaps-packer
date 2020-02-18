@@ -15,7 +15,7 @@ phases:
   pre_build:
     commands:
       - echo "Installing Pre-Requisites"
-      - ${CODEBUILD_SRC_DIR}/linux_vm/install-pre-reqs.sh
+      - ${CODEBUILD_SRC_DIR}/codebuild/linux_vm/install-pre-reqs.sh
   build:
     commands:
       - echo $BRANCH_NAME
