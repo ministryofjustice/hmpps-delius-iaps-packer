@@ -1,8 +1,8 @@
 #!/bin/bash
 
-echo '----------------------------------'
-echo 'Building Packer AMI'
-echo '----------------------------------'
+echo '-------------------------------------------'
+echo 'Building Packer AMI using packer binary'
+echo '-------------------------------------------'
 
 echo "BRANCH_NAME: ${BRANCH_NAME}"
 echo "TARGET_ENV: ${TARGET_ENV}"

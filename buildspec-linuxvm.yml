@@ -7,7 +7,7 @@ env:
     TARGET_ENV:  'dev'
     ARTIFACT_BUCKET: 'tf-eu-west-2-hmpps-eng-dev-config-s3bucket'
     ZAIZI_BUCKET: 'tf-eu-west-2-hmpps-eng-dev-artefacts-s3bucket'
-    FILENAME:     'iaps-codebuild.json'
+    FILENAME:     'codebuild/iaps-codebuild.json'
   parameter-store:
     WIN_ADMIN_PASS:  '/dev/jenkins/windows/slave/admin/password'
     GITHUB_ACCESS_TOKEN: "/jenkins/github/accesstoken"
@@ -19,5 +19,5 @@ phases:
   build:
     commands:
       - echo $BRANCH_NAME
-      - ${CODEBUILD_SRC_DIR}/linux_vm/packer-verify.sh 
-      - ${CODEBUILD_SRC_DIR}/linux_vm/packer-build-windows.sh 
+      - ${CODEBUILD_SRC_DIR}/codebuild/linux_vm/packer-verify.sh 
+      - ${CODEBUILD_SRC_DIR}/codebuild/linux_vm/packer-build-windows.sh 
