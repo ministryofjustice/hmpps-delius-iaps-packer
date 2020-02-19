@@ -1,0 +1,257 @@
+{
+    "variables": {
+      "packer_profile": "packer",
+      "branch_name": "{{env `BRANCH_NAME`}}",
+      "admin_pass": "{{env `WIN_ADMIN_PASS`}}",
+      "zaizi_bucket": "{{env `ZAIZI_BUCKET`}}",
+      "target_env":  "{{env `TARGET_ENV`}}",
+      "aws_region": "{{env `AWS_REGION`}}"
+    },
+    "builders": [
+      {
+        "name": "AWS AMI Builder - IAPS",
+        "type": "amazon-ebs",
+        "region": "eu-west-2",
+        "source_ami_filter": {
+            "filters": {
+              "virtualization-type": "hvm",
+              "architecture": "x86_64",
+              "name": "HMPPS Windows Server Base master *",
+              "root-device-type": "ebs"
+            },
+            "owners": ["895523100917"],
+            "most_recent": true
+        },
+        "instance_type": "t2.medium",
+        "communicator": "winrm",
+        "winrm_username": "Administrator",
+        "winrm_password": "{{user `admin_pass`}}",
+        "winrm_use_ssl": false,
+        "winrm_insecure": true,
+        "iam_instance_profile": "tf-eu-west-2-hmpps-eng-{{user `target_env`}}-jenkins-ec2-slave-role-instance-profile",
+        "ami_name": "HMPPS IAPS Windows Server {{user `branch_name`}} {{timestamp}}",
+        "vpc_id": "vpc-02321f288159e5d0e",
+        "subnet_id": "subnet-00982fba28419ac5f",
+        "temporary_security_group_source_cidr": "10.0.0.0/8",
+        "ami_regions": ["eu-west-2"],
+        "ami_users": [
+            "895523100917",
+            "723123699647",
+            "728765553488",
+            "130975965028",
+            "205048117103",
+            "563502482979",
+            "010587221707",
+            "050243167760",
+            "716683748953",
+            "645753425509",
+            "330914586320",
+            "130847504577",
+            "077643444046",
+            "479759138745",
+            "349354156492",
+            "431912413968"
+        ],
+        "tags": {
+          "OS_Version": "Windows Server 2012 R2 RTM",
+          "Base_AMI_Name": "{{ .SourceAMIName }}",
+          "Base_AMI_ID": "{{ .SourceAMI }}",
+          "Name": "HMPPS IAPS Windows Server {{user `branch_name`}} {{timestamp}}"
+        },
+        "ami_description": "HMPPS IAPS Windows Server"
+      }
+    ],
+    "provisioners": [
+        {
+            "type": "powershell",
+            "script": "scripts/windows/iaps/SetRegionalConfig.ps1"
+        },
+        {
+            "type": "file",
+            "source": "files/windows/iaps/registry/default_user.reg",
+            "destination": "C:\\Setup\\Registry\\default_user.reg"
+        },
+        {
+            "type": "file",
+            "source": "files/windows/iaps/registry/LocalService_user_S-1–5–19.reg",
+            "destination": "C:\\Setup\\Registry\\LocalService_user_S-1–5–19.reg"
+        },
+        {
+            "type": "file",
+            "source": "files/windows/iaps/registry/NetworkService_user_S-1–5–20.reg",
+            "destination": "C:\\Setup\\Registry\\NetworkService_user_S-1–5–20.reg"
+        },
+        {
+            "type": "powershell",
+            "script": "scripts/windows/iaps/ImportRegistryFiles.ps1"
+        },
+        {
+            "type": "powershell",
+            "script": "scripts/windows/iaps/InstallPackages.ps1",
+            "elevated_user": "Administrator",
+            "elevated_password": "{{user `admin_pass`}}"
+        },
+        {
+            "type": "powershell",
+            "script": "scripts/windows/iaps/InstallDotNet35.ps1"
+        },
+        {
+            "type": "powershell",
+            "script": "scripts/windows/iaps/IAPSFirewallRules.ps1"  
+        },
+        {
+            "type": "powershell",
+            "script": "scripts/windows/iaps/GetS3SetupArtefacts.ps1",
+            "environment_vars": ["ZAIZI_BUCKET={{user `zaizi_bucket`}}", "AWS_REGION={{user `aws_region`}}"]   
+        },
+        {
+            "type": "file",
+            "source": "files/windows/iaps/OracleClient.rsp",
+            "destination": "C:\\Setup\\Oracle\\OracleClient.rsp"
+        },
+        {
+            "type": "file",
+            "source": "files/windows/iaps/tnsnames.ora.tmpl",
+            "destination": "C:\\Setup\\Oracle\\tnsnames.ora.tmpl"
+        },
+        {
+            "type": "file",
+            "source": "files/windows/iaps/sqlnet.ora.tmpl",
+            "destination": "C:\\Setup\\Oracle\\sqlnet.ora.tmpl"
+        },
+        {
+            "type": "powershell",
+            "script": "scripts/windows/iaps/SetupOracleClient.ps1",
+            "elevated_user": "Administrator",
+            "elevated_password": "{{user `admin_pass`}}"
+        },
+        {
+            "type": "powershell",
+            "script": "scripts/windows/iaps/InstallSQLDeveloper.ps1"
+        },
+        {
+            "type": "powershell",
+            "script": "scripts/windows/iaps/SetupODBCDSN.ps1"
+        },
+        {
+            "type": "powershell",
+            "script": "scripts/windows/iaps/InstallNDeliusInterface.ps1"
+        },
+        {
+            "type": "powershell",
+            "script": "scripts/windows/iaps/InstallIMInterface.ps1"
+        },
+        {
+            "type": "powershell",
+            "script": "scripts/windows/iaps/ReEnableUserData.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/SetRegionalConfig.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\SetRegionalConfig.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/SetDNSSearchSuffix.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\SetDNSSearchSuffix.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/ImportACMCertificates.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\ImportACMCertificates.ps1"
+        },
+        {
+            "type": "file",
+            "source": "files/windows/iaps/nginx.conf.tmpl",
+            "destination": "C:\\Setup\\Nginx\\nginx.conf.tmpl"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/SetupNginx.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\SetupNginx.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/Route53Record.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\Route53Record.ps1"
+        },
+        {
+            "type": "file",
+            "source": "files/windows/iaps/cloudwatch.config.json",
+            "destination": "C:\\Setup\\Cloudwatch\\config.json"
+        },       
+        {
+            "type": "powershell",
+            "script": "scripts/windows/iaps/InstallCloudwatchAgent.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/SetupCloudwatchAgent.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\SetupCloudwatchAgent.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/SetupLocalUsersFromParamStore.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\SetupLocalUsersFromParamStore.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/ImportChainCertificates.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\ImportChainCertificates.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/UpdateIMInterface.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\UpdateIMInterface.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/UpdateNDeliusIMConfig.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\UpdateNDeliusIMConfig.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/DisableServices.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\DisableServices.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/Install-Pester-PoshSpec.ps1",
+            "destination": "C:\\Setup\\Testing\\Install-Pester-PoshSpec.ps1"
+        },
+        {
+            "type": "powershell",
+            "script": "scripts/windows/iaps/Install-Pester-PoshSpec.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/IMTests-Execute-Deploytime.ps1",
+            "destination": "C:\\Setup\\Testing\\IMTests-Execute-Deploytime.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/IMTests-Execute-Baketime.ps1",
+            "destination": "C:\\Setup\\Testing\\IMTests-Execute-Baketime.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/IMTests-generic.ps1",
+            "destination": "C:\\Setup\\Testing\\IMTests-generic.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/IMTests-PackerAMIBuild.ps1",
+            "destination": "C:\\Setup\\Testing\\IMTests-PackerAMIBuild.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/IMTests-Deploytime.ps1",
+            "destination": "C:\\Setup\\Testing\\IMTests-Deploytime.ps1"
+        },
+        {
+            "type": "powershell",
+            "script": "scripts/windows/iaps/IMTests-Execute-Baketime.ps1"
+        }
+    ]
+  }
+  

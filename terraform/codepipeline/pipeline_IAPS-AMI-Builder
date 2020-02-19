@@ -1,0 +1,76 @@
+{
+    "pipeline": {
+        "roleArn": "arn:aws:iam::895523100917:role/service-role/AWSCodePipelineServiceRole-eu-west-2-IAPS-AMI-Builder", 
+        "stages": [
+            {
+                "name": "Source", 
+                "actions": [
+                    {
+                        "inputArtifacts": [], 
+                        "name": "Source", 
+                        "region": "eu-west-2", 
+                        "actionTypeId": {
+                            "category": "Source", 
+                            "owner": "ThirdParty", 
+                            "version": "1", 
+                            "provider": "GitHub"
+                        }, 
+                        "outputArtifacts": [
+                            {
+                                "name": "SourceArtifact"
+                            }
+                        ], 
+                        "configuration": {
+                            "Owner": "ministryofjustice", 
+                            "Repo": "hmpps-delius-iaps-packer", 
+                            "PollForSourceChanges": "false", 
+                            "Branch": "34_DAM-1032-IAPS-AWS-CodePipeline-AMI-Build", 
+                            "OAuthToken": "****"
+                        }, 
+                        "runOrder": 1
+                    }
+                ]
+            }, 
+            {
+                "name": "Build", 
+                "actions": [
+                    {
+                        "inputArtifacts": [
+                            {
+                                "name": "SourceArtifact"
+                            }
+                        ], 
+                        "name": "Build", 
+                        "region": "eu-west-2", 
+                        "actionTypeId": {
+                            "category": "Build", 
+                            "owner": "AWS", 
+                            "version": "1", 
+                            "provider": "CodeBuild"
+                        }, 
+                        "outputArtifacts": [
+                            {
+                                "name": "BuildArtifact"
+                            }
+                        ], 
+                        "configuration": {
+                            "ProjectName": "IAPS_AMI_BUILDER"
+                        }, 
+                        "runOrder": 1
+                    }
+                ]
+            }
+        ], 
+        "artifactStore": {
+            "type": "S3", 
+            "location": "hmpps-eng-dev-ci-storage"
+        }, 
+        "name": "IAPS-AMI-Builder", 
+        "version": 2
+    }, 
+    "metadata": {
+        "pipelineArn": "arn:aws:codepipeline:eu-west-2:895523100917:IAPS-AMI-Builder", 
+        "updated": 1581693904.063, 
+        "created": 1581688527.084
+    }
+}

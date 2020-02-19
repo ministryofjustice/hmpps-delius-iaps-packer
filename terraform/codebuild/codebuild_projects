@@ -1,0 +1,6 @@
+{
+    "projects": [
+        "IAPS_AMI_BUILDER_DOCKER", 
+        "IAPS_AMI_BUILDER"
+    ]
+}
