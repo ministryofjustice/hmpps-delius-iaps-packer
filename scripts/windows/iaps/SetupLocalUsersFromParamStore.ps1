@@ -28,9 +28,16 @@ Write-Host('Fetching IAPS Delius Local Users to Create from SSM Parameter Store'
     )
 
     $IAPSLocalUsersSSMPath = "/" + $environmentName.Value + "/" + $application.Value + "/iaps/iaps/iaps_local_users"
+    $IAPSLocalUsersOneTimePasswordSSMPath = "/" + $environmentName.Value + "/" + $application.Value + "/iaps/iaps/iaps_local_users_onetime_password"
+
     try {
+        Write-Host("Getting raw users list from Parameter Store Path '$IAPSLocalUsersSSMPath'")
+
         $IAPSLocalUsersList = Get-SSMParameter -Name $IAPSLocalUsersSSMPath -WithDecryption $true
         Write-Host("Raw users list from Parameter Store Path '$IAPSLocalUsersSSMPath': '$IAPSLocalUsersList'")
+
+        Write-Host("Getting users One Time Password from Parameter Store Path '$IAPSLocalUsersOneTimePasswordSSMPath'")
+        $IAPSLocalUserOneTimePassword = Get-SSMParameter -Name $IAPSLocalUsersOneTimePasswordSSMPath -WithDecryption $true
     }
     catch [Exception] {
         Write-Host ("Failed to fetch ssm params from $IAPSLocalUsersSSMPath")
@@ -38,7 +45,7 @@ Write-Host('Fetching IAPS Delius Local Users to Create from SSM Parameter Store'
         exit 1
     } 
     
-    $onetimepassword = "MustBeChanged0!"
+    $onetimepassword = $IAPSLocalUserOneTimePassword.Value
     $userslist = $IAPSLocalUsersList.Value.split(",") 
 
     Write-Host("Creating Local Users specified in Parameter Store Path '$IAPSLocalUsersSSMPath'")
