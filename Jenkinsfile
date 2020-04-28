@@ -69,7 +69,7 @@ pipeline {
     environment {
         // TARGET_ENV is set on the jenkins slave and defaults to dev
         AWS_REGION = "eu-west-2"
-        WIN_ADMIN_PASS = "$(aws ssm get-parameters --names /${TARGET_ENV}/jenkins/windows/slave/admin/password --region ${AWS_REGION} --with-decrypt | jq -r '.Parameters[0].Value')"
+        WIN_ADMIN_PASS = "\$(aws ssm get-parameters --names /${TARGET_ENV}/jenkins/windows/slave/admin/password --region ${AWS_REGION} --with-decrypt | jq -r '.Parameters[0].Value')"
         BRANCH_NAME = set_branch_name()
     }
 
