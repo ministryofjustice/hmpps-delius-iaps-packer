@@ -71,7 +71,7 @@ pipeline {
         // set env var for git tag if we're on master branch
         env.IMAGE_TAG_VERSION='0.0.0'
         echo "Setting IMAGE_TAG_VERSION to default value '${env.IMAGE_TAG_VERSION}'"
-        if [ $BRANCH_NAME = 'master' ]
+        if [[ $BRANCH_NAME == 'master' ]]
         then
             GIT_TAG=$(git describe --tags --exact-match)
             echo "Using git tag '${GIT_TAG}' on master"
