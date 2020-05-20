@@ -62,15 +62,12 @@ def set_tag_version(branchname) {
         #!/usr/env/bin bash
         set +x
         IMAGE_TAG_VERSION='0.0.0'
-        echo "Setting IMAGE_TAG_VERSION to default value '${IMAGE_TAG_VERSION}'"
-        if [[ branchname == 'master' ]]
+        if [['" + branchname + "' == 'master' ]]
         then
-            GIT_TAG=$(git describe --tags --exact-match)
-            echo "Using git tag '${GIT_TAG}' on master"
-            IMAGE_TAG_VERSION=$GIT_TAG
+            GIT_TAG=\$(git describe --tags --exact-match)
+            IMAGE_TAG_VERSION=\$GIT_TAG
         fi
-        echo "IMAGE_TAG_VERSION = ${IMAGE_TAG_VERSION}'"
-        return $IMAGE_TAG_VERSION """
+        return \$IMAGE_TAG_VERSION"""
     }
 }
 
