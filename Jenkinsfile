@@ -58,16 +58,15 @@ def build_win_image(filename) {
 def set_tag_version(branchname) {
     
     wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm']) {
-        sh """
-        #!/usr/env/bin bash
+        sh label: '', script: '''#!/usr/env/bin bash
         set +x
-        IMAGE_TAG_VERSION='0.0.0'
-        if [['" + branchname + "' == 'master' ]]
+        IMAGE_TAG_VERSION=\'0.0.0\'
+        if [[\'" + branchname + "\' == \'master\' ]]
         then
-            GIT_TAG=\$(git describe --tags --exact-match)
-            IMAGE_TAG_VERSION=\$GIT_TAG
+            GIT_TAG=$(git describe --tags --exact-match)
+            IMAGE_TAG_VERSION=$GIT_TAG
         fi
-        return \$IMAGE_TAG_VERSION"""
+        return $IMAGE_TAG_VERSION"""'''
     }
 }
 
