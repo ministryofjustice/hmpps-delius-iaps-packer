@@ -67,6 +67,18 @@ pipeline {
         AWS_REGION = "eu-west-2"
         WIN_ADMIN_PASS = '$(aws ssm get-parameters --names /${TARGET_ENV}/jenkins/windows/slave/admin/password --region ${AWS_REGION} --with-decryption | jq -r \'.Parameters[0].Value\')'
         BRANCH_NAME = set_branch_name()
+
+        // set env var for git tag if we're on master branch
+        env.IMAGE_TAG_VERSION='0.0.0'
+        echo "Setting IMAGE_TAG_VERSION to default value '${env.IMAGE_TAG_VERSION}'"
+        if [[ $BRANCH_NAME == 'master' ]]
+        then
+            GIT_TAG=$(git describe --tags --exact-match)
+            echo "Using git tag '${GIT_TAG}' on master"
+            env.IMAGE_TAG_VERSION=$GIT_TAG
+        fi
+
+         echo "IMAGE_TAG_VERSION = ${env.IMAGE_TAG_VERSION}'"
     }
 
     stages {
