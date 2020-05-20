@@ -58,9 +58,11 @@ def build_win_image(filename) {
 def set_tag_version() {
     def branchName = "${env.BRANCH_NAME}"
     if (branchName == "master") {
-        OUTPUT = sh returnStdout: true,
-                    script: "git describe --tags --exact-match"
-        return OUTPUT
+        git_tag = sh (
+                        script: "git describe --tags --exact-match",
+                        returnStdout: true
+                     ).trim()
+        return git_tag
     }
     else {
         return '0.0.0'
