@@ -63,6 +63,7 @@ def set_tag_version(branchname) {
     then
         GIT_TAG=$(git describe --tags --exact-match)
         echo "Using git tag '${GIT_TAG}' on master"
+        IMAGE_TAG_VERSION=$GIT_TAG
     fi
     echo "IMAGE_TAG_VERSION = ${env.IMAGE_TAG_VERSION}'"
     return $IMAGE_TAG_VERSION
