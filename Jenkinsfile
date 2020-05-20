@@ -55,21 +55,20 @@ def build_win_image(filename) {
     }
 }
 
-def set_tag_version(branchname) {
-    
-    wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm']) {
-        sh """
-        #!/usr/env/bin bash
-        set +x
-        IMAGE_TAG_VERSION='0.0.0'
-        if [['" + branchname + "' == 'master' ]]
-        then
-            GIT_TAG=\$(git describe --tags --exact-match)
-            IMAGE_TAG_VERSION=\$GIT_TAG
-        fi
-        return \$IMAGE_TAG_VERSION"""
+def set_tag_version() {
+    def branchName = "${env.BRANCH_NAME}"
+    if (branchName == "master") {
+        git_tag = sh (
+                        script: "git describe --tags --exact-match",
+                        returnStdout: true
+                     ).trim()
+        return git_tag
+    }
+    else {
+        return '0.0.0'
     }
 }
+
 
 pipeline {
     agent { label "jenkins_slave"}
@@ -83,7 +82,7 @@ pipeline {
         AWS_REGION        = "eu-west-2"
         WIN_ADMIN_PASS    = '$(aws ssm get-parameters --names /${TARGET_ENV}/jenkins/windows/slave/admin/password --region ${AWS_REGION} --with-decryption | jq -r \'.Parameters[0].Value\')'
         BRANCH_NAME       = set_branch_name()
-        IMAGE_TAG_VERSION = set_tag_version($BRANCH_NAME)
+        IMAGE_TAG_VERSION = set_tag_version()
     }
 
     stages {
