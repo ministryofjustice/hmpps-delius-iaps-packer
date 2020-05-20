@@ -60,6 +60,8 @@ def debug() {
       sh """
       #!/usr/env/bin bash
       git version
+      git describe --tags --exact-match
+      git branch --show-current
       """
   }
 
