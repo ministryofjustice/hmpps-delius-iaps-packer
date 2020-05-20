@@ -22,7 +22,7 @@ def verify_image(filename) {
 def build_image(filename) {
     wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm']) {
         sh '''
-        #!/usr/env/bin bash       
+        #!/usr/env/bin bash
         docker run --rm \
         -e BRANCH_NAME \
         -e TARGET_ENV \
@@ -55,8 +55,18 @@ def build_win_image(filename) {
     }
 }
 
+def get_branch_name() {
+    git_branch = sh (
+                    script: "git branch --show-current",
+                    returnStdout: true
+                 ).trim()
+
+    echo "git_branch - " + git_branch
+    return git_branch
+}
+
 def set_tag_version() {
-    def branchName = "${env.BRANCH_NAME}"
+    branchName = get_branch_name()
     if (branchName == "master") {
         git_tag = sh (
                         script: "git describe --tags --exact-match",
@@ -86,8 +96,8 @@ pipeline {
     }
 
     stages {
-        stage('IAPS - Packer Verify') { 
-            steps { 
+        stage('IAPS - Packer Verify') {
+            steps {
                 sh('echo $BRANCH_NAME')
                 script {
                     verify_image('iaps.json')
@@ -95,8 +105,8 @@ pipeline {
             }
         }
 
-        stage('IAPS - Packer Build') { 
-            steps { 
+        stage('IAPS - Packer Build') {
+            steps {
                 sh('echo $BRANCH_NAME')
                 sh('echo $IMAGE_TAG_VERSION')
                 script {
