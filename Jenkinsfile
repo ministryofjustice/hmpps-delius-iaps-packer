@@ -55,15 +55,14 @@ def build_win_image(filename) {
     }
 }
 
-def set_tag_version() {
+def set_tag_version(branchname) {
     
     IMAGE_TAG_VERSION='0.0.0'
-    echo "Setting IMAGE_TAG_VERSION to default value '${env.IMAGE_TAG_VERSION}'"
-    if [[ $BRANCH_NAME == 'master' ]]
+    echo "Setting IMAGE_TAG_VERSION to default value '${IMAGE_TAG_VERSION}'"
+    if [[ branchname == 'master' ]]
     then
         GIT_TAG=$(git describe --tags --exact-match)
         echo "Using git tag '${GIT_TAG}' on master"
-        env.IMAGE_TAG_VERSION=$GIT_TAG
     fi
     echo "IMAGE_TAG_VERSION = ${env.IMAGE_TAG_VERSION}'"
     return $IMAGE_TAG_VERSION
@@ -83,7 +82,7 @@ pipeline {
         AWS_REGION        = "eu-west-2"
         WIN_ADMIN_PASS    = '$(aws ssm get-parameters --names /${TARGET_ENV}/jenkins/windows/slave/admin/password --region ${AWS_REGION} --with-decryption | jq -r \'.Parameters[0].Value\')'
         BRANCH_NAME       = set_branch_name()
-        IMAGE_TAG_VERSION = set_tag_version()
+        IMAGE_TAG_VERSION = set_tag_version(BRANCH_NAME)
     }
 
     stages {
@@ -98,6 +97,8 @@ pipeline {
 
         stage('IAPS - Packer Build') { 
             steps { 
+                sh('echo $BRANCH_NAME')
+                sh('echo $IMAGE_TAG_VERSION')
                 script {
                     build_win_image('iaps.json')
                 }
