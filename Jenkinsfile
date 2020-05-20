@@ -55,6 +55,19 @@ def build_win_image(filename) {
     }
 }
 
+def debug() {
+  wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm']) {
+      sh """
+      #!/usr/env/bin bash
+      git version
+      """
+  }
+
+
+
+
+
+}
 def get_branch_name() {
     git_branch = sh (
                     script: "git branch --show-current",
@@ -88,6 +101,7 @@ pipeline {
     }
 
     environment {
+        debug()
         // TARGET_ENV is set on the jenkins slave and defaults to dev
         AWS_REGION        = "eu-west-2"
         WIN_ADMIN_PASS    = '$(aws ssm get-parameters --names /${TARGET_ENV}/jenkins/windows/slave/admin/password --region ${AWS_REGION} --with-decryption | jq -r \'.Parameters[0].Value\')'
