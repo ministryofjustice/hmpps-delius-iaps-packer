@@ -5,7 +5,8 @@
       "admin_pass": "{{env `WIN_ADMIN_PASS`}}",
       "zaizi_bucket": "{{env `ZAIZI_BUCKET`}}",
       "target_env":  "{{env `TARGET_ENV`}}",
-      "aws_region": "{{env `AWS_REGION`}}"
+      "aws_region": "{{env `AWS_REGION`}}",
+      "image_tag_version": "{{env `IMAGE_TAG_VERSION`}}"
     },
     "builders": [
       {
@@ -56,7 +57,8 @@
           "Base_AMI_Name": "{{ .SourceAMIName }}",
           "Base_AMI_ID": "{{ .SourceAMI }}",
           "Name": "HMPPS IAPS Windows Server {{user `branch_name`}} {{timestamp}}",
-          "Git_Branch": "{{user `branch_name`}}"
+          "Git_Branch": "{{user `branch_name`}}",
+          "image_tag_version": "{{user `image_tag_version`}}"
         }
       }
     ],
