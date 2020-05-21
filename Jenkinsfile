@@ -22,7 +22,7 @@ def verify_image(filename) {
 def build_image(filename) {
     wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm']) {
         sh '''
-        #!/usr/env/bin bash       
+        #!/usr/env/bin bash
         docker run --rm \
         -e BRANCH_NAME \
         -e TARGET_ENV \
@@ -55,8 +55,33 @@ def build_win_image(filename) {
     }
 }
 
+def debug() {
+  wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm']) {
+      sh """
+      #!/usr/env/bin bash
+      git version
+      git describe --tags --exact-match
+      git branch --show-current
+      """
+  }
+
+
+
+
+
+}
+def get_branch_name() {
+    git_branch = sh (
+                    script: "git branch --show-current",
+                    returnStdout: true
+                 ).trim()
+
+    echo "git_branch - " + git_branch
+    return git_branch
+}
+
 def set_tag_version() {
-    def branchName = "${env.BRANCH_NAME}"
+    branchName = get_branch_name()
     if (branchName == "master") {
         git_tag = sh (
                         script: "git describe --tags --exact-match",
@@ -78,6 +103,7 @@ pipeline {
     }
 
     environment {
+        debug = debug()
         // TARGET_ENV is set on the jenkins slave and defaults to dev
         AWS_REGION        = "eu-west-2"
         WIN_ADMIN_PASS    = '$(aws ssm get-parameters --names /${TARGET_ENV}/jenkins/windows/slave/admin/password --region ${AWS_REGION} --with-decryption | jq -r \'.Parameters[0].Value\')'
@@ -86,8 +112,8 @@ pipeline {
     }
 
     stages {
-        stage('IAPS - Packer Verify') { 
-            steps { 
+        stage('IAPS - Packer Verify') {
+            steps {
                 sh('echo $BRANCH_NAME')
                 script {
                     verify_image('iaps.json')
@@ -95,8 +121,8 @@ pipeline {
             }
         }
 
-        stage('IAPS - Packer Build') { 
-            steps { 
+        stage('IAPS - Packer Build') {
+            steps {
                 sh('echo $BRANCH_NAME')
                 sh('echo $IMAGE_TAG_VERSION')
                 script {
