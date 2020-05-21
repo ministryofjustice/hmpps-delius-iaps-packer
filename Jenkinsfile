@@ -38,10 +38,10 @@ def build_image(filename) {
 
 def get_git_latest_master_tag() {
     git_branch = sh (
-                    script: "$(docker run --rm \
+                    script: """docker run --rm \
                                     -v `pwd`:/home/tools/data \
                                     mojdigitalstudio/hmpps-packer-builder \
-                                    bash -c 'git describe --tags --exact-match')",
+                                    bash -c 'git describe --tags --exact-match'""",
                     returnStdout: true
                  ).trim()    
     return git_branch
