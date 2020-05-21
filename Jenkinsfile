@@ -41,7 +41,7 @@ def get_git_latest_master_tag() {
                     script: """docker run --rm \
                                     -v `pwd`:/home/tools/data \
                                     mojdigitalstudio/hmpps-packer-builder \
-                                    bash -c 'git fetch --prune --unshallow && git describe --tags --exact-match'""",
+                                    bash -c 'git fetch --prune && git describe --tags --exact-match'""",
                     returnStdout: true
                  ).trim()    
     return git_branch
