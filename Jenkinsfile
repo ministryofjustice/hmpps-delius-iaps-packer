@@ -36,6 +36,17 @@ def build_image(filename) {
     }
 }
 
+def get_git_latest_master_tag() {
+    git_branch = sh (
+                    script: "$(docker run --rm \
+                                    -v `pwd`:/home/tools/data \
+                                    mojdigitalstudio/hmpps-packer-builder \
+                                    bash -c 'git describe --tags --exact-match')",
+                    returnStdout: true
+                 ).trim()    
+    return git_branch
+}
+
 def build_win_image(filename) {
     wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm']) {
         sh """
@@ -55,45 +66,16 @@ def build_win_image(filename) {
     }
 }
 
-def debug() {
-  wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm']) {
-      sh """
-      #!/usr/env/bin bash
-      git version
-      git describe --tags --exact-match
-      git branch --show-current
-      """
-  }
-
-
-
-
-
-}
-def get_branch_name() {
-    git_branch = sh (
-                    script: "git branch --show-current",
-                    returnStdout: true
-                 ).trim()
-
-    echo "git_branch - " + git_branch
-    return git_branch
-}
-
 def set_tag_version() {
-    branchName = get_branch_name()
+    branchName = set_branch_name()
     if (branchName == "master") {
-        git_tag = sh (
-                        script: "git describe --tags --exact-match",
-                        returnStdout: true
-                     ).trim()
-        return git_tag
+        git_tag = get_git_latest_master_tag()
     }
     else {
-        return '0.0.0'
+        git_tag = '0.0.0'
     }
+    return git_tag
 }
-
 
 pipeline {
     agent { label "jenkins_slave"}
@@ -103,7 +85,6 @@ pipeline {
     }
 
     environment {
-        debug = debug()
         // TARGET_ENV is set on the jenkins slave and defaults to dev
         AWS_REGION        = "eu-west-2"
         WIN_ADMIN_PASS    = '$(aws ssm get-parameters --names /${TARGET_ENV}/jenkins/windows/slave/admin/password --region ${AWS_REGION} --with-decryption | jq -r \'.Parameters[0].Value\')'
@@ -131,6 +112,7 @@ pipeline {
             }
         }
     }
+
     post {
         always {
             deleteDir() /* clean up our workspace */
