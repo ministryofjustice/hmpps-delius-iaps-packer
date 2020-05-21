@@ -8,6 +8,7 @@ def verify_image(filename) {
         #!/usr/env/bin bash
         docker run --rm \
         -e BRANCH_NAME \
+        -e IMAGE_TAG_VERSION \
         -e TARGET_ENV \
         -e ARTIFACT_BUCKET \
         -e ZAIZI_BUCKET \
@@ -25,6 +26,7 @@ def build_image(filename) {
         #!/usr/env/bin bash
         docker run --rm \
         -e BRANCH_NAME \
+        -e IMAGE_TAG_VERSION \
         -e TARGET_ENV \
         -e ARTIFACT_BUCKET \
         -e ZAIZI_BUCKET \
@@ -54,6 +56,7 @@ def build_win_image(filename) {
         set +x
         docker run --rm \
         -e BRANCH_NAME \
+        -e IMAGE_TAG_VERSION \
         -e TARGET_ENV \
         -e ARTIFACT_BUCKET \
         -e ZAIZI_BUCKET \
@@ -96,6 +99,7 @@ pipeline {
         stage('IAPS - Packer Verify') {
             steps {
                 sh('echo $BRANCH_NAME')
+                sh('echo $IMAGE_TAG_VERSION')
                 script {
                     verify_image('iaps.json')
                 }
