@@ -81,7 +81,7 @@ def set_tag_version() {
 }
 
 pipeline {
-    agent { label "jenkins_slave"}
+    agent { label "jenkins_agent"}
 
     options {
         ansiColor('xterm')
