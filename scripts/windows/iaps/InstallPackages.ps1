@@ -19,6 +19,10 @@ try
     Write-Host('Install openssl for converting between pkcs12 and pem')
     # Installs vcredist140 (Visual C++ 2017) as a dependency
     choco install -y openssl.light --version 1.1.1.20181020
+
+    Write-Host('Install SoapUI for test and debugging')
+    choco install -y soapui
+
 }
 catch [Exception] {
     Write-Host ('Failed installing one or more chocolatey packages - see logs')

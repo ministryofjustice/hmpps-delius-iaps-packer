@@ -250,6 +250,11 @@
             "destination": "C:\\Setup\\Testing\\IMTests-Deploytime.ps1"
         },
         {
+            "type": "file",
+            "source": "scripts/windows/iaps/IMTests-Webservices.ps1",
+            "destination": "C:\\Setup\\Testing\\IMTests-Webservices.ps1"
+        },
+        {
             "type": "powershell",
             "script": "scripts/windows/iaps/IMTests-Execute-Baketime.ps1"
         }
