@@ -27,7 +27,12 @@
 						"file_path": "C:\\Program Files (x86)\\I2N\\IapsIMInterface\\Log\\IMIAPSIF.LOG",
 						"log_group_name": "IAPS",
 						"log_stream_name": "i2n-iapsif.log"
-					} 
+					},
+					{
+						"file_path": "C:\\Setup\\Backup-IAPS-Configs.log",
+						"log_group_name": "IAPS",
+						"log_stream_name": "Backup-IAPS-Configs.log"
+					}  
 				]
 			},
 			"windows_events": {
