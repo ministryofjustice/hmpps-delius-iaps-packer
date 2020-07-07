@@ -187,6 +187,11 @@
         },
         {
             "type": "file",
+            "source": "scripts/windows/iaps/Backup-IAPS-Configs.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\Backup-IAPS-Configs.ps1"
+        },
+        {
+            "type": "file",
             "source": "scripts/windows/iaps/SetupCloudwatchAgent.ps1",
             "destination": "C:\\Setup\\RunTimeConfig\\SetupCloudwatchAgent.ps1"
         },
@@ -214,6 +219,11 @@
             "type": "file",
             "source": "scripts/windows/iaps/DisableServices.ps1",
             "destination": "C:\\Setup\\RunTimeConfig\\DisableServices.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/CreateScheduledTaskIAPSConfigBackup.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\CreateScheduledTaskIAPSConfigBackup.ps1"
         },
         {
             "type": "file",
@@ -248,6 +258,11 @@
             "type": "file",
             "source": "scripts/windows/iaps/IMTests-Deploytime.ps1",
             "destination": "C:\\Setup\\Testing\\IMTests-Deploytime.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/IMTests-Webservices.ps1",
+            "destination": "C:\\Setup\\Testing\\IMTests-Webservices.ps1"
         },
         {
             "type": "powershell",
