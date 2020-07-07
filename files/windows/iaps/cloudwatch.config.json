@@ -29,7 +29,7 @@
 						"log_stream_name": "i2n-iapsif.log"
 					},
 					{
-						"file_path": "C:\\Setup\\Backup-IAPS-Configs.log",
+						"file_path": "c:\\Setup\\BackupLogs\\backup.log",
 						"log_group_name": "IAPS",
 						"log_stream_name": "Backup-IAPS-Configs.log"
 					}  
