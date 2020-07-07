@@ -187,8 +187,8 @@
         },
         {
             "type": "file",
-            "source": "scripts/windows/iaps/BackupIAPSConfigs.ps1",
-            "destination": "C:\\Setup\\BackupIAPSConfigs.ps1"
+            "source": "scripts/windows/iaps/Backup-IAPS-Configs.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\Backup-IAPS-Configs.ps1"
         },
         {
             "type": "file",

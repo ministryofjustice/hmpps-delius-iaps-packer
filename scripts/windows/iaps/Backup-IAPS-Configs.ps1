@@ -1,8 +1,6 @@
 $ErrorActionPreference = 'Stop'
 $VerbosePreference = 'Continue'
 
-Clear-Host
-
 try {
 
     ################################################################################
@@ -42,6 +40,8 @@ try {
         "NDELIUSIF_DATA.XML"
     )
 
+ 
+    # backup each file to the target bucket date stanped folder
     Write-Output "-----------------------------------------------------------------"
     Write-Output "Backup IMInterface Config files"
     Write-Output "-----------------------------------------------------------------"
@@ -83,7 +83,7 @@ try {
 catch [Exception] {
     Write-Host ('Error: Failed to copy IAPS config files to s3')
     echo $_.Exception|format-list -force
-    exit 1
+    #exit 1
 } 
  
  
