@@ -30,9 +30,11 @@ try {
     )
 
     $currentenv = ($environmentName.Value)
-    
+    $currentenv
+
     $adminUser = (Get-SSMParameterValue -Name "/$currentenv/delius/iaps/iaps/iaps_user").Parameters.Value
-    
+    $adminUser
+
     $adminPassword = (Get-SSMParameterValue -Name /$currentenv/delius/iaps/iaps/iaps_password -WithDecryption $true).Parameters.Value
    
     $adminCreds = New-Credential -UserName "$adminUser" -Password "$adminPassword"
@@ -41,7 +43,7 @@ try {
 
     $trigger =  New-ScheduledTaskTrigger -Daily -At 9am
 
-    Register-ScheduledTask -Action $action -Trigger $trigger -TaskName "IAPSDailyConfigBackup" -Description "Daily backup of IAPS Config Files to S3" -User $adminUser -Password $adminPassword
+    Register-ScheduledTask -Action $action -Trigger $trigger -TaskName "IAPSDailyConfigBackup" -Description "Daily backup of IAPS Config Files to S3" -User "SIM-WIN-001\$adminUser" -Password $adminPassword
 
 }
 catch [Exception] {
