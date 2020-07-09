@@ -482,3 +482,89 @@ Describe 'Other Windows Services' {
     }
 }
 
+Describe 'DNS Search Suffix Configuration' {
+    
+    It 'eu-west-2.ec2-utilities.amazonaws.com suffix exists' {
+        $suffix="eu-west-2.ec2-utilities.amazonaws.com"
+        $dnsconfig = Get-DnsClientGlobalSetting
+        if ($dnsconfig.SuffixSearchList -match $suffix) {
+            $result = $true
+        } else {
+           $result = $false
+        }
+
+        $result | Should Be $True
+    }
+
+    It 'us-east-1.ec2-utilities.amazonaws.com suffix exists' {
+        $suffix="us-east-1.ec2-utilities.amazonaws.com"
+        $dnsconfig = Get-DnsClientGlobalSetting
+        if ($dnsconfig.SuffixSearchList -match $suffix) {
+            $result = $true
+        } else {
+           $result = $false
+        }
+
+        $result | Should Be $True
+    }
+
+    It 'ec2-utilities.amazonaws.com suffix exists' {
+        $suffix="ec2-utilities.amazonaws.com"
+        $dnsconfig = Get-DnsClientGlobalSetting
+        if ($dnsconfig.SuffixSearchList -match $suffix) {
+            $result = $true
+        } else {
+           $result = $false
+        }
+
+        $result | Should Be $True
+    }
+
+    It 'ec2.internal suffix exists' {
+       $suffix="ec2.internal"
+        $dnsconfig = Get-DnsClientGlobalSetting
+        if ($dnsconfig.SuffixSearchList -match $suffix) {
+            $result = $true
+        } else {
+           $result = $false
+        }
+
+        $result | Should Be $True
+    }
+
+    It 'compute-1.internal suffix exists' {
+        $suffix="compute-1.internal"
+        $dnsconfig = Get-DnsClientGlobalSetting
+        if ($dnsconfig.SuffixSearchList -match $suffix) {
+            $result = $true
+        } else {
+           $result = $false
+        }
+
+        $result | Should Be $True
+    }
+
+    It 'eu-west-2.compute.internal suffix exists' {
+        $suffix="eu-west-2.compute.internal"
+        $dnsconfig = Get-DnsClientGlobalSetting
+        if ($dnsconfig.SuffixSearchList -match $suffix) {
+            $result = $true
+        } else {
+           $result = $false
+        }
+
+        $result | Should Be $True
+    }
+
+    It 'probation.hmpps.dsd.io suffix exists' {
+        $suffix="probation.hmpps.dsd.io"
+        $dnsconfig = Get-DnsClientGlobalSetting
+        if ($dnsconfig.SuffixSearchList -match $suffix) {
+            $result = $true
+        } else {
+           $result = $false
+        }
+
+        $result | Should Be $True
+    }
+}
