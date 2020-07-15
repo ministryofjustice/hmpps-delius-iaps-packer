@@ -10,6 +10,7 @@
     },
     "builders": [
       {
+        "name": "AWS AMI Builder - IAPS",
         "type": "amazon-ebs",
         "communicator": "winrm",
         "winrm_username": "Administrator",

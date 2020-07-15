@@ -5,6 +5,7 @@ echo 'Building Packer AMI inside docker container'
 echo '-------------------------------------------'
 
 echo "BRANCH_NAME: ${BRANCH_NAME}"
+echo "IMAGE_TAG_VERSION: ${IMAGE_TAG_VERSION}"
 echo "TARGET_ENV: ${TARGET_ENV}"
 echo "ARTIFACT_BUCKET: ${ARTIFACT_BUCKET}"
 echo "ZAIZI_BUCKET: ${ZAIZI_BUCKET}"

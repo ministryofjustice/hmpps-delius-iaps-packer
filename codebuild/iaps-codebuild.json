@@ -5,34 +5,34 @@
       "admin_pass": "{{env `WIN_ADMIN_PASS`}}",
       "zaizi_bucket": "{{env `ZAIZI_BUCKET`}}",
       "target_env":  "{{env `TARGET_ENV`}}",
-      "aws_region": "{{env `AWS_REGION`}}"
+      "aws_region": "{{env `AWS_REGION`}}",
+      "image_tag_version": "{{env `IMAGE_TAG_VERSION`}}"
     },
     "builders": [
       {
         "name": "AWS AMI Builder - IAPS",
         "type": "amazon-ebs",
-        "region": "eu-west-2",
-        "source_ami_filter": {
-            "filters": {
-              "virtualization-type": "hvm",
-              "architecture": "x86_64",
-              "name": "HMPPS Windows Server Base master *",
-              "root-device-type": "ebs"
-            },
-            "owners": ["895523100917"],
-            "most_recent": true
-        },
-        "instance_type": "t2.medium",
         "communicator": "winrm",
         "winrm_username": "Administrator",
         "winrm_password": "{{user `admin_pass`}}",
         "winrm_use_ssl": false,
         "winrm_insecure": true,
-        "iam_instance_profile": "tf-eu-west-2-hmpps-eng-{{user `target_env`}}-jenkins-ec2-slave-role-instance-profile",
-        "ami_name": "HMPPS IAPS Windows Server {{user `branch_name`}} {{timestamp}}",
+        "region": "eu-west-2",
         "vpc_id": "vpc-02321f288159e5d0e",
         "subnet_id": "subnet-00982fba28419ac5f",
         "temporary_security_group_source_cidr": "10.0.0.0/8",
+        "iam_instance_profile": "tf-eu-west-2-hmpps-eng-{{user `target_env`}}-jenkins-ec2-slave-role-instance-profile",
+        "source_ami_filter": {
+          "filters": {
+            "virtualization-type": "hvm",
+            "architecture": "x86_64",
+            "name": "HMPPS Windows Server Base master *",
+            "root-device-type": "ebs"
+          },
+          "owners": ["895523100917"],
+          "most_recent": true
+        },
+        "instance_type": "t2.medium",
         "ami_regions": ["eu-west-2"],
         "ami_users": [
             "895523100917",
@@ -52,13 +52,15 @@
             "349354156492",
             "431912413968"
         ],
+        "ami_name": "HMPPS IAPS Windows Server {{user `branch_name`}} {{timestamp}}",
         "tags": {
           "OS_Version": "Windows Server 2012 R2 RTM",
           "Base_AMI_Name": "{{ .SourceAMIName }}",
           "Base_AMI_ID": "{{ .SourceAMI }}",
-          "Name": "HMPPS IAPS Windows Server {{user `branch_name`}} {{timestamp}}"
-        },
-        "ami_description": "HMPPS IAPS Windows Server"
+          "Name": "HMPPS IAPS Windows Server {{user `branch_name`}} {{timestamp}}",
+          "Git_Branch": "{{user `branch_name`}}",
+          "image_tag_version": "{{user `image_tag_version`}}"
+        }
       }
     ],
     "provisioners": [
@@ -186,6 +188,11 @@
         },
         {
             "type": "file",
+            "source": "scripts/windows/iaps/Backup-IAPS-Configs.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\Backup-IAPS-Configs.ps1"
+        },
+        {
+            "type": "file",
             "source": "scripts/windows/iaps/SetupCloudwatchAgent.ps1",
             "destination": "C:\\Setup\\RunTimeConfig\\SetupCloudwatchAgent.ps1"
         },
@@ -213,6 +220,11 @@
             "type": "file",
             "source": "scripts/windows/iaps/DisableServices.ps1",
             "destination": "C:\\Setup\\RunTimeConfig\\DisableServices.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/CreateScheduledTaskIAPSConfigBackup.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\CreateScheduledTaskIAPSConfigBackup.ps1"
         },
         {
             "type": "file",
@@ -247,6 +259,11 @@
             "type": "file",
             "source": "scripts/windows/iaps/IMTests-Deploytime.ps1",
             "destination": "C:\\Setup\\Testing\\IMTests-Deploytime.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/IMTests-Webservices.ps1",
+            "destination": "C:\\Setup\\Testing\\IMTests-Webservices.ps1"
         },
         {
             "type": "powershell",
