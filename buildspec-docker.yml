@@ -12,6 +12,9 @@ env:
     WIN_JENKINS_PASS:    "/${TARGET_ENV}/jenkins/windows/agent/jenkins/password"
     GITHUB_ACCESS_TOKEN: "/jenkins/github/accesstoken"
 phases:
+  pre_build:
+    commands:
+      - ${CODEBUILD_SRC_DIR}/codebuild/docker_image/set-codebuild-env-vars.sh 
   build:
     commands:
       - ${CODEBUILD_SRC_DIR}/codebuild/docker_image/run.sh 
