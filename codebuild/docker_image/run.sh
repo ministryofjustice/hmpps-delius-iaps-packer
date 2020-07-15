@@ -6,9 +6,9 @@ function set_branch_name() {
     echo "CODEBUILD_GIT_BRANCH = $CODEBUILD_GIT_BRANCH"
 
     if [ "$CODEBUILD" == "true" ]; then
-        BRANCH_NAME=$CODEBUILD_GIT_BRANCH
+        export BRANCH_NAME=$CODEBUILD_GIT_BRANCH
     else 
-        BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+        export BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
     fi
     
     echo "BRANCH_NAME = '$BRANCH_NAME'"
@@ -18,7 +18,7 @@ function set_git_latest_master_tag() {
     echo '----------------------------------------------'
     echo "Setting IMAGE_TAG_VERSION"
     echo '----------------------------------------------'
-    IMAGE_TAG_VERSION=$(git describe --tags --exact-match)
+    export IMAGE_TAG_VERSION=$(git describe --tags --exact-match)
     echo "Set IMAGE_TAG_VERSION to '$IMAGE_TAG_VERSION'"
 }
 
@@ -29,7 +29,7 @@ function set_tag_version() {
         set_git_latest_master_tag
     else
         echo "Branch name is '${BRANCH_NAME}' so setting tag to 0.0.0"
-        IMAGE_TAG_VERSION='0.0.0'
+        export IMAGE_TAG_VERSION='0.0.0'
     fi
 }
 
@@ -162,5 +162,5 @@ verify_image ${PACKER_FILENAME}
 echo '----------------------------------------------------'
 echo 'Building Packer AMI'
 echo '----------------------------------------------------'
-build_windows_image  ${PACKER_FILENAME}
+build_windows_image ${PACKER_FILENAME}
 
