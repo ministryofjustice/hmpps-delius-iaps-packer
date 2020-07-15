@@ -2,18 +2,17 @@ version: 0.2
 
 env:
   variables:
-    AWS_REGION:  'eu-west-2'
-    BRANCH_NAME: '34_DAM-1032-IAPS-AWS-CodePipeline-AMI-Build'
-    TARGET_ENV:  'dev'
-    ARTIFACT_BUCKET: 'tf-eu-west-2-hmpps-eng-dev-config-s3bucket'
-    ZAIZI_BUCKET: 'tf-eu-west-2-hmpps-eng-dev-artefacts-s3bucket'
-    FILENAME:     'codebuild/iaps-codebuild.json'
+    ARTIFACT_BUCKET: "tf-eu-west-2-hmpps-eng-dev-config-s3bucket"
+    AWS_REGION:      "eu-west-2"
+    PACKER_FILENAME: "codebuild/iaps-codebuild.json"
+    TARGET_ENV:      "dev"
+    ZAIZI_BUCKET:    "tf-eu-west-2-hmpps-eng-dev-artefacts-s3bucket"
   parameter-store:
-    WIN_ADMIN_PASS:  "/dev/jenkins/windows/slave/admin/password"
+    WIN_ADMIN_PASS:      "/${TARGET_ENV}/jenkins/windows/slave/admin/password"
+    WIN_JENKINS_PASS:    "/${TARGET_ENV}/jenkins/windows/agent/jenkins/password"
     GITHUB_ACCESS_TOKEN: "/jenkins/github/accesstoken"
 phases:
   build:
     commands:
-      - echo $BRANCH_NAME
-      - ${CODEBUILD_SRC_DIR}/codebuild/docker_image/packer-verify-docker.sh 
-      - ${CODEBUILD_SRC_DIR}/codebuild/docker_image/packer-build-windows-docker.sh 
+      - ${CODEBUILD_SRC_DIR}/codebuild/docker_image/run.sh 
+      
