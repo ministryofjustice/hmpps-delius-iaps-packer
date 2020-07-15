@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e 
 
 # taken from https://raw.githubusercontent.com/thii/aws-codebuild-extras/master/install
 
