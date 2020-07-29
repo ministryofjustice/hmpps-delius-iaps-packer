@@ -9,8 +9,10 @@ function set_git_latest_master_tag() {
     echo '----------------------------------------------'
     echo "Setting IMAGE_TAG_VERSION"
     echo '----------------------------------------------'
-    IMAGE_TAG_VERSION=$(git describe --tags --exact-match)
+    export IMAGE_TAG_VERSION=$(curl -s https://api.github.com/repos/ministryofjustice/hmpps-delius-iaps-packer/tags | jq -r '.[0].name')
+    echo "Set IMAGE_TAG_VERSION to '$IMAGE_TAG_VERSION'"
 }
+
 
 function set_tag_version() {
     set_branch_name
@@ -22,6 +24,8 @@ function set_tag_version() {
         IMAGE_TAG_VERSION='0.0.0'
     fi
 }
+
+
 
 function verify_image() {
     # 
