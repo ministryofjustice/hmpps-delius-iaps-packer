@@ -61,6 +61,7 @@
           "Name": "HMPPS IAPS Windows Server {{user `branch_name`}} {{timestamp}}",
           "Git_Branch": "{{user `branch_name`}}",
           "image_tag_version": "{{user `image_tag_version`}}",
+          "source-code": "https://github.com/ministryofjustice/hmpps-delius-iaps-packer",
           "Codebuild": "{{user `codebuild`}}"
         },
         "run_volume_tags": {
@@ -70,6 +71,7 @@
             "Name": "HMPPS IAPS Windows Server {{user `branch_name`}} {{timestamp}}",
             "Git_Branch": "{{user `branch_name`}}",
             "image_tag_version": "{{user `image_tag_version`}}",
+            "source-code": "https://github.com/ministryofjustice/hmpps-delius-iaps-packer",
             "Codebuild": "{{user `codebuild`}}"
           }
       }
