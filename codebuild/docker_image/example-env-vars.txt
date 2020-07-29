@@ -1,0 +1,81 @@
+[Container] 2020/07/15 10:14:26 Running command ${CODEBUILD_SRC_DIR}/codebuild/docker_image/set-codebuild-env-vars.sh
+==> AWS CodeBuild Extra Environment Variables:
+==> CI = true
+==> CODEBUILD = true
+==> CODEBUILD_ACCOUNT_ID = 895523100917
+==> CODEBUILD_GIT_AUTHOR = Chris Kinsella
+==> CODEBUILD_GIT_AUTHOR_EMAIL = chris.kinsella@helkinsoft.com
+==> CODEBUILD_GIT_BRANCH = issues/62/ALS-900-Packer-AMI-Codepipeline-Migration
+==> CODEBUILD_GIT_CLEAN_BRANCH = issues.62.ALS-900-Packer-AMI-Codepipeline-Migration
+==> CODEBUILD_GIT_ESCAPED_BRANCH = issues\\.62\\.ALS-900-Packer-AMI-Codepipeline-Migration
+==> CODEBUILD_GIT_COMMIT = 3c5091fa48819189f7b986a2d310e70854582f83
+==> CODEBUILD_GIT_SHORT_COMMIT = 3c5091f
+==> CODEBUILD_GIT_MESSAGE = moved util script
+==> CODEBUILD_GIT_TAG = 
+==> CODEBUILD_GIT_MOST_RECENT_TAG = 0.17.0
+==> CODEBUILD_PROJECT = iaps-packer-builder:5f0417cf-af75-43f1-9421-69a62e6e9b71
+==> CODEBUILD_PULL_REQUEST = false
+
+
+
+----------------------------------------------
+Setting Environment Variables
+----------------------------------------------
+Setting IMAGE_TAG_VERSION
+Branch name is 'HEAD' so setting tag to 0.0.0
+CODEBUILD_BUILD_IMAGE=mojdigitalstudio/hmpps-packer-builder
+CODEBUILD_WEBHOOK_ACTOR_ACCOUNT_ID=10235456
+ECS_CONTAINER_METADATA_URI_V4=http://169.254.170.2/v4/618e6330-bb0b-4fcb-aab5-d47557a9d7d8
+CODEBUILD_BUILD_NUMBER=6
+CODEBUILD_WEBHOOK_HEAD_REF=refs/heads/issues/62/ALS-900-Packer-AMI-Codepipeline-Migration
+HOSTNAME=ip-10-161-96-114.eu-west-2.compute.internal
+OLDPWD=/codebuild/readonly
+CODEBUILD_CI=true
+CODEBUILD_BMR_URL=https://CODEBUILD_AGENT:3000
+GITHUB_ACCESS_TOKEN=***
+CODEBUILD_PROJECT_UUID=47e7f857-5c0b-4381-aa82-6ad3055f7720
+CODEBUILD_GOPATH=/codebuild/output/src229739123
+CODEBUILD_RESOLVED_SOURCE_VERSION=3c5091fa48819189f7b986a2d310e70854582f83
+AWS_DEFAULT_REGION=eu-west-2
+CODEBUILD_BUILD_ARN=arn:aws:codebuild:eu-west-2:895523100917:build/iaps-packer-builder:5f0417cf-af75-43f1-9421-69a62e6e9b71
+ZAIZI_BUCKET=tf-eu-west-2-hmpps-eng-dev-artefacts-s3bucket
+CODEBUILD_START_TIME=1594804416124
+USER=tools
+PAGER=busybox more
+CODEBUILD_BUILD_ID=iaps-packer-builder:5f0417cf-af75-43f1-9421-69a62e6e9b71
+GOPATH=/codebuild/output/src229739123
+WIN_JENKINS_PASS=***
+PWD=/codebuild/output/src229739123/src/github.com/ministryofjustice/hmpps-delius-iaps-packer
+CODEBUILD_WEBHOOK_TRIGGER=branch/issues/62/ALS-900-Packer-AMI-Codepipeline-Migration
+HOME=/home/tools
+CODEBUILD_SRC_DIR=/codebuild/output/src229739123/src/github.com/ministryofjustice/hmpps-delius-iaps-packer
+CODEBUILD_WEBHOOK_EVENT=PUSH
+ECS_CONTAINER_METADATA_URI=http://169.254.170.2/v3/618e6330-bb0b-4fcb-aab5-d47557a9d7d8
+CODEBUILD_VPC_AZ=eu-west-2a
+AWS_EXECUTION_ENV=AWS_ECS_EC2
+WIN_ADMIN_PASS=***
+CODEBUILD_EXECUTION_ROLE_BUILD=
+CODEBUILD_LOG_PATH=iaps-ami-packer/5f0417cf-af75-43f1-9421-69a62e6e9b71
+CODEBUILD_FE_REPORT_ENDPOINT=https://codebuild.eu-west-2.amazonaws.com/
+CODEBUILD_KMS_KEY_ID=arn:aws:kms:eu-west-2:895523100917:alias/aws/s3
+AWS_REGION=eu-west-2
+CODEBUILD_BUILD_SUCCEEDING=1
+CTS_LINK_LOCAL_ADDR=169.254.170.3
+CODEBUILD_AGENT_ENDPOINT=http://127.0.0.1:7831
+CODEBUILD_CONTAINER_NAME=default
+CODEBUILD_INITIATOR=GitHub-Hookshot/9d5a883
+ARTIFACT_BUCKET=tf-eu-west-2-hmpps-eng-dev-config-s3bucket
+CODEBUILD_SOURCE_VERSION=3c5091fa48819189f7b986a2d310e70854582f83
+CODEBUILD_BUILD_URL=https://eu-west-2.console.aws.amazon.com/codebuild/home?region=eu-west-2#/builds/iaps-packer-builder:5f0417cf-af75-43f1-9421-69a62e6e9b71/view/new
+FE_REPORT_LINK_LOCAL_ADDR=169.254.170.8
+CODEBUILD_SOURCE_REPO_URL=https://github.com/ministryofjustice/hmpps-delius-iaps-packer.git
+SHLVL=5
+CODEBUILD_LAST_EXIT=0
+PACKER_FILENAME=codebuild/iaps-codebuild.json
+AWS_CONTAINER_CREDENTIALS_RELATIVE_URI=/v2/credentials/d62ea755-750e-4679-9b84-a0122d48e5b6
+CODEBUILD_WEBHOOK_PREV_COMMIT=80397e9ef0133f787dbcbb8020a78ce314b0e745
+CODEBUILD_AUTH_TOKEN=d349a459-20f5-47b8-9869-3f195a82e721
+MAVEN_OPTS=-Dmaven.wagon.httpconnectionManager.maxPerRoute=2
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/codebuild/user/bin
+TARGET_ENV=dev
+_=/usr/bin/env
