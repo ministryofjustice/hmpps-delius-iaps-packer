@@ -281,6 +281,11 @@
         {
             "type": "powershell",
             "script": "scripts/windows/iaps/IMTests-Execute-Baketime.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/RestoreLatestIAPSConfig.ps1.ps1",
+            "destination": "C:\\Setup\\RestoreLatestIAPSConfig.ps1"
         }
     ]
   }
