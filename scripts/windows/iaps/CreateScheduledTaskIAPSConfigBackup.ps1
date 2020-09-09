@@ -3,6 +3,8 @@ $VerbosePreference = 'Continue'
 
 try {
 
+    Import-Module Carbon
+
     $dir = "C:\Setup\BackupLogs"
     if(!(Test-Path -Path $dir )){
         New-Item -ItemType directory -Path $dir
@@ -30,25 +32,17 @@ try {
     )
 
     $currentenv = ($environmentName.Value)
-    $currentenv
-
-    $adminUser = (Get-SSMParameterValue -Name "/$currentenv/delius/iaps/iaps/iaps_user").Parameters.Value
-    $adminUser
-
-    $adminPassword = (Get-SSMParameterValue -Name /$currentenv/delius/iaps/iaps/iaps_password -WithDecryption $true).Parameters.Value
-   
-    $adminCreds = New-Credential -UserName "$adminUser" -Password "$adminPassword"
+    Write-Output "The current environment is $currentenv"
 
     $action = New-ScheduledTaskAction -Execute 'Powershell.exe' -Argument '-NoProfile -WindowStyle Hidden -command "& powershell c:\Setup\RunTimeConfig\Backup-IAPS-Configs.ps1 > c:\Setup\BackupLogs\backup.log"'
-
-    $trigger =  New-ScheduledTaskTrigger -Daily -At 9am
-
-    Register-ScheduledTask -Action $action -Trigger $trigger -TaskName "IAPSDailyConfigBackup" -Description "Daily backup of IAPS Config Files to S3" -User "SIM-WIN-001\$adminUser" -Password $adminPassword
+    $trigger = New-ScheduledTaskTrigger -Daily -At 9am
+    Register-ScheduledTask -Action $action -Trigger $trigger -TaskName "IAPSDailyConfigBackup" -Description "Daily backup of IAPS Config Files to S3" -User "NT AUTHORITY\SYSTEM"
 
 }
 catch [Exception] {
-    Write-Host ('Error: Failed to copy IAPS config files to s3')
+    Write-Host ('Error: Failed to create Windows Scheduled Task to Backup IAPS config files to s3')
     echo $_.Exception|format-list -force
     #exit 1
 } 
   
+ 
