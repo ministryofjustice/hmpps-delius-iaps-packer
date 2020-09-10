@@ -17,7 +17,7 @@ Describe 'AmazonCloudWatchAgent Windows Service' {
 
     It 'Service is set to Automatic StartType' {
         $service = Get-Service | Where { $_.Name -eq 'AmazonCloudWatchAgent' }
-        $service.StartType | Should Be 'Automatic'
+        $service.StartType | Should Be 'Auto'
     }
 } 
  
