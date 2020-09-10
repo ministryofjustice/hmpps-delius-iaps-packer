@@ -40,6 +40,9 @@ Write-Output "environmentName: $($environmentName.Value)"
 Write-Output "environment:     $($environment.Value)"
 Write-Output "application:     $($application.Value)"
 
+$envshortname = $($environmentName.Value).Replace('delius-','').Replace('core-','')
+Write-Output "envshortname:  $envshortname"
+
 $hku = Get-PSDrive | Where { $_.Root -eq 'HKEY_USERS'}
 if($hku -eq $null) {
     write-host 'Creating HKEY_USERS as PSDrive HKU'
@@ -400,18 +403,18 @@ Describe 'ACM Certificates Configuration' {
         $exists = Get-ChildItem cert:\LocalMachine\TrustedPublisher | Where subject -eq 'CN=Amazon, OU=Server CA 1B, O=Amazon, C=US'
         $exists | Should Not Be $Null
     }
-    It 'Trusted People/*.stage.delius.probation.hmpps.dsd.io cert exists' {
-        $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq 'CN=*.stage.delius.probation.hmpps.dsd.io'
+    It "Trusted People/*.$envshortname.delius.probation.hmpps.dsd.io cert exists" {
+        $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq "CN=*.$envshortname.delius.probation.hmpps.dsd.io"
         $exists | Should Not Be $Null
     }
 
-    It 'Trusted People/*.stage.delius.probation.hmpps.dsd.io cert exists' {
-        $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq 'CN=*.stage.probation.service.justice.gov.uk'
+    It "Trusted People/*.$envshortname.delius.probation.hmpps.dsd.io cert exists" {
+        $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq "CN=*.$envshortname.probation.service.justice.gov.uk"
         $exists | Should Not Be $Null
     }
 
-    It 'Trusted People/*.stage.probation.service.justice.gov.uk cert exists' {
-        $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq 'CN=*.stage.probation.service.justice.gov.uk'
+    It "Trusted People/*.$envshortname.probation.service.justice.gov.uk cert exists" {
+        $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq "CN=*.$envshortname.probation.service.justice.gov.uk"
         $exists | Should Not Be $Null
     }
     
@@ -567,4 +570,4 @@ Describe 'DNS Search Suffix Configuration' {
 
         $result | Should Be $True
     }
-}
+} 
