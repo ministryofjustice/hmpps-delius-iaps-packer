@@ -14,5 +14,5 @@ env:
 phases:
   build:
     commands:
-      - ${CODEBUILD_SRC_DIR}/codebuild/docker_image/run.sh 
+      - ${CODEBUILD_SRC_DIR}/run-project.sh 'iaps.json'
       
