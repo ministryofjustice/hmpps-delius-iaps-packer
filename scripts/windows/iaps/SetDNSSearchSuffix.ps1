@@ -1,4 +1,4 @@
-
+ 
 
 #DNS Suffix Search List. . . . . . :  eu-west-2.ec2-utilities.amazonaws.com
 #  x                                  us-east-1.ec2-utilities.amazonaws.com
@@ -14,6 +14,120 @@
 $ErrorActionPreference = "Stop"
 $VerbosePreference = "Continue"
 
+
+# Update dns search suffix with 'eu-west-2.ec2-utilities.amazonaws.com'
+try {
+    $suffix="eu-west-2.ec2-utilities.amazonaws.com"
+    $dnsconfig = Get-DnsClientGlobalSetting
+    if ($dnsconfig.SuffixSearchList -match $suffix) {
+        Write-Host("Skipping DNS Search Suffix $suffix as matching entry exists")
+    } else {
+        Write-Host("Adding Private Zone $suffix DNS Search Suffix Entry")
+        $dnsconfig.SuffixSearchList += $suffix
+        Set-DnsClientGlobalSetting -SuffixSearchList $dnsconfig.SuffixSearchList
+        Clear-DnsClientCache
+    }
+}
+catch [Exception] {
+    Write-Host ("Failed to Update DNS Search Suffix List with $suffix")
+    echo $_.Exception|format-list -force
+    exit 1
+}
+
+# Update dns search suffix with 'us-east-1.ec2-utilities.amazonaws.com'
+try {
+    $suffix="us-east-1.ec2-utilities.amazonaws.com"
+    $dnsconfig = Get-DnsClientGlobalSetting
+    if ($dnsconfig.SuffixSearchList -match $suffix) {
+        Write-Host("Skipping DNS Search Suffix $suffix as matching entry exists")
+    } else {
+        Write-Host("Adding Private Zone $suffix DNS Search Suffix Entry")
+        $dnsconfig.SuffixSearchList += $suffix
+        Set-DnsClientGlobalSetting -SuffixSearchList $dnsconfig.SuffixSearchList
+        Clear-DnsClientCache
+    }
+}
+catch [Exception] {
+    Write-Host ("Failed to Update DNS Search Suffix List with $suffix")
+    echo $_.Exception|format-list -force
+    exit 1
+}
+
+# Update dns search suffix with 'ec2-utilities.amazonaws.com'
+try {
+    $suffix="ec2-utilities.amazonaws.coml"
+    $dnsconfig = Get-DnsClientGlobalSetting
+    if ($dnsconfig.SuffixSearchList -match $suffix) {
+        Write-Host("Skipping DNS Search Suffix $suffix as matching entry exists")
+    } else {
+        Write-Host("Adding Private Zone $suffix DNS Search Suffix Entry")
+        $dnsconfig.SuffixSearchList += $suffix
+        Set-DnsClientGlobalSetting -SuffixSearchList $dnsconfig.SuffixSearchList
+        Clear-DnsClientCache
+    }
+}
+catch [Exception] {
+    Write-Host ("Failed to Update DNS Search Suffix List with $suffix")
+    echo $_.Exception|format-list -force
+    exit 1
+}
+
+# Update dns search suffix with 'ec2.internal'
+try {
+    $suffix="ec2.internal"
+    $dnsconfig = Get-DnsClientGlobalSetting
+    if ($dnsconfig.SuffixSearchList -match $suffix) {
+        Write-Host("Skipping DNS Search Suffix $suffix as matching entry exists")
+    } else {
+        Write-Host("Adding Private Zone $suffix DNS Search Suffix Entry")
+        $dnsconfig.SuffixSearchList += $suffix
+        Set-DnsClientGlobalSetting -SuffixSearchList $dnsconfig.SuffixSearchList
+        Clear-DnsClientCache
+    }
+}
+catch [Exception] {
+    Write-Host ("Failed to Update DNS Search Suffix List with $suffix")
+    echo $_.Exception|format-list -force
+    exit 1
+}
+
+# Update dns search suffix with 'compute-1.internal'
+try {
+    $suffix="compute-1.internal"
+    $dnsconfig = Get-DnsClientGlobalSetting
+    if ($dnsconfig.SuffixSearchList -match $suffix) {
+        Write-Host("Skipping DNS Search Suffix $suffix as matching entry exists")
+    } else {
+        Write-Host("Adding Private Zone $suffix DNS Search Suffix Entry")
+        $dnsconfig.SuffixSearchList += $suffix
+        Set-DnsClientGlobalSetting -SuffixSearchList $dnsconfig.SuffixSearchList
+        Clear-DnsClientCache
+    }
+}
+catch [Exception] {
+    Write-Host ("Failed to Update DNS Search Suffix List with $suffix")
+    echo $_.Exception|format-list -force
+    exit 1
+}
+
+# Update dns search suffix with 'eu-west-2.compute.internal'
+try {
+    $suffix="eu-west-2.compute.internal"
+    $dnsconfig = Get-DnsClientGlobalSetting
+    if ($dnsconfig.SuffixSearchList -match $suffix) {
+        Write-Host("Skipping DNS Search Suffix $suffix as matching entry exists")
+    } else {
+        Write-Host("Adding Private Zone $suffix DNS Search Suffix Entry")
+        $dnsconfig.SuffixSearchList += $suffix
+        Set-DnsClientGlobalSetting -SuffixSearchList $dnsconfig.SuffixSearchList
+        Clear-DnsClientCache
+    }
+}
+catch [Exception] {
+    Write-Host ("Failed to Update DNS Search Suffix List with $suffix")
+    echo $_.Exception|format-list -force
+    exit 1
+}
 
 # Update dns search suffix with 'probation.hmpps.dsd.io'
 try {
@@ -53,7 +167,7 @@ catch [Exception] {
     exit 1
 }
 
-# Update dns search suffix with internal domain name (ie. delius-prod.internal)
+# Update dns search suffix with internal domain name (ie. delius-*.internal)
 try {
     # Get the instance id from ec2 meta data
     $instanceid = Invoke-RestMethod "http://169.254.169.254/latest/meta-data/instance-id"
@@ -92,7 +206,7 @@ catch [Exception] {
     exit 1
 }
 
-# Update dns search suffix with public domain name (ie. prod.delius.probation.hmpps.dsd.io)
+# Update dns search suffix with public domain name (ie. *.delius.probation.hmpps.dsd.io)
 try {
     # Get the instance id from ec2 meta data
     $instanceid = Invoke-RestMethod "http://169.254.169.254/latest/meta-data/instance-id"
@@ -160,4 +274,4 @@ catch [Exception] {
     Write-Host ('Failed to Update DNS Search Suffix List with Public Zone details')
     echo $_.Exception|format-list -force
     exit 1
-}
+} 

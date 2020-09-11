@@ -370,7 +370,7 @@ Describe 'Route53 Record Updated for iaps-admin' {
         Exit 1
     }
 
-    Set-Location ENV:
+    # Set-Location ENV:
     $zoneName =  $env:ExternalDomain + "."
     $hostedZone = Get-R53HostedZones | where Name -eq $zoneName
     $resourceName = "iaps-admin." + $zoneName

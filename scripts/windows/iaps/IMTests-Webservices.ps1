@@ -47,18 +47,41 @@ $IMHost =
         default { 'Unknown'  }
     }
 
+$IMPort = 
+    switch ($environment.Value) {
+        'prod'  { '' }
+        'stage' { ':8443'}
+        default { '' }
+    }
 
 Describe 'IM  Webservice Connectivity Test' {
     $url = 'https://localhost/IMIAPSSoap/service.svc'
 
+     add-type @"
+    using System.Net;
+    using System.Security.Cryptography.X509Certificates;
+    public class TrustAllCertsPolicy : ICertificatePolicy {
+        public bool CheckValidationResult(
+            ServicePoint srvPoint, X509Certificate certificate,
+            WebRequest request, int certificateProblem) {
+            return true;
+        }
+    }
+"@
+[System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
+
+
     $response = Invoke-WebRequest -URI $url
 
-    Describe 'StatusCode 200' {
+    Describe 'Calling https://localhost/IMIAPSSoap/service.svc should return StatusCode 200' {
         $response.StatusCode | Should Be 200
     }
 
     Describe 'Content should contain correct IM webservice response' {
-        $searchtext='https://' + $IMHost + '.noms.gsi.gov.uk/IMIapsSoap/Service.svc'
+        $searchtext="https://$IMHost.noms.gsi.gov.uk$IMPort/IMIapsSoap/Service.svc"
+
+        write-output $response.Content
+
         if ($response.Content -match $searchtext) {
             $result = $true
         } else {
@@ -70,9 +93,23 @@ Describe 'IM  Webservice Connectivity Test' {
 
 Describe 'NDelius Interface Connectivity Test' {
     $url = 'https://localhost/NDeliusIAPS/RetrieveOffender?wsdl'
+
+    add-type @"
+    using System.Net;
+    using System.Security.Cryptography.X509Certificates;
+    public class TrustAllCertsPolicy : ICertificatePolicy {
+        public bool CheckValidationResult(
+            ServicePoint srvPoint, X509Certificate certificate,
+            WebRequest request, int certificateProblem) {
+            return true;
+        }
+    }
+"@
+[System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
+
     $response = Invoke-WebRequest -URI $url
 
-    Describe 'StatusCode 200' {
+    Describe 'Calling https://localhost/NDeliusIAPS/RetrieveOffender?wsdl should return StatusCode 200' {
         $response.StatusCode | Should Be 200
     }
 
@@ -86,4 +123,3 @@ Describe 'NDelius Interface Connectivity Test' {
         $result | Should Be $True
     }
 }
- 
