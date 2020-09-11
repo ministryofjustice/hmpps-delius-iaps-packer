@@ -1,11 +1,11 @@
- 
+  
 
 Import-Module -Name C:\Setup\Testing\poshspec -Verbose
 #Import-Module -Name C:\ProgramData\chocolatey\lib\pester\tools\pester -Verbose
  
 Describe 'Packages Installed' {
     Registry 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\7-Zip' { Should Exist }
-    Registry 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Mozilla Firefox 71.0 (x64 en-US)' { Should Exist }
+    #Registry 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Mozilla Firefox 71.0 (x64 en-US)' { Should Exist }
     
     Describe 'Microsoft Visual C++ 2010  x64 Redistributable - 10.0.40219' {
         Registry 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{1D8E6291-B0D5-35EC-8441-6616F567A0F7}'  { Should Exist }
@@ -26,6 +26,20 @@ Describe 'Packages Installed' {
         Registry 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{F0C3E5D1-1ADE-321E-8167-68EF0DE699A5}'  { Should Exist }
         Registry 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{F0C3E5D1-1ADE-321E-8167-68EF0DE699A5}' 'DisplayVersion' { Should Be '10.0.40219' }
     }
+}
+
+Describe 'Firefox is at least version 70.1' {
+
+    $fileVersion = [System.Diagnostics.FileVersionInfo]::GetVersionInfo("C:\Program Files\Mozilla Firefox\firefox.exe").FileVersion
+    Write-Output "File Version of firefox.exe is $fileversion"
+    if([VERSION]$fileVersion -gt [VERSION]'70.1') {
+        $result = $True
+    }
+    else {
+        $result = $false
+    }
+
+    $result | Should Be $True 
 }
 
 Describe 'Windows Features Installed' {
@@ -116,3 +130,4 @@ Describe 'IM Interface Installed' {
         Registry 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{686454DB-90FA-4D0E-A626-217236BA1047}' 'DisplayVersion' { Should Be '1.0.0' }
     }
 }
+ 
