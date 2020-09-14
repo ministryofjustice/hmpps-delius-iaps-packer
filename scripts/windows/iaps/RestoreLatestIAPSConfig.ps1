@@ -28,6 +28,9 @@ try {
     )
     Write-Output "environmentName: $environmentName"
 
+    $IMConfigFilesPrefix="IapsIMInterface/"
+    $NDeliusIFConfigFilesPrefix="IapsNDeliusInterface/"
+
     ##############################################
     # Calculate S3 Bucket Name 
     ##############################################
@@ -68,7 +71,7 @@ try {
    
     foreach ($file in $IMFilestorestore) {
 
-        $sourcefile = "$SourcePath$IMConfigFilesPrefix/$file"
+        $sourcefile = "$SourcePath$IMConfigFilesPrefix$file"
         $targetfile = "$IMConfigFilesFolder\$file"
         
         write-output "Restoring file '$sourcefile' to '$targetfile'"
@@ -87,7 +90,7 @@ try {
 
     foreach ($file in $NDeliusFilestorestore) {
 
-        $sourcefile = "$SourcePath$NDeliusIFConfigFilesPrefix/$file"
+        $sourcefile = "$SourcePath$NDeliusIFConfigFilesPrefix$file"
         $targetfile = "$NDeliusIFConfigFilesFolder\$file"
         write-output "Restoring file '$sourcefile' to '$targetfile'"
 
@@ -120,5 +123,3 @@ catch [Exception] {
     echo $_.Exception|format-list -force
     #exit 1
 } 
-  
- 
