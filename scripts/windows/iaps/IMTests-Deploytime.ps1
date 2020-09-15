@@ -217,15 +217,15 @@ Describe 'nDelius Interface Config' {
     }
 
     Describe 'INTERFACE SOAPURL' {
-        $elementToTest.SOAPURL | Should Be 'https://localhost:443/NDeliusIAPS'
+        $elementToTest.SOAPURL | Should Be 'https://localhost/NDeliusIAPS'
     }
 
     Describe 'INTERFACE SOAPUSER' {
         $elementToTest.SOAPUSER | Should Be 'IAPS-User'
     }
 
-    Describe 'INTERFACE SOAPPASS Is not blank' {
-        $elementToTest.SOAPPASS | Should Not Be ''
+    Describe 'INTERFACE SOAPPASS Is blank' {
+        $elementToTest.SOAPPASS | Should Be ''
     }
 
     Describe 'INTERFACE REPLICAURL Is blank' {
@@ -571,3 +571,4 @@ Describe 'DNS Search Suffix Configuration' {
         $result | Should Be $True
     }
 } 
+ 
