@@ -34,7 +34,7 @@ try {
     $currentenv = ($environmentName.Value)
     Write-Output "The current environment is $currentenv"
 
-    $action = New-ScheduledTaskAction -Execute 'Powershell.exe' -Argument '-NoProfile -WindowStyle Hidden -command "& powershell c:\Setup\RunTimeConfig\Backup-IAPS-Configs.ps1 > c:\Setup\BackupLogs\backup.log"'
+    $action = New-ScheduledTaskAction -Execute 'Powershell.exe' -Argument '-NoProfile -WindowStyle Hidden -command "& powershell c:\Setup\Backup-IAPS-Configs.ps1 > c:\Setup\BackupLogs\backup.log"'
     $trigger = New-ScheduledTaskTrigger -Daily -At 9am
     Register-ScheduledTask -Action $action -Trigger $trigger -TaskName "IAPSDailyConfigBackup" -Description "Daily backup of IAPS Config Files to S3" -User "NT AUTHORITY\SYSTEM"
 
