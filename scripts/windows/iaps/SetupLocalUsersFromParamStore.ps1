@@ -65,7 +65,7 @@ try {
             Install-User -Credential $creds -PasswordExpires
             Add-GroupMember -Name Administrators -Member $user
             # Limited by version of powershell - need to use net cmd to force password change
-            net user $user /logonpasswordchg:yes
+            #net user $user /logonpasswordchg:yes
         }
     } 
 }
