@@ -19,8 +19,18 @@ try {
         Write-Host('Error - R53 Setup failed to retrieve hosted zone data')
         Exit 1
     }
-    # Set ResourceRecordSet
-    $resourceName = "iaps-admin." + $zoneName
+
+    # Set ResourceRecordSet for v1 of IAPS
+    if($env:computername -eq 'sim-win-001') {
+        $resourceName = "iaps-admin." + $zoneName
+    }
+   
+    # Set ResourceRecordSet for v2 of IAPS
+    if($env:computername -eq 'sim-win-002') {
+        $resourceName = "iaps-admin-v2." + $zoneName
+    }
+    
+
     $resourceRecordSet = New-Object Amazon.Route53.Model.ResourceRecordSet
     $resourceRecordSet.Name = $resourceName
     $resourceRecordSet.Type = "A"
