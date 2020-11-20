@@ -1,1 +1,0 @@
-logstreamname: 'iaps-packer'
