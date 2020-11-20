@@ -7,7 +7,7 @@
             <Contents/>
          </StringRefAddr>
          <StringRefAddr addrType="SavePassword">
-            <Contents>true</Contents>
+            <Contents>false</Contents>
          </StringRefAddr>
          <StringRefAddr addrType="OracleConnectionType">
             <Contents>BASIC</Contents>
@@ -31,7 +31,7 @@
             <Contents>iaps-db</Contents>
          </StringRefAddr>
          <StringRefAddr addrType="password">
-            <Contents>3Y838ByXAmhQ2YG5oDaGYQ==</Contents>
+            <ContentsContents>
          </StringRefAddr>
          <StringRefAddr addrType="driver">
             <Contents>oracle.jdbc.OracleDriver</Contents>
@@ -63,7 +63,7 @@
             <Contents/>
          </StringRefAddr>
          <StringRefAddr addrType="SavePassword">
-            <Contents>true</Contents>
+            <Contents>false</Contents>
          </StringRefAddr>
          <StringRefAddr addrType="OracleConnectionType">
             <Contents>BASIC</Contents>
@@ -87,7 +87,7 @@
             <Contents>iaps-db</Contents>
          </StringRefAddr>
          <StringRefAddr addrType="password">
-            <Contents>UkvClknkiSXp6KWGX7sFYw==</Contents>
+            <Contents></Contents>
          </StringRefAddr>
          <StringRefAddr addrType="driver">
             <Contents>oracle.jdbc.OracleDriver</Contents>
