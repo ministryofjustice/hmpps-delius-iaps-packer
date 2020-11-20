@@ -311,7 +311,7 @@ resource "aws_iam_policy" "IAPS-AMI-Builder-SSM-Parameters" {
       ],
       "Resource": [
         "arn:aws:ssm:eu-west-2:895523100917:parameter/jenkins/github/accesstoken",
-        "arn:aws:ssm:eu-west-2:895523100917:parameter/dev/jenkins/windows/slave/admin/password"
+        "arn:aws:ssm:eu-west-2:895523100917:parameter/dev/jenkins/windows/agent/admin/password"
       ]
     }
   ]
