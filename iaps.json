@@ -286,6 +286,11 @@
             "type": "file",
             "source": "scripts/windows/iaps/RestoreLatestIAPSConfig.ps1",
             "destination": "C:\\Setup\\RestoreLatestIAPSConfig.ps1"
+        },
+        {
+            "type": "file",
+            "source": "files/windows/iaps/connections.xml",
+            "destination": "C:\\Setup\\connections.xml"
         }
     ]
   }
