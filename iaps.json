@@ -295,8 +295,7 @@
         {
             "type": "file",
             "source": "files/windows/iaps/connections.xml",
-            "destination": "C:\\Setup\\connections.xml"
+            "destination": "C:\\Users\\Public\\Desktop\\connections.xml"
         }
     ]
   }
-   

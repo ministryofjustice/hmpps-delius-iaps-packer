@@ -1,6 +1,59 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <References xmlns="http://xmlns.oracle.com/adf/jndi">
-   <Reference name="IAPS as Shadow" className="oracle.jdeveloper.db.adapter.DatabaseProvider" xmlns="">
+   <Reference name="IAPS as SHADOW" className="oracle.jdeveloper.db.adapter.DatabaseProvider" xmlns="">
+      <Factory className="oracle.jdevimpl.db.adapter.DatabaseProviderFactory1212"/>
+      <RefAddresses>
+         <StringRefAddr addrType="role">
+            <Contents/>
+         </StringRefAddr>
+         <StringRefAddr addrType="SavePassword">
+            <Contents>false</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="OracleConnectionType">
+            <Contents>BASIC</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="serviceName">
+            <Contents>IAPS</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="RaptorConnectionType">
+            <Contents>Oracle</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="customUrl">
+            <Contents>jdbc:oracle:thin:@tf-eu-west-2-hmpps-delius-stage-iaps-copy.c1yzufvgdwfh.eu-west-2.rds.amazonaws.com:1521/IAPS</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="oraDriverType">
+            <Contents>thin</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="NoPasswordConnection">
+            <Contents>TRUE</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="hostname">
+            <Contents>tf-eu-west-2-hmpps-delius-stage-iaps-copy.c1yzufvgdwfh.eu-west-2.rds.amazonaws.com</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="driver">
+            <Contents>oracle.jdbc.OracleDriver</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="port">
+            <Contents>1521</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="subtype">
+            <Contents>oraJDBC</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="OS_AUTHENTICATION">
+            <Contents>false</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="user">
+            <Contents>shadow</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="KERBEROS_AUTHENTICATION">
+            <Contents>false</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="ConnName">
+            <Contents>IAPS as SHADOW</Contents>
+         </StringRefAddr>
+      </RefAddresses>
+   </Reference>
+   <Reference name="imnledb01.nle.im.i2ncloud.com - IMApplication" className="oracle.jdeveloper.db.adapter.DatabaseProvider" xmlns="">
       <Factory className="oracle.jdevimpl.db.adapter.DatabaseProviderFactory1212"/>
       <RefAddresses>
          <StringRefAddr addrType="role">
@@ -16,10 +69,10 @@
             <Contents>Oracle</Contents>
          </StringRefAddr>
          <StringRefAddr addrType="sid">
-            <Contents>IAPS</Contents>
+            <Contents>IM-v2</Contents>
          </StringRefAddr>
          <StringRefAddr addrType="customUrl">
-            <Contents>jdbc:oracle:thin:@iaps-db:1521:IAPS</Contents>
+            <Contents>jdbc:oracle:thin:@imnledb01.nle.im.i2ncloud.com:1521:IM-v2</Contents>
          </StringRefAddr>
          <StringRefAddr addrType="oraDriverType">
             <Contents>thin</Contents>
@@ -28,10 +81,7 @@
             <Contents>TRUE</Contents>
          </StringRefAddr>
          <StringRefAddr addrType="hostname">
-            <Contents>iaps-db</Contents>
-         </StringRefAddr>
-         <StringRefAddr addrType="password">
-            <ContentsContents>
+            <Contents>imnledb01.nle.im.i2ncloud.com</Contents>
          </StringRefAddr>
          <StringRefAddr addrType="driver">
             <Contents>oracle.jdbc.OracleDriver</Contents>
@@ -46,13 +96,66 @@
             <Contents>false</Contents>
          </StringRefAddr>
          <StringRefAddr addrType="user">
-            <Contents>SHADOW</Contents>
+            <Contents>IMApplication</Contents>
          </StringRefAddr>
          <StringRefAddr addrType="KERBEROS_AUTHENTICATION">
             <Contents>false</Contents>
          </StringRefAddr>
          <StringRefAddr addrType="ConnName">
-            <Contents>IAPS as Shadow</Contents>
+            <Contents>imnledb01.nle.im.i2ncloud.com - IMApplication</Contents>
+         </StringRefAddr>
+      </RefAddresses>
+   </Reference>
+   <Reference name="STGIAPS-PROD-COPY - IAPS" className="oracle.jdeveloper.db.adapter.DatabaseProvider" xmlns="">
+      <Factory className="oracle.jdevimpl.db.adapter.DatabaseProviderFactory1212"/>
+      <RefAddresses>
+         <StringRefAddr addrType="role">
+            <Contents/>
+         </StringRefAddr>
+         <StringRefAddr addrType="SavePassword">
+            <Contents>false</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="OracleConnectionType">
+            <Contents>BASIC</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="serviceName">
+            <Contents>IAPS</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="RaptorConnectionType">
+            <Contents>Oracle</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="customUrl">
+            <Contents>jdbc:oracle:thin:@tf-eu-west-2-hmpps-delius-stage-iaps-copy.c1yzufvgdwfh.eu-west-2.rds.amazonaws.com:1521/IAPS</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="oraDriverType">
+            <Contents>thin</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="NoPasswordConnection">
+            <Contents>TRUE</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="hostname">
+            <Contents>tf-eu-west-2-hmpps-delius-stage-iaps-copy.c1yzufvgdwfh.eu-west-2.rds.amazonaws.com</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="driver">
+            <Contents>oracle.jdbc.OracleDriver</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="port">
+            <Contents>1521</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="subtype">
+            <Contents>oraJDBC</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="OS_AUTHENTICATION">
+            <Contents>false</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="user">
+            <Contents>IAPS</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="KERBEROS_AUTHENTICATION">
+            <Contents>false</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="ConnName">
+            <Contents>STGIAPS-PROD-COPY - IAPS</Contents>
          </StringRefAddr>
       </RefAddresses>
    </Reference>
@@ -68,14 +171,14 @@
          <StringRefAddr addrType="OracleConnectionType">
             <Contents>BASIC</Contents>
          </StringRefAddr>
+         <StringRefAddr addrType="serviceName">
+            <Contents>IAPS</Contents>
+         </StringRefAddr>
          <StringRefAddr addrType="RaptorConnectionType">
             <Contents>Oracle</Contents>
          </StringRefAddr>
-         <StringRefAddr addrType="sid">
-            <Contents>IAPS</Contents>
-         </StringRefAddr>
          <StringRefAddr addrType="customUrl">
-            <Contents>jdbc:oracle:thin:@iaps-db:1521:IAPS</Contents>
+            <Contents>jdbc:oracle:thin:@tf-eu-west-2-hmpps-delius-stage-iaps-copy.c1yzufvgdwfh.eu-west-2.rds.amazonaws.com:1521/IAPS</Contents>
          </StringRefAddr>
          <StringRefAddr addrType="oraDriverType">
             <Contents>thin</Contents>
@@ -84,10 +187,7 @@
             <Contents>TRUE</Contents>
          </StringRefAddr>
          <StringRefAddr addrType="hostname">
-            <Contents>iaps-db</Contents>
-         </StringRefAddr>
-         <StringRefAddr addrType="password">
-            <Contents></Contents>
+            <Contents>tf-eu-west-2-hmpps-delius-stage-iaps-copy.c1yzufvgdwfh.eu-west-2.rds.amazonaws.com</Contents>
          </StringRefAddr>
          <StringRefAddr addrType="driver">
             <Contents>oracle.jdbc.OracleDriver</Contents>
@@ -109,6 +209,59 @@
          </StringRefAddr>
          <StringRefAddr addrType="ConnName">
             <Contents>IAPS as NPS</Contents>
+         </StringRefAddr>
+      </RefAddresses>
+   </Reference>
+   <Reference name="STGIAPS - IAPS" className="oracle.jdeveloper.db.adapter.DatabaseProvider" xmlns="">
+      <Factory className="oracle.jdevimpl.db.adapter.DatabaseProviderFactory1212"/>
+      <RefAddresses>
+         <StringRefAddr addrType="role">
+            <Contents/>
+         </StringRefAddr>
+         <StringRefAddr addrType="SavePassword">
+            <Contents>false</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="OracleConnectionType">
+            <Contents>BASIC</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="serviceName">
+            <Contents>IAPS</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="RaptorConnectionType">
+            <Contents>Oracle</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="customUrl">
+            <Contents>jdbc:oracle:thin:@tf-eu-west-2-hmpps-delius-stage-iaps.c1yzufvgdwfh.eu-west-2.rds.amazonaws.com:1521/IAPS</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="oraDriverType">
+            <Contents>thin</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="NoPasswordConnection">
+            <Contents>TRUE</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="hostname">
+            <Contents>tf-eu-west-2-hmpps-delius-stage-iaps.c1yzufvgdwfh.eu-west-2.rds.amazonaws.com</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="driver">
+            <Contents>oracle.jdbc.OracleDriver</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="port">
+            <Contents>1521</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="subtype">
+            <Contents>oraJDBC</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="OS_AUTHENTICATION">
+            <Contents>false</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="user">
+            <Contents>IAPS</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="KERBEROS_AUTHENTICATION">
+            <Contents>false</Contents>
+         </StringRefAddr>
+         <StringRefAddr addrType="ConnName">
+            <Contents>STGIAPS - IAPS</Contents>
          </StringRefAddr>
       </RefAddresses>
    </Reference>
