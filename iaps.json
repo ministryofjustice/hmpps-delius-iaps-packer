@@ -192,6 +192,11 @@
         },
         {
             "type": "file",
+            "source": "scripts/windows/iaps/GetIAPSSSMParams.ps1",
+            "destination": "C:\\Setup\\GetIAPSSSMParams.ps1"
+        },
+        {
+            "type": "file",
             "source": "files/How-to-import-Database-connections-into-Oracle-SQL-Developer-from-XML.pdf",
             "destination": "C:\\Users\\Public\\Desktop\\How-to-import-Database-connections-into-Oracle-SQL-Developer-from-XML.pdf"
         },
