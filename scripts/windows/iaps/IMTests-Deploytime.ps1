@@ -34,14 +34,45 @@ $application = Get-EC2Tag -Filter @(
             values="application"
         }
     )
+$instanceName =  Get-EC2Tag -Filter @(
+        @{
+            name="resource-id"
+            values="$instanceid"
+        }
+        @{
+            name="key"
+            values="Name"
+        }
+    )
 
 Write-Output "instanceid:      $instanceid"
 Write-Output "environmentName: $($environmentName.Value)"
 Write-Output "environment:     $($environment.Value)"
 Write-Output "application:     $($application.Value)"
+Write-Output "instanceName:    $($instanceName.Value)"
 
 $envshortname = $($environmentName.Value).Replace('delius-','').Replace('core-','')
 Write-Output "envshortname:  $envshortname"
+
+switch($instanceName.Value) {
+    'delius-stage-delius-iaps-asg' { 
+        $hostname     = 'sim-win-001';
+        $admindnsname = 'iaps-admin';
+        break; 
+    }
+    'delius-stage-delius-iapsv2-asg' { 
+        $hostname     = 'sim-win-002';
+        $admindnsname = 'iaps-admin-v2';
+        break;
+    }
+    Default {
+        $hostname     = 'unknown';
+        $admindnsname = 'unknown';
+    }
+}
+Write-Output "hostname    :  $hostname"
+Write-Output "admindnsname:  $admindnsname"
+
 
 $hku = Get-PSDrive | Where { $_.Root -eq 'HKEY_USERS'}
 if($hku -eq $null) {
@@ -62,12 +93,12 @@ Describe 'Regional Configuration' {
 }
 
 Describe 'ComputerName is correct' {
-    Registry 'HKLM:\SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName' 'ComputerName' { Should Be 'sim-win-001' }
-    Registry 'HKLM:\SYSTEM\CurrentControlSet\Control\Computername\ActiveComputerName' 'ComputerName' { Should Be 'sim-win-001' }
-    Registry 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters' 'Hostname' { Should Be 'sim-win-001' }
-    Registry 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters' 'NV Hostname' { Should Be 'sim-win-001' }
-    Registry 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' 'AltDefaultDomainName' { Should Be 'sim-win-001' }
-    Registry 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' 'DefaultDomainName' { Should Be 'sim-win-001' }
+    Registry 'HKLM:\SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName' 'ComputerName' { Should Be $hostname }
+    Registry 'HKLM:\SYSTEM\CurrentControlSet\Control\Computername\ActiveComputerName' 'ComputerName' { Should Be $hostname }
+    Registry 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters' 'Hostname' { Should Be $hostname }
+    Registry 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters' 'NV Hostname' { Should Be $hostname }
+    Registry 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' 'AltDefaultDomainName' { Should Be $hostname }
+    Registry 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' 'DefaultDomainName' { Should Be $hostname }
 } 
 
 Describe 'AmazonCloudWatchAgent is Running' {
@@ -373,7 +404,7 @@ Describe 'Route53 Record Updated for iaps-admin' {
     # Set-Location ENV:
     $zoneName =  $env:ExternalDomain + "."
     $hostedZone = Get-R53HostedZones | where Name -eq $zoneName
-    $resourceName = "iaps-admin." + $zoneName
+    $resourceName = "${admindnsname}." + $zoneName
     
     Get-R53ResourceRecordSet -HostedZoneId $hostedZone.id
 
