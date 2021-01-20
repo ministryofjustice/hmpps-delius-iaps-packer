@@ -43,7 +43,7 @@ Write-Output "application:     $($application.Value)"
 $IMHost = 
     switch ($environment.Value) {
         'prod'  { 'data-im' }
-        'stage' { 'data-nle'}
+        'stage' { 'data-nle.stage'}
         default { 'Unknown'  }
     }
 
@@ -78,7 +78,7 @@ Describe 'IM  Webservice Connectivity Test' {
     }
 
     Describe 'Content should contain correct IM webservice response' {
-        $searchtext="https://$IMHost.noms.gsi.gov.uk$IMPort/IMIapsSoap/Service.svc"
+        $searchtext="https://$IMHost.probation.service.justice.gov.uk$IMPort/IMIapsSoap/Service.svc"
 
         write-output $response.Content
 
