@@ -23,7 +23,7 @@ try {
     # Edit Cloudwatch Config to set log_group_name to specific name for this env
     ################################################################################
     $config = "C:\Setup\Cloudwatch\config.json"
-    Write-Host("Editing Cloudwatch Config file '$origconfig'")
+    Write-Host("Editing Cloudwatch Config file '$config'")
     
     $loggroupnametext = '"log_group_name": "' + $environmentName.Value + '/IAPS",'
     Write-Host("Updating Cloudwatch Config log_group_name to '$loggroupnametext'")
@@ -39,6 +39,4 @@ try {
 catch [Exception] {
     Write-Host ('Failed to configure and start aws cloudwatch agent')
     echo $_.Exception|format-list -force
-    #exit 1
 } 
- 
