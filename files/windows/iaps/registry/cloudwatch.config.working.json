@@ -5,38 +5,38 @@
 				"collect_list": [
 					{
 						"file_path": "c:\\ProgramData\\Amazon\\AmazonCloudWatchAgent\\Logs\\amazon-cloudwatch-agent.log",
-						"log_group_name": "/IAPS/amazon-cloudwatch-agent.log",
+						"log_group_name": "delius-stage/IAPS/amazon-cloudwatch-agent.log",
 						"log_stream_name": "{hostname}",
 						"timestamp_format": "%H: %M: %S%y%b%-d"
 					},
 					{
 						"file_path": "c:\\nginx\\nginx-1.17.6\\logs\\access.log",
-						"log_group_name": "/IAPS/access.log",
+						"log_group_name": "delius-stage/IAPS/access.log",
 						"log_stream_name": "{hostname}"
 					},
 					{
 						"file_path": "c:\\nginx\\nginx-1.17.6\\logs\\error.log",
-						"log_group_name": "/IAPS/error.log",
+						"log_group_name": "delius-stage/IAPS/nginx-error.log",
 						"log_stream_name": "{hostname}"
 					},
 					{
 						"file_path": "C:\\Program Files (x86)\\I2N\\IapsNDeliusInterface\\Log\\XMLTRANSFER.LOG",
-						"log_group_name": "/IAPS/i2n-xmltransfer.log",
+						"log_group_name": "delius-stage/IAPS/i2n-xmltransfer.log",
 						"log_stream_name": "{hostname}"
 					},
 					{
 						"file_path": "C:\\Program Files (x86)\\I2N\\IapsNDeliusInterface\\Log\\DAILY\\DAYSUMMARY.LOG",
-						"log_group_name": "/IAPS/i2n-daysummary.log",
+						"log_group_name": "delius-stage/IAPS/i2n-daysummary.log",
 						"log_stream_name": "{hostname}"
 					},
 					{
 						"file_path": "C:\\Program Files (x86)\\I2N\\IapsIMInterface\\Log\\IMIAPSIF.LOG",
-						"log_group_name": "/IAPS/imiapsif.log",
+						"log_group_name": "delius-stage/IAPS/imiapsif.log",
 						"log_stream_name": "{hostname}"
 					},
 					{
 						"file_path": "c:\\Setup\\BackupLogs\\backup.log",
-						"log_group_name": "/IAPS/backup.log",
+						"log_group_name": "delius-stage/IAPS/backup.log",
 						"log_stream_name": "{hostname}"
 					}  
 				]
@@ -51,7 +51,7 @@
 							"CRITICAL"
 						],
 						"event_name": "System",
-						"log_group_name": "/IAPS/system-events",
+						"log_group_name": "delius-stage/IAPS/system-events",
 						"log_stream_name": "{hostname}"
 					},
 					{
@@ -62,7 +62,7 @@
 							"CRITICAL"
 						],
 						"event_name": "Application",
-						"log_group_name": "/IAPS/application-events",
+						"log_group_name": "delius-stage/IAPS/application-events",
 						"log_stream_name": "{hostname}"
 					}
 				]
