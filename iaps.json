@@ -211,7 +211,7 @@
         },
         {
             "type": "file",
-            "source": "scripts/windows/iaps/Backup-IAPS-Configs.ps1",
+            "source": "scripts/windows/iaps/backups/Backup-IAPS-Configs.ps1",
             "destination": "C:\\Setup\\Backup-IAPS-Configs.ps1"
         },
         {
@@ -246,7 +246,7 @@
         },
         {
             "type": "file",
-            "source": "scripts/windows/iaps/CreateScheduledTaskIAPSConfigBackup.ps1",
+            "source": "scripts/windows/iaps/backups/CreateScheduledTaskIAPSConfigBackup.ps1",
             "destination": "C:\\Setup\\RunTimeConfig\\CreateScheduledTaskIAPSConfigBackup.ps1"
         },
         {
@@ -256,46 +256,46 @@
         },
         {
             "type": "file",
-            "source": "scripts/windows/iaps/Install-Pester-PoshSpec.ps1",
+            "source": "scripts/windows/iaps/smoketests/Install-Pester-PoshSpec.ps1",
             "destination": "C:\\Setup\\Testing\\Install-Pester-PoshSpec.ps1"
         },
         {
             "type": "powershell",
-            "script": "scripts/windows/iaps/Install-Pester-PoshSpec.ps1"
+            "script": "scripts/windows/iaps/smoketests/Install-Pester-PoshSpec.ps1"
         },
         {
             "type": "file",
-            "source": "scripts/windows/iaps/IMTests-Execute-Deploytime.ps1",
+            "source": "scripts/windows/iaps/smoketests/IMTests-Execute-Deploytime.ps1",
             "destination": "C:\\Setup\\Testing\\IMTests-Execute-Deploytime.ps1"
         },
         {
             "type": "file",
-            "source": "scripts/windows/iaps/IMTests-Execute-Baketime.ps1",
+            "source": "scripts/windows/iaps/smoketests/IMTests-Execute-Baketime.ps1",
             "destination": "C:\\Setup\\Testing\\IMTests-Execute-Baketime.ps1"
         },
         {
             "type": "file",
-            "source": "scripts/windows/iaps/IMTests-generic.ps1",
+            "source": "scripts/windows/iaps/smoketests/IMTests-generic.ps1",
             "destination": "C:\\Setup\\Testing\\IMTests-generic.ps1"
         },
         {
             "type": "file",
-            "source": "scripts/windows/iaps/IMTests-PackerAMIBuild.ps1",
+            "source": "scripts/windows/iaps/smoketests/IMTests-PackerAMIBuild.ps1",
             "destination": "C:\\Setup\\Testing\\IMTests-PackerAMIBuild.ps1"
         },
         {
             "type": "file",
-            "source": "scripts/windows/iaps/IMTests-Deploytime.ps1",
+            "source": "scripts/windows/iaps/smoketests/IMTests-Deploytime.ps1",
             "destination": "C:\\Setup\\Testing\\IMTests-Deploytime.ps1"
         },
         {
             "type": "file",
-            "source": "scripts/windows/iaps/IMTests-Webservices.ps1",
+            "source": "scripts/windows/iaps/smoketests/IMTests-Webservices.ps1",
             "destination": "C:\\Setup\\Testing\\IMTests-Webservices.ps1"
         },
         {
             "type": "powershell",
-            "script": "scripts/windows/iaps/IMTests-Execute-Baketime.ps1"
+            "script": "scripts/windows/iaps/smoketests/IMTests-Execute-Baketime.ps1"
         },
         {
             "type": "file",
@@ -306,6 +306,16 @@
             "type": "file",
             "source": "files/windows/iaps/connections.xml",
             "destination": "C:\\Users\\Public\\Desktop\\connections.xml"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/backups/NginxCycleLogs.ps1",
+            "destination": "C:\\Setup\\NginxCycleLogs.ps1"
+        },
+        {
+            "type": "file",
+            "source": "scripts/windows/iaps/backups/CreateScheduledTaskNginxLogsArchive.ps1",
+            "destination": "C:\\Setup\\RunTimeConfig\\CreateScheduledTaskNginxLogsArchive.ps1"
         }
     ]
   }
