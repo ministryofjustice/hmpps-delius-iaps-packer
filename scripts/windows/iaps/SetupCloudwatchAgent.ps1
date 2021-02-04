@@ -25,9 +25,9 @@ try {
     $config = "C:\Setup\Cloudwatch\config.json"
     Write-Host("Editing Cloudwatch Config file '$config'")
     
-    $loggroupnametext = '"log_group_name": "' + $environmentName.Value + '/IAPS",'
+    $loggroupnametext = '"log_group_name": "' + $environmentName.Value + '/IAPS/'
     Write-Host("Updating Cloudwatch Config log_group_name to '$loggroupnametext'")
-    ((Get-Content -path $config -Raw) -replace '"log_group_name": "IAPS",',$loggroupnametext) | Set-Content -Path $config
+    ((Get-Content -path $config -Raw) -replace '"log_group_name": "/IAPS/',$loggroupnametext) | Set-Content -Path $config
 
     ################################################################################
     # Update Cloudwatch Agent Config
