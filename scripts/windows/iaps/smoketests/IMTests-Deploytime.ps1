@@ -51,7 +51,14 @@ Write-Output "environment:     $($environment.Value)"
 Write-Output "application:     $($application.Value)"
 Write-Output "instanceName:    $($instanceName.Value)"
 
-$envshortname = $($environmentName.Value).Replace('delius-','').Replace('core-','')
+if ($environmentName.Value -eq 'delius-prod') {
+    $envshortname = ""
+}
+else {
+    $envshortname = $($environmentName.Value).Replace('delius-','').Replace('core-','')
+    $envshortname += "."
+}
+
 Write-Output "envshortname:  $envshortname"
 
 switch($instanceName.Value) {
@@ -61,6 +68,16 @@ switch($instanceName.Value) {
         break; 
     }
     'delius-stage-delius-iapsv2-asg' { 
+        $hostname     = 'sim-win-002';
+        $admindnsname = 'iaps-admin-v2';
+        break;
+    }
+    'delius-prod-delius-iaps-asg' { 
+        $hostname     = 'sim-win-001';
+        $admindnsname = 'iaps-admin';
+        break; 
+    }
+    'delius-prod-delius-iapsv2-asg' { 
         $hostname     = 'sim-win-002';
         $admindnsname = 'iaps-admin-v2';
         break;
@@ -248,7 +265,7 @@ Describe 'nDelius Interface Config' {
     }
 
     Describe 'INTERFACE SOAPURL' {
-        $elementToTest.SOAPURL | Should Be 'https://localhost/NDeliusIAPS'
+        $elementToTest.SOAPURL | Should Be 'https://localhost:443/NDeliusIAPS'
     }
 
     Describe 'INTERFACE SOAPUSER' {
@@ -434,18 +451,18 @@ Describe 'ACM Certificates Configuration' {
         $exists = Get-ChildItem cert:\LocalMachine\TrustedPublisher | Where subject -eq 'CN=Amazon, OU=Server CA 1B, O=Amazon, C=US'
         $exists | Should Not Be $Null
     }
-    It "Trusted People/*.$envshortname.delius.probation.hmpps.dsd.io cert exists" {
-        $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq "CN=*.$envshortname.delius.probation.hmpps.dsd.io"
+    It "Trusted People/*.${envshortname}delius.probation.hmpps.dsd.io cert exists" {
+        $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq "CN=*.${envshortname}delius.probation.hmpps.dsd.io"
         $exists | Should Not Be $Null
     }
 
-    It "Trusted People/*.$envshortname.delius.probation.hmpps.dsd.io cert exists" {
-        $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq "CN=*.$envshortname.probation.service.justice.gov.uk"
+    It "Trusted People/*.${envshortname}delius.probation.hmpps.dsd.io cert exists" {
+        $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq "CN=*.${envshortname}probation.service.justice.gov.uk"
         $exists | Should Not Be $Null
     }
 
-    It "Trusted People/*.$envshortname.probation.service.justice.gov.uk cert exists" {
-        $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq "CN=*.$envshortname.probation.service.justice.gov.uk"
+    It "Trusted People/*.${envshortname}probation.service.justice.gov.uk cert exists" {
+        $exists = Get-ChildItem cert:\LocalMachine\TrustedPeople | Where subject -eq "CN=*.${envshortname}probation.service.justice.gov.uk"
         $exists | Should Not Be $Null
     }
     
@@ -602,4 +619,3 @@ Describe 'DNS Search Suffix Configuration' {
         $result | Should Be $True
     }
 } 
- 
